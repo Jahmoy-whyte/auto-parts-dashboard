@@ -1,10 +1,9 @@
 import Button from "../../components/button/Button";
 import TextBox from "../../components/text-box/TextBox";
-import { useNavigate } from "react-router-dom";
+
 import useLogin from "./useLogin";
 const LoginRoute = () => {
-  const nav = useNavigate();
-  const [textBox, isLoading, textBoxHandler, submit] = useLogin();
+  const [textBox, isLoading, textBoxHandler, submit, nav] = useLogin();
   return (
     <div className="flex h-screen justify-center ">
       <div className="flex bg-white max-w-sm w-full p-4 flex-col gap-2 mt-5">
@@ -34,15 +33,15 @@ const LoginRoute = () => {
         </p>
 
         <Button text={"Log In"} isLoading={isLoading} onClick={submit} />
-        <p className="text-sm flex gap-1">
-          Dont have an account?
+        <div className="flex flex-row items-center text-sm gap-1">
+          <p>Dont have an account? </p>
           <p
             onClick={() => nav("/signup")}
             className="text-secondary font-bold cursor-pointer"
           >
             Sign Up
           </p>
-        </p>
+        </div>
       </div>
     </div>
   );

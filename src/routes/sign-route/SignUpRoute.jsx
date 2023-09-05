@@ -47,15 +47,16 @@ const SignUpRoute = () => {
         />
 
         <Button text={"Sign Up"} isLoading={isLoading} onClick={submit} />
-        <p className="text-sm flex gap-1">
-          Already have an account?
+
+        <div className="flex flex-row items-center text-sm gap-1">
+          <p>Already have an account? </p>
           <p
             onClick={() => nav("/")}
             className="text-secondary font-bold cursor-pointer"
           >
             Login
           </p>
-        </p>
+        </div>
       </div>
     </div>
   );

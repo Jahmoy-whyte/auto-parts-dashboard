@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { dbSignup } from "../../services/employeeApi";
+
+import toastMessage from "../../helper/toast-message/toastMessage";
+import useFetchInstance from "../../hooks/useFetchInstance";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContextProvider";
 
 const useSignUp = () => {
   const [textBox, setTextBox] = useState({
@@ -11,8 +14,8 @@ const useSignUp = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {}, []);
+  const nav = useNavigate();
+  const { signUp } = useAuthContext();
 
   const textBoxHandler = (textBoxName, value) => {
     setTextBox((prev) => ({ ...prev, [textBoxName]: value }));
@@ -20,20 +23,20 @@ const useSignUp = () => {
 
   const submit = async () => {
     const { bool, message } = checkTextBox();
-    if (bool) return toast.error(message);
+    if (bool) return toastMessage("error", message);
     setIsLoading(true);
 
-    const { firstName, lastName, email, password } = textBox;
     try {
-      await dbSignup(
-        firstName.trim(),
-        lastName.trim(),
-        email.trim(),
-        password.trim()
+      await signUp(
+        textBox.firstName.trim(),
+        textBox.lastName.trim(),
+        textBox.email.trim(),
+        textBox.password.trim()
       );
-      toast.success("Account Created");
+      toastMessage("success", "Account created successfully");
+      nav("/");
     } catch (error) {
-      toast.error(error.message);
+      toastMessage("error", error.message);
     }
     setIsLoading(false);
   };

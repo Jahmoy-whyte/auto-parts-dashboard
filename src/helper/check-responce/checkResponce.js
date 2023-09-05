@@ -1,6 +1,4 @@
 const checkResponce = async (responce) => {
-  responce.status;
-
   if (!responce.ok) {
     let data;
     switch (responce.status) {

@@ -1,29 +1,32 @@
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { dbLogin } from "../../services/employeeApi";
+
+import toastMessage from "../../helper/toast-message/toastMessage";
+import useFetchInstance from "../../hooks/useFetchInstance";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContextProvider";
 const useLogin = () => {
   const [textBox, setTextBox] = useState({
     email: "",
     password: "",
   });
-
+  const { logIn } = useAuthContext();
   const [isLoading, setIsLoading] = useState(false);
-
+  const nav = useNavigate();
   const textBoxHandler = (textBoxName, value) => {
     setTextBox((prev) => ({ ...prev, [textBoxName]: value }));
   };
 
   const submit = async () => {
     const { bool, message } = checkTextBox();
-    if (bool) return toast.error(message);
+    if (bool) return toastMessage("error", message);
     setIsLoading(true);
-    const { email, password } = textBox;
+
     try {
-      const tokens = await dbLogin(email.trim(), password.trim());
-      console.log("==========================");
-      console.log(tokens);
+      await logIn(textBox.email.trim(), textBox.password.trim());
+
+      nav("/home");
     } catch (error) {
-      toast.error(error.message);
+      toastMessage("error", error.message);
     }
     setIsLoading(false);
   };
@@ -39,7 +42,7 @@ const useLogin = () => {
 
     return { bool, message };
   };
-  return [textBox, isLoading, textBoxHandler, submit];
+  return [textBox, isLoading, textBoxHandler, submit, nav];
 };
 
 export default useLogin;
