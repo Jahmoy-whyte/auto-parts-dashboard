@@ -29,7 +29,7 @@ const Router = () => {
   return (
     <>
       <AuthContextProvider>
-        <RouterProvider router={router} />;
+        <RouterProvider router={router} />
       </AuthContextProvider>
       <ToastContainer />
     </>

@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import useFetchInstance from "../../hooks/useFetchInstance";
 import toastMessage from "../../helper/toast-message/toastMessage";
+import { useAuthContext } from "../../context/AuthContextProvider";
+import { useNavigate } from "react-router-dom";
 
 const useHome = () => {
-  const [] = useState();
-  const { privateFetch } = useFetchInstance();
-  useEffect(() => {}, []);
+  const { tokenAwareFetch } = useFetchInstance();
+  const nav = useNavigate();
 
   const logout = async () => {
     try {
-      await privateFetch("/employee/logout", "POST");
+      await tokenAwareFetch("/employee/logout", "POST");
+      nav("/");
     } catch (error) {
       toastMessage("error", error.message);
     }
