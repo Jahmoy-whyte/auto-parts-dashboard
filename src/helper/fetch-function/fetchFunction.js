@@ -27,6 +27,7 @@ export const privateFetch = async (
   data,
   extraHeaders = {}
 ) => {
+  console.log(`${BASE_URL}${URL}`);
   const responce = await fetch(`${BASE_URL}${URL}`, {
     method: method,
     credentials: "include",

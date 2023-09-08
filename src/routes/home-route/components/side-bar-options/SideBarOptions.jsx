@@ -1,6 +1,9 @@
-const SideBarOptions = ({ title, icon, onClick }) => {
+const SideBarOptions = ({ title, icon, onClick, path }) => {
   return (
-    <button onClick={onClick} className="flex items-center gap-3 py-3  ">
+    <button
+      onClick={() => onClick(path)}
+      className="flex items-center gap-3 py-3  "
+    >
       {icon} <p> {title} </p>
     </button>
   );

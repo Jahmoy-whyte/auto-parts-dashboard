@@ -16,7 +16,7 @@ const useHome = () => {
       toastMessage("error", error.message);
     }
   };
-  return [logout];
+  return [logout, nav];
 };
 
 export default useHome;

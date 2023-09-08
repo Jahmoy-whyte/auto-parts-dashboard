@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import HomeRoute from "./routes/home-route/HomeRoute";
 import AuthContextProvider from "./context/AuthContextProvider";
 import DashBoard from "./routes/dashboard/DashBoard";
+import ProductsRoute from "./routes/products-route/ProductsRoute";
 const Router = () => {
   const router = createBrowserRouter([
     { path: "/", element: <LoginRoute /> },
@@ -21,6 +22,10 @@ const Router = () => {
         {
           path: "/home/",
           element: <DashBoard />,
+        },
+        {
+          path: "/home/products/",
+          element: <ProductsRoute />,
         },
       ],
     },
