@@ -1,12 +1,24 @@
 import useProducts from "./useProducts";
 
 const ProductsRoute = () => {
-  const [state, dispatch, getProducts] = useProducts();
+  const [state, dispatch, getProducts, prev, next] = useProducts();
 
   return (
     <div className="flex h-screen flex-col  bg-slate-100 items-center  flex-1 overflow-y-auto">
       <div className="flex w-full max-w-6xl mt-5 flex-1 flex-col px-5">
         <h1 className="text-2xl font-bold mb-5">Products</h1>
+
+        <div>
+          <p onClick={prev}>prev</p>
+          {state.pages.map((num) => {
+            return (
+              <button onClick={() => getProducts(num)} className="border-2 p-4">
+                {num}
+              </button>
+            );
+          })}
+          <p onClick={next}>next</p>
+        </div>
         <div className="flex flex-col bg-white p-5   ">
           <div className="flex gap-5 items-center mb-5">
             <div className="border-2 rounded-md p-1 text-sm">
@@ -62,15 +74,6 @@ const ProductsRoute = () => {
               </tbody>
             </table>
           </div>
-        </div>
-        <div>
-          {[...Array(state.pageCount).keys()].map((num) => {
-            return (
-              <button onClick={() => getProducts(num)} className="border-2 p-4">
-                {num}
-              </button>
-            );
-          })}
         </div>
       </div>
     </div>
