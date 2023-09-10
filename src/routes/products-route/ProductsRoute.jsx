@@ -1,4 +1,10 @@
+import PageNumbers from "./components/page-numbers/PageNumbers";
+import TabelRows from "./components/table-rows/TabelRows";
 import useProducts from "./useProducts";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { AiOutlineSearch } from "react-icons/ai";
+import { MdFilterList } from "react-icons/md";
+import { ACTIONS } from "./helper/reducerHelper";
 
 const ProductsRoute = () => {
   const [state, dispatch, getProducts, prev, next] = useProducts();
@@ -8,29 +14,51 @@ const ProductsRoute = () => {
       <div className="flex w-full max-w-6xl mt-5 flex-1 flex-col px-5">
         <h1 className="text-2xl font-bold mb-5">Products</h1>
 
-        <div>
-          <p onClick={prev}>prev</p>
-          {state.pages.map((num) => {
-            return (
-              <button onClick={() => getProducts(num)} className="border-2 p-4">
-                {num}
-              </button>
-            );
-          })}
-          <p onClick={next}>next</p>
-        </div>
         <div className="flex flex-col bg-white p-5   ">
-          <div className="flex gap-5 items-center mb-5">
-            <div className="border-2 rounded-md p-1 text-sm">
-              <input type="text" placeholder="Search" />
+          <div className="flex gap-5 items-center mb-5 flex-wrap">
+            <div className="flex items-center gap-2 px-2 border-2  h-9 rounded-md text-sm">
+              <AiOutlineSearch />
+              <input
+                type="text"
+                placeholder="Search"
+                className="outline-none"
+                onChange={(e) =>
+                  dispatch({
+                    type: ACTIONS.SET_SEARCH_TEXT,
+                    payload: e.currentTarget.value,
+                  })
+                }
+                value={state.searchText}
+              />
+              {state.searchText != "" ? (
+                <p
+                  onClick={() =>
+                    dispatch({
+                      type: ACTIONS.SET_SEARCH_TEXT,
+                      payload: "",
+                    })
+                  }
+                >
+                  clear
+                </p>
+              ) : null}
             </div>
 
-            <button className="bg-green-400 text-white rounded-md p-1 text-sm">
-              Add
-            </button>
-            <button className="bg-red-400 text-white rounded-md p-1 text-sm">
-              Delete
-            </button>
+            <div className="flex items-center gap-2 px-2 border-2  h-9 rounded-md  text-sm">
+              <MdFilterList />
+              <select
+                className="outline-none"
+                onChange={(e) =>
+                  dispatch({
+                    type: ACTIONS.SET_FILTER,
+                    payload: e.currentTarget.value,
+                  })
+                }
+              >
+                <option value={"product_name"}>Product</option>
+                <option value={"product_id"}>Id</option>
+              </select>
+            </div>
           </div>
 
           <div className="flex flex-col bg-white   overflow-x-auto">
@@ -48,31 +76,33 @@ const ProductsRoute = () => {
               </thead>
               <tbody>
                 {state.products.map((data) => {
-                  return (
-                    <tr>
-                      <td className="px-6 py-4">
-                        <input type="checkbox" />
-                      </td>
-                      <td className="px-6 py-4">{data.productName}</td>
-                      <td className="px-6 py-4">{data.make}</td>
-                      <td className="px-6 py-4">{data.model}</td>
-                      <td className="px-6 py-4">{data.price}</td>
-                      <td className="px-6 py-4">
-                        <p className="bg-amber-200 text-center rounded-lg font-bold text-amber-500">
-                          Here
-                        </p>
-                      </td>
-                      <td className="px-6 py-4">
-                        <img
-                          src={data.image}
-                          className="bg-gray-200 rounded-md p-2 w-20"
-                        />
-                      </td>
-                    </tr>
-                  );
+                  return <TabelRows data={data} key={data.id} />;
                 })}
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <div className="flex justify-end my-2">
+          <div className="flex text-sm">
+            <button onClick={prev} className="border-2 p-2">
+              prev
+            </button>
+            <div className="flex ">
+              {state.pageChunk.map((num) => {
+                return (
+                  <PageNumbers
+                    state={state}
+                    number={num}
+                    onClick={getProducts}
+                    key={num}
+                  />
+                );
+              })}
+            </div>
+            <button onClick={next} className="border-2 p-2 ">
+              next
+            </button>
           </div>
         </div>
       </div>

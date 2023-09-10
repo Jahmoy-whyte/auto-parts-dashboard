@@ -1,22 +1,11 @@
-import { useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import useFetchInstance from "../../hooks/useFetchInstance";
 import toastMessage from "../../helper/toast-message/toastMessage";
+import { ACTIONS, initialState } from "./helper/reducerHelper";
 
 const useProducts = () => {
-  const initialState = {
-    isLoading: true,
-    products: [],
-    pageCount: 0,
-    pageEnd: 0,
-    pages: [],
-    currentPage: 0,
-  };
+  const chunks = 4;
 
-  const ACTIONS = {
-    SET_PRODUCTS: "set-products",
-    SET_PAGE: "set-page",
-    PAGE_SETUP: "page-setup",
-  };
   const reducer = (state, action) => {
     switch (action.type) {
       case "set-products":
@@ -27,18 +16,31 @@ const useProducts = () => {
           isLoading: false,
         };
 
-      case "set-page":
+      case "set-page-chunk":
         return {
           ...state,
-          pages: action.payload,
+          pageChunk: action.payload.pageChunk,
+          currentPageChunk: action.payload.currentPageChunk,
         };
 
       case "page-setup":
         return {
           ...state,
-          pageCount: action.payload.pageCount,
-          pages: action.payload.pages,
-          pageEnd: action.payload.pageEnd,
+          numberOfPages: action.payload.numberOfPages,
+          pageChunk: action.payload.pageChunk,
+          numberOfPageChunks: action.payload.numberOfPageChunks,
+        };
+
+      case "set-search-text":
+        return {
+          ...state,
+          searchText: action.payload,
+        };
+
+      case "set-filter":
+        return {
+          ...state,
+          searchTextFilter: action.payload,
         };
       default:
         state;
@@ -49,9 +51,10 @@ const useProducts = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const getProducts = async (pageNumber = 0) => {
-    const startingNumber = 15 * pageNumber;
+    const productsPerPage = state.productsPerPage;
+    const startingNumber = productsPerPage * pageNumber;
     const products = await tokenAwareFetch(
-      `/products/get-products/${startingNumber}`
+      `/products/products/get?start=${startingNumber}&limit=${productsPerPage}`
     );
     dispatch({
       type: ACTIONS.SET_PRODUCTS,
@@ -63,12 +66,18 @@ const useProducts = () => {
     const getInitialProducts = async () => {
       try {
         const count = await tokenAwareFetch("/products/product/count");
-        const [pageCount, pageEnd, pages] = caluPages(count?.numOfProducts);
+        const [numberOfPages, numberOfPageChunks, pageChunk] = caluPages(
+          count?.numOfProducts
+        );
         dispatch({
           type: ACTIONS.PAGE_SETUP,
-          payload: { pageCount: pageCount, pages: pages, pageEnd: pageEnd },
+          payload: {
+            numberOfPages: numberOfPages,
+            pageChunk: pageChunk,
+            numberOfPageChunks: numberOfPageChunks,
+          },
         });
-        await getProducts(0);
+        getProducts(0);
 
         // console.log(caluPages(count?.numOfProducts));
       } catch (error) {
@@ -79,39 +88,76 @@ const useProducts = () => {
     getInitialProducts();
   }, []);
 
-  const caluPages = (count) => {
-    const pageCount = Math.ceil(count / 15);
-    const pageEnd = Math.ceil(pageCount / 4);
-    const pages = [...Array(pageCount).keys()];
-    return [pageCount, pageEnd, pages.length > 4 ? pages.slice(0, 4) : pages];
+  const caluPages = (numOfProducts) => {
+    // get number of pages
+    //to get total page number numOfProducts / productsPerPage
+    //productsPerPage is the limit of how many products is return after a query
+    const numberOfPages = Math.ceil(numOfProducts / state.productsPerPage);
+
+    const numberOfPageChunks = Math.ceil(numberOfPages / chunks); //chunks is how many page number to show at a time
+
+    const pages = [...Array(numberOfPages).keys()];
+    const pageChunk = pages.length > chunks ? pages.slice(0, chunks) : pages;
+    return [numberOfPages, numberOfPageChunks, pageChunk];
   };
 
-  const next = () => {
-    const pages = [...Array(state.pageCount).keys()];
-    const start = state.pages[0] + 4;
-    const end = 4;
+  useEffect(() => {
+    if (state.searchText == "") return;
 
-    console.log(start + "========" + end);
+    const time = setTimeout(async () => {
+      try {
+        const products = await tokenAwareFetch(
+          `/products/products/search?text=${state.searchText}&filter=${state.searchTextFilter}`
+        );
+
+        dispatch({
+          type: ACTIONS.SET_PRODUCTS,
+          payload: { products: products, currentPage: state.currentPage },
+        });
+      } catch (error) {
+        toastMessage("error", error.message);
+      }
+    }, 1000);
+
+    return () => clearTimeout(time);
+  }, [state.searchText]);
+
+  const next = () => {
+    const currentPageChunk = state.currentPageChunk;
+
+    if (currentPageChunk == state.numberOfPageChunks) return;
+
+    const pages = [...Array(state.numberOfPages).keys()];
+    const start = state.pageChunk[0] + chunks;
+    const end = chunks;
+
     dispatch({
-      type: ACTIONS.SET_PAGE,
-      payload: pages.splice(start, end),
+      type: ACTIONS.SET_PAGE_CHUNK,
+      payload: {
+        pageChunk: pages.splice(start, end),
+        currentPageChunk: currentPageChunk + 1,
+      },
     });
   };
 
   const prev = () => {
-    const pages = [...Array(state.pageCount).keys()];
-    const start = state.pages[0] - 4;
-    const end = 4;
+    const currentPageChunk = state.currentPageChunk;
+    if (currentPageChunk == 1) return;
+    const pages = [...Array(state.numberOfPages).keys()];
+    const start = state.pageChunk[0] - chunks;
+    const end = chunks;
 
-    console.log(start + "========" + end);
     dispatch({
-      type: ACTIONS.SET_PAGE,
-      payload: pages.splice(start, end),
+      type: ACTIONS.SET_PAGE_CHUNK,
+      payload: {
+        pageChunk: pages.splice(start, end),
+        currentPageChunk: state.currentPageChunk - 1,
+      },
     });
   };
 
-  console.log(state.currentPage);
-
+  //console.log(state.currentPageChunk + "==" + state.numberOfPageChunks);
+  // console.log(state);
   return [state, dispatch, getProducts, prev, next];
 };
 
