@@ -35,7 +35,6 @@ const DashBoard = () => {
         data: labels.map(() => Math.round(Math.random() * 200)),
         borderColor: "",
         backgroundColor: "#F47A00",
-        borderRadius: 20,
       },
     ],
   };

@@ -14,6 +14,7 @@ const useProducts = () => {
           products: action.payload.products,
           currentPage: action.payload.currentPage,
           isLoading: false,
+          selected: [],
         };
 
       case "set-page-chunk":
@@ -42,6 +43,24 @@ const useProducts = () => {
           ...state,
           searchTextFilter: action.payload,
         };
+
+      case "set-is-loading":
+        return {
+          ...state,
+          isLoading: action.payload,
+        };
+      case "set-selected":
+        return {
+          ...state,
+          selected: [...state.selected, action.payload],
+        };
+
+      case "deselect":
+        return {
+          ...state,
+          selected: state.selected.filter((id) => id != action.payload),
+        };
+
       default:
         state;
     }
@@ -63,6 +82,7 @@ const useProducts = () => {
   };
 
   useEffect(() => {
+    // start up useEffect =======
     const getInitialProducts = async () => {
       try {
         const count = await tokenAwareFetch("/products/product/count");
@@ -77,9 +97,6 @@ const useProducts = () => {
             numberOfPageChunks: numberOfPageChunks,
           },
         });
-        getProducts(0);
-
-        // console.log(caluPages(count?.numOfProducts));
       } catch (error) {
         toastMessage("error", error.message);
       }
@@ -102,7 +119,17 @@ const useProducts = () => {
   };
 
   useEffect(() => {
-    if (state.searchText == "") return;
+    // search useEffect =======
+    if (state.numberOfPages == 0) return;
+    if (state.searchText == "") {
+      getProducts(0);
+      return;
+    }
+
+    dispatch({
+      type: ACTIONS.SET_IS_LOADING,
+      payload: true,
+    });
 
     const time = setTimeout(async () => {
       try {
@@ -116,11 +143,15 @@ const useProducts = () => {
         });
       } catch (error) {
         toastMessage("error", error.message);
+        dispatch({
+          type: ACTIONS.SET_IS_LOADING,
+          payload: true,
+        });
       }
-    }, 1000);
+    }, 1500);
 
     return () => clearTimeout(time);
-  }, [state.searchText]);
+  }, [state.searchText, state.numberOfPages]);
 
   const next = () => {
     const currentPageChunk = state.currentPageChunk;
@@ -129,12 +160,12 @@ const useProducts = () => {
 
     const pages = [...Array(state.numberOfPages).keys()];
     const start = state.pageChunk[0] + chunks;
-    const end = chunks;
+    const end = start + chunks;
 
     dispatch({
       type: ACTIONS.SET_PAGE_CHUNK,
       payload: {
-        pageChunk: pages.splice(start, end),
+        pageChunk: pages.slice(start, end),
         currentPageChunk: currentPageChunk + 1,
       },
     });
@@ -145,19 +176,19 @@ const useProducts = () => {
     if (currentPageChunk == 1) return;
     const pages = [...Array(state.numberOfPages).keys()];
     const start = state.pageChunk[0] - chunks;
-    const end = chunks;
+    const end = start + chunks;
 
     dispatch({
       type: ACTIONS.SET_PAGE_CHUNK,
       payload: {
-        pageChunk: pages.splice(start, end),
+        pageChunk: pages.slice(start, end),
         currentPageChunk: state.currentPageChunk - 1,
       },
     });
   };
 
   //console.log(state.currentPageChunk + "==" + state.numberOfPageChunks);
-  // console.log(state);
+  console.log(state.selected);
   return [state, dispatch, getProducts, prev, next];
 };
 

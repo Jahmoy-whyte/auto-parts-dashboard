@@ -9,6 +9,7 @@ export const initialState = {
   productsPerPage: 15,
   searchText: "",
   searchTextFilter: "product_name",
+  selected: [],
 };
 
 export const ACTIONS = {
@@ -17,4 +18,7 @@ export const ACTIONS = {
   PAGE_SETUP: "page-setup",
   SET_SEARCH_TEXT: "set-search-text",
   SET_FILTER: "set-filter",
+  SET_IS_LOADING: "set-is-loading",
+  SET_SELECTED: "set-selected",
+  DESELECT: "deselect",
 };

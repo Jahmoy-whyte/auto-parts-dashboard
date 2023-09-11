@@ -6,6 +6,15 @@ const useFetchInstance = () => {
   const { accessToken, setAuthData } = useAuthContext();
   const nav = useNavigate();
 
+  const timeOutFunc = (func) => {
+    return new Promise((res, rej) => {
+      setTimeout(async () => {
+        const data = await func();
+        res(data);
+      }, 1000);
+    });
+  };
+
   const tokenAwareFetch = async (
     URL = "",
     method = "GET",
@@ -15,7 +24,7 @@ const useFetchInstance = () => {
     const fetchData = [URL, method, accessToken, data, extraHeaders];
 
     try {
-      const responce = await privateFetch(...fetchData);
+      const responce = await timeOutFunc(() => privateFetch(...fetchData));
       return responce;
     } catch (error) {
       if (

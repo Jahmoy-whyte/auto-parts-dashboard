@@ -1,16 +1,26 @@
 import { memo } from "react";
-
-const TabelRows = ({ data }) => {
-  //  console.log("dwdwdwddddddddddddd");
+import formattedCost from "../../../../helper/format-cost/formattedCost";
+import { ACTIONS } from "../../helper/reducerHelper";
+const TabelRows = ({ data, dispatch }) => {
+  //console.log("dwdwdwddddddddddddd");
   return (
     <tr>
       <td className="px-6 py-4">
-        <input type="checkbox" />
+        <input
+          type="checkbox"
+          onChange={(e) => {
+            if (e.currentTarget.checked) {
+              dispatch({ type: ACTIONS.SET_SELECTED, payload: data.id });
+            } else {
+              dispatch({ type: ACTIONS.DESELECT, payload: data.id });
+            }
+          }}
+        />
       </td>
       <td className="px-6 py-4">{data.productName}</td>
       <td className="px-6 py-4">{data.make}</td>
       <td className="px-6 py-4">{data.model}</td>
-      <td className="px-6 py-4">{data.price}</td>
+      <td className="px-6 py-4">{formattedCost(data.price)}</td>
       <td className="px-6 py-4">
         <p className="bg-amber-200 text-center rounded-lg font-bold text-amber-500">
           Here

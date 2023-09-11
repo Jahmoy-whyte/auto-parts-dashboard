@@ -11,6 +11,7 @@ import HomeRoute from "./routes/home-route/HomeRoute";
 import AuthContextProvider from "./context/AuthContextProvider";
 import DashBoard from "./routes/dashboard/DashBoard";
 import ProductsRoute from "./routes/products-route/ProductsRoute";
+import AddProductsRoute from "./routes/add-products-route/AddProductsRoute";
 const Router = () => {
   const router = createBrowserRouter([
     { path: "/", element: <LoginRoute /> },
@@ -26,6 +27,10 @@ const Router = () => {
         {
           path: "/home/products/",
           element: <ProductsRoute />,
+        },
+        {
+          path: "/home/products/add",
+          element: <AddProductsRoute />,
         },
       ],
     },

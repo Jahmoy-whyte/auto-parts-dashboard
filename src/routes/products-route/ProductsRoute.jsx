@@ -2,10 +2,10 @@ import PageNumbers from "./components/page-numbers/PageNumbers";
 import TabelRows from "./components/table-rows/TabelRows";
 import useProducts from "./useProducts";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { AiOutlineSearch } from "react-icons/ai";
-import { MdFilterList } from "react-icons/md";
-import { ACTIONS } from "./helper/reducerHelper";
 
+import { Oval } from "react-loader-spinner";
+import PageNumberPagination from "./components/page-number-pagination/PageNumberPagination";
+import ToolBar from "./components/tool-bar/ToolBar";
 const ProductsRoute = () => {
   const [state, dispatch, getProducts, prev, next] = useProducts();
 
@@ -15,52 +15,7 @@ const ProductsRoute = () => {
         <h1 className="text-2xl font-bold mb-5">Products</h1>
 
         <div className="flex flex-col bg-white p-5   ">
-          <div className="flex gap-5 items-center mb-5 flex-wrap">
-            <div className="flex items-center gap-2 px-2 border-2  h-9 rounded-md text-sm">
-              <AiOutlineSearch />
-              <input
-                type="text"
-                placeholder="Search"
-                className="outline-none"
-                onChange={(e) =>
-                  dispatch({
-                    type: ACTIONS.SET_SEARCH_TEXT,
-                    payload: e.currentTarget.value,
-                  })
-                }
-                value={state.searchText}
-              />
-              {state.searchText != "" ? (
-                <p
-                  onClick={() =>
-                    dispatch({
-                      type: ACTIONS.SET_SEARCH_TEXT,
-                      payload: "",
-                    })
-                  }
-                >
-                  clear
-                </p>
-              ) : null}
-            </div>
-
-            <div className="flex items-center gap-2 px-2 border-2  h-9 rounded-md  text-sm">
-              <MdFilterList />
-              <select
-                className="outline-none"
-                onChange={(e) =>
-                  dispatch({
-                    type: ACTIONS.SET_FILTER,
-                    payload: e.currentTarget.value,
-                  })
-                }
-              >
-                <option value={"product_name"}>Product</option>
-                <option value={"product_id"}>Id</option>
-              </select>
-            </div>
-          </div>
-
+          <ToolBar dispatch={dispatch} state={state} />
           <div className="flex flex-col bg-white   overflow-x-auto">
             <table className="text-sm">
               <thead className="text-left">
@@ -74,37 +29,43 @@ const ProductsRoute = () => {
                   <th className="px-6 py-4">Image</th>
                 </tr>
               </thead>
+
               <tbody>
-                {state.products.map((data) => {
-                  return <TabelRows data={data} key={data.id} />;
-                })}
+                {state.isLoading ? (
+                  <tr>
+                    <td colSpan={7}>
+                      <div className=" flex  justify-center mt-5">
+                        <Oval
+                          color="#F47A00"
+                          secondaryColor="#F47A00"
+                          width={40}
+                          height={40}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  state.products.map((data) => {
+                    return (
+                      <TabelRows
+                        data={data}
+                        key={data.id}
+                        dispatch={dispatch}
+                      />
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>
         </div>
 
-        <div className="flex justify-end my-2">
-          <div className="flex text-sm">
-            <button onClick={prev} className="border-2 p-2">
-              prev
-            </button>
-            <div className="flex ">
-              {state.pageChunk.map((num) => {
-                return (
-                  <PageNumbers
-                    state={state}
-                    number={num}
-                    onClick={getProducts}
-                    key={num}
-                  />
-                );
-              })}
-            </div>
-            <button onClick={next} className="border-2 p-2 ">
-              next
-            </button>
-          </div>
-        </div>
+        <PageNumberPagination
+          next={next}
+          prev={prev}
+          state={state}
+          getProducts={getProducts}
+        />
       </div>
     </div>
   );
