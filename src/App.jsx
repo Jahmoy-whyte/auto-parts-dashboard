@@ -13,3 +13,26 @@ function App() {
 }
 
 export default App;
+/*
+
+
+product_id 	
+product_name	
+make_id	
+model_id	
+year_id	
+
+image
+description
+	
+price	
+condition_of_part
+new_arrival	
+subcategory_id		
+status	
+
+
+	
+
+
+*/

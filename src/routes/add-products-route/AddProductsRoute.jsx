@@ -1,10 +1,19 @@
 import CustomDropDown from "../../components/custom-drop-down/CustomDropDown";
 import TextBox from "../../components/text-box/TextBox";
 import img from "../../assets/images/placeholderimg.svg";
+import SelectBox from "./components/select-box/SelectBox";
+import CustomModel from "./components/model/CustomModel";
+import useAddProducts from "./useAddProducts";
 const arr = [1, 2, 3, 4, 5, 6];
 const AddProductsRoute = () => {
+  const [state, dispatch, setModelIsOpen, getMake] = useAddProducts();
   return (
-    <div className="flex h-screen flex-col  bg-slate-100 items-center  flex-1 overflow-y-auto">
+    <div className="flex h-screen flex-col  bg-slate-100 items-center  flex-1 overflow-y-auto relative">
+      <CustomModel
+        setIsOpen={setModelIsOpen}
+        isOpen={state.modelIsOpen}
+        data={state.modelData}
+      />
       <div className="flex w-full max-w-6xl mt-5 flex-1 flex-col px-5">
         <h1 className="text-2xl font-bold mb-5">Products</h1>
 
@@ -12,24 +21,9 @@ const AddProductsRoute = () => {
           <div className="bg-white p-5">
             <h1 className="text-lg font-bold">Products</h1>
             <TextBox label={"Name:"} placeHolder={"Enter product name"} />
-            <CustomDropDown
-              options={arr}
-              placeHolder="Select make"
-              dropDownId="w1"
-              label="Make:"
-            />
-            <CustomDropDown
-              options={arr}
-              label="Model:"
-              placeHolder="Select model"
-              dropDownId="w2"
-            />
-            <CustomDropDown
-              options={arr}
-              label="Year:"
-              placeHolder="Select year"
-              dropDownId="w6"
-            />
+            <SelectBox label="Make" onClick={getMake} />
+            <SelectBox label="Model" />
+            <SelectBox label="Year" />
           </div>
 
           <div className="bg-white p-5">
