@@ -16,7 +16,7 @@ const HomeRoute = () => {
   const [logout, nav] = useHome();
   return (
     <div className="flex h-screen  bg-slate-400 flex-row">
-      <div className="bg-primary h-screen w-48 px-5 text-white  hidden lg:block">
+      <div className="bg-primary h-screen w-52 px-5 text-white  hidden lg:block">
         <div className="h-16 justify-center items-center flex">
           <h1>title</h1>
         </div>

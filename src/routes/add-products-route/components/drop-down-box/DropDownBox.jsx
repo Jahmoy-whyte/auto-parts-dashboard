@@ -2,24 +2,26 @@ import { useEffect, useState, memo } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import { Oval } from "react-loader-spinner";
 
-const CustomDropDown = ({
+const DropDownBox = ({
   label = "label",
-  value = "",
+  text = "",
   options = [],
   onClick,
   placeHolder = "",
-  dropDownId = "dropId",
+  name = "dropId",
   isLoading = false,
+  disabled = false,
 }) => {
   console.log("====================== dropdwon");
+
   useEffect(() => {
     const click = (e) => {
-      console.log(e.target.id);
-      if (e.target.id != dropDownId) {
+      if (e.target.id != name) {
         setOpen(false);
       }
     };
     window.addEventListener("click", click);
+
     return () => window.removeEventListener("click", click);
   }, []);
 
@@ -27,13 +29,18 @@ const CustomDropDown = ({
   return (
     <>
       <label className="text-sm">{label}</label>
-      <div className="flex flex-col relative text-sm">
+      <div className="flex flex-col relative text-sm ">
         <button
-          onClick={() => setOpen(!open)}
-          id={dropDownId}
-          className="flex items-center justify-center border-2 rounded-md h-10 p-2 relative bg-white"
+          onClick={() => {
+            if (disabled) return;
+            setOpen(!open);
+          }}
+          id={name}
+          className={`flex items-center justify-center border-2 rounded-md h-10 p-2 relative ${
+            disabled ? "bg-slate-300" : "bg-white"
+          }  ${text == "" ? "text-gray-500" : ""}  `}
         >
-          {value == "" ? placeHolder : value}
+          {text == "" ? placeHolder : text}
           <div className="absolute right-2">
             <BsChevronDown />
           </div>
@@ -56,13 +63,14 @@ const CustomDropDown = ({
               options.map((option) => {
                 return (
                   <button
+                    key={option.id}
                     className="h-10"
                     onClick={() => {
-                      onClick(option, option);
+                      onClick(name, option.id, option.text);
                       setOpen(false);
                     }}
                   >
-                    {option}
+                    {option.text}
                   </button>
                 );
               })
@@ -74,4 +82,4 @@ const CustomDropDown = ({
   );
 };
 
-export default CustomDropDown;
+export default memo(DropDownBox);
