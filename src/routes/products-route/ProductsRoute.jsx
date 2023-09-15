@@ -6,8 +6,11 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Oval } from "react-loader-spinner";
 import PageNumberPagination from "./components/page-number-pagination/PageNumberPagination";
 import ToolBar from "./components/tool-bar/ToolBar";
+import { useNavigate } from "react-router-dom";
 const ProductsRoute = () => {
-  const [state, dispatch, getProducts, prev, next] = useProducts();
+  const [state, dispatch, getProducts, prev, next, deleteProduct] =
+    useProducts();
+  const nav = useNavigate();
 
   return (
     <div className="flex h-screen flex-col  bg-slate-100 items-center  flex-1 overflow-y-auto">
@@ -15,7 +18,11 @@ const ProductsRoute = () => {
         <h1 className="text-2xl font-bold mb-5">Products</h1>
 
         <div className="flex flex-col bg-white p-5   ">
-          <ToolBar dispatch={dispatch} state={state} />
+          <ToolBar
+            dispatch={dispatch}
+            state={state}
+            deleteProduct={deleteProduct}
+          />
           <div className="flex flex-col bg-white   overflow-x-auto">
             <table className="text-sm">
               <thead className="text-left">
@@ -26,6 +33,7 @@ const ProductsRoute = () => {
                   <th className="px-6 py-4">Model</th>
                   <th className="px-6 py-4">Price</th>
                   <th className="px-6 py-4">Status</th>
+                  <th className="px-6 py-4">Image</th>
                   <th className="px-6 py-4">Image</th>
                 </tr>
               </thead>
@@ -51,6 +59,7 @@ const ProductsRoute = () => {
                         data={data}
                         key={data.id}
                         dispatch={dispatch}
+                        nav={nav}
                       />
                     );
                   })

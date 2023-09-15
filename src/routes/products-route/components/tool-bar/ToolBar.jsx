@@ -1,9 +1,10 @@
 import { ACTIONS } from "../../helper/reducerHelper";
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdFilterList } from "react-icons/md";
+import { Oval } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 
-const ToolBar = ({ state, dispatch }) => {
+const ToolBar = ({ state, dispatch, deleteProduct }) => {
   const nav = useNavigate();
   return (
     <div className="flex gap-5 items-center mb-5 flex-wrap">
@@ -52,8 +53,15 @@ const ToolBar = ({ state, dispatch }) => {
       </div>
 
       {state.selected.length > 0 ? (
-        <button className="h-9 px-2 bg-red-500 rounded-md text-white text-sm">
-          Delete
+        <button
+          onClick={deleteProduct}
+          className="border-white border-2 h-9 px-2 min-w-[50px] bg-red-500 rounded-md text-white text-sm flex justify-center items-center"
+        >
+          {state.deleteBtnIsloading ? (
+            <Oval width={15} height={15} color="white" secondaryColor="white" />
+          ) : (
+            "Delete"
+          )}
         </button>
       ) : null}
 

@@ -9,8 +9,12 @@ const useFetchInstance = () => {
   const timeOutFunc = (func) => {
     return new Promise((res, rej) => {
       setTimeout(async () => {
-        const data = await func();
-        res(data);
+        try {
+          const data = await func();
+          res(data);
+        } catch (error) {
+          rej(error);
+        }
       }, 1000);
     });
   };

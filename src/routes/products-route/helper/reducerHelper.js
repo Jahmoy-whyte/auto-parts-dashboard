@@ -1,4 +1,5 @@
 export const initialState = {
+  deleteBtnIsloading: false,
   isLoading: true,
   products: [],
   numberOfPages: 0,
@@ -21,4 +22,5 @@ export const ACTIONS = {
   SET_IS_LOADING: "set-is-loading",
   SET_SELECTED: "set-selected",
   DESELECT: "deselect",
+  DELETE_BTN_IS_LOADING: "delete-btn-is-loading",
 };

@@ -8,6 +8,12 @@ const useProducts = () => {
 
   const reducer = (state, action) => {
     switch (action.type) {
+      case "delete-btn-is-loading":
+        return {
+          ...state,
+          deleteBtnIsloading: action.payload,
+        };
+
       case "set-products":
         return {
           ...state,
@@ -70,15 +76,19 @@ const useProducts = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const getProducts = async (pageNumber = 0) => {
-    const productsPerPage = state.productsPerPage;
-    const startingNumber = productsPerPage * pageNumber;
-    const products = await tokenAwareFetch(
-      `/products/products/get?start=${startingNumber}&limit=${productsPerPage}`
-    );
-    dispatch({
-      type: ACTIONS.SET_PRODUCTS,
-      payload: { products: products, currentPage: pageNumber },
-    });
+    try {
+      const productsPerPage = state.productsPerPage;
+      const startingNumber = productsPerPage * pageNumber;
+      const products = await tokenAwareFetch(
+        `/products/products/get?start=${startingNumber}&limit=${productsPerPage}`
+      );
+      dispatch({
+        type: ACTIONS.SET_PRODUCTS,
+        payload: { products: products, currentPage: pageNumber },
+      });
+    } catch (error) {
+      toastMessage("error", error.message);
+    }
   };
 
   useEffect(() => {
@@ -187,9 +197,32 @@ const useProducts = () => {
     });
   };
 
+  const deleteProduct = async () => {
+    dispatch({
+      type: ACTIONS.DELETE_BTN_IS_LOADING,
+      payload: true,
+    });
+    const selected = state.selected;
+    try {
+      for (let i = 0; i < selected.length; i++) {
+        const msg = await tokenAwareFetch("/products", "DELETE", {
+          id: selected[i],
+        });
+      }
+      toastMessage("success", "Delete Successful");
+    } catch (error) {
+      toastMessage("error", error.message);
+    }
+
+    dispatch({
+      type: ACTIONS.DELETE_BTN_IS_LOADING,
+      payload: false,
+    });
+  };
+
   //console.log(state.currentPageChunk + "==" + state.numberOfPageChunks);
-  console.log(state.selected);
-  return [state, dispatch, getProducts, prev, next];
+
+  return [state, dispatch, getProducts, prev, next, deleteProduct];
 };
 
 export default useProducts;

@@ -4,6 +4,13 @@ import { Oval } from "react-loader-spinner";
 
 const DropDownBox = ({
   label = "label",
+  onClick,
+  placeHolder = "",
+  name = "dropId",
+  state,
+}) => {
+  /*
+   label = "label",
   text = "",
   options = [],
   onClick,
@@ -11,7 +18,8 @@ const DropDownBox = ({
   name = "dropId",
   isLoading = false,
   disabled = false,
-}) => {
+  
+  */
   console.log("====================== dropdwon");
 
   useEffect(() => {
@@ -32,15 +40,15 @@ const DropDownBox = ({
       <div className="flex flex-col relative text-sm ">
         <button
           onClick={() => {
-            if (disabled) return;
+            if (state.isDisabled) return;
             setOpen(!open);
           }}
           id={name}
           className={`flex items-center justify-center border-2 rounded-md h-10 p-2 relative ${
-            disabled ? "bg-slate-300" : "bg-white"
-          }  ${text == "" ? "text-gray-500" : ""}  `}
+            state.isDisabled ? "bg-slate-300" : "bg-white"
+          }  ${state.text == "" ? "text-gray-500" : ""}  `}
         >
-          {text == "" ? placeHolder : text}
+          {state.text == "" ? placeHolder : state.text}
           <div className="absolute right-2">
             <BsChevronDown />
           </div>
@@ -50,7 +58,7 @@ const DropDownBox = ({
             className="flex flex-col border-2 absolute top-10 bg-white w-full z-10"
             onClick={(e) => e.stopPropagation()}
           >
-            {isLoading ? (
+            {state.isLoading ? (
               <div className="flex justify-center py-2">
                 <Oval
                   color="#F47A00"
@@ -60,7 +68,7 @@ const DropDownBox = ({
                 />
               </div>
             ) : (
-              options.map((option) => {
+              state.data.map((option) => {
                 return (
                   <button
                     key={option.id}

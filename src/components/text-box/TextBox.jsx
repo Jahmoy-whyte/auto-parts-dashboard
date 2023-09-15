@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 const TextBox = ({
   onChangeHandler,
   label,
@@ -5,6 +7,7 @@ const TextBox = ({
   name,
   type = "text",
   isDisabled,
+  value = "",
 }) => {
   return (
     <div className="flex flex-col text-sm">
@@ -15,9 +18,10 @@ const TextBox = ({
         type={type}
         onChange={(e) => onChangeHandler(name, e.currentTarget.value)}
         placeholder={placeHolder}
+        value={value}
       />
     </div>
   );
 };
 
-export default TextBox;
+export default memo(TextBox);

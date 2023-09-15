@@ -17,46 +17,52 @@ const AddProductsRoute = () => {
     setTextBox,
     save,
     setImage,
+    isUpdate,
+    update,
   ] = useAddProducts();
-  console.log(state);
+
   return (
     <div className="flex h-screen flex-col  bg-slate-100 items-center  flex-1 overflow-y-auto relative">
       <div className="flex w-full max-w-6xl mt-5 flex-1 flex-col px-5">
         <div className="flex justify-between items-center mb-5">
           <h1 className="text-2xl font-bold ">Products</h1>
           <button
-            onClick={save}
-            className="bg-secondary text-white font-bold text-sm h-8 w-14 rounded-md"
+            disabled={state.isLoading}
+            onClick={isUpdate ? update : save}
+            className="bg-secondary text-white font-bold text-sm h-8 w-14 rounded-md flex justify-center items-center hover:bg-orange-600 active:scale-95"
           >
-            Save
+            {state.isLoading ? (
+              <Oval width={18} height={18} color="white" />
+            ) : isUpdate ? (
+              "Update"
+            ) : (
+              "Save"
+            )}
           </button>
         </div>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
-          <div className="bg-white p-5 flex flex-col gap-1">
+          <div className="bg-white p-5 flex flex-col gap-1 ">
             <h1 className="text-lg font-bold">Products</h1>
             <TextBox
               label={"Name:"}
               placeHolder={"Enter product name"}
               name={"name"}
               onChangeHandler={setTextBox}
+              value={state.name}
             />
             <DropDownBox
               label="Make:"
               placeHolder="Select Make"
-              text={state.make.text}
-              options={state.make.data}
-              disabled={state.make.isDisabled}
               onClick={getModel}
               name="make"
+              state={state.make}
             />
 
             <DropDownBox
               label="Model:"
               placeHolder="Select Model"
-              text={state.model.text}
-              options={state.model.data}
-              disabled={state.model.isDisabled}
+              state={state.model}
               onClick={getYear}
               name="model"
             />
@@ -64,9 +70,7 @@ const AddProductsRoute = () => {
             <DropDownBox
               label="year:"
               placeHolder="Select Year"
-              options={state.year.data}
-              text={state.year.text}
-              disabled={state.year.isDisabled}
+              state={state.year}
               onClick={selectOption}
               name="year"
             />
@@ -78,7 +82,13 @@ const AddProductsRoute = () => {
             <div className=" rounded-md flex justify-center items-center relative text-sm border-[1px] border-dashed border-secondary">
               <div className="flex justify-center items-center flex-col py-4">
                 <img
-                  src={state.image ? URL.createObjectURL(state.image) : img}
+                  src={
+                    state.image?.passedImage
+                      ? state.image.image
+                      : state.image
+                      ? URL.createObjectURL(state.image)
+                      : img
+                  }
                   className="w-24 h-24"
                 />
                 <p className="text-sm">
@@ -100,6 +110,7 @@ const AddProductsRoute = () => {
                 placeholder="Enter description"
                 className="w-full border-2 rounded-md resize-none px-2  text-sm"
                 onChange={(e) => setTextBox("description", e.target.value)}
+                value={state.description}
               />
             </div>
           </div>
@@ -108,41 +119,38 @@ const AddProductsRoute = () => {
             <h1 className="text-lg font-bold">Products</h1>
             <TextBox
               label={"Price:"}
-              placeHolder={"Enter product name"}
+              placeHolder={"Enter price"}
               name={"price"}
               onChangeHandler={setTextBox}
+              value={state.price}
+              type="number"
             />
             <DropDownBox
               placeHolder="Select condition"
               name="condition"
               label="condition:"
-              text={state.condition.text}
-              options={state.condition.data}
+              state={state.condition}
               onClick={selectOption}
             />
             <DropDownBox
               label="New arrival:"
               placeHolder="Select"
               name="newArrival"
-              text={state.newArrival.text}
-              options={state.newArrival.data}
+              state={state.newArrival}
               onClick={selectOption}
             />
             <DropDownBox
               label="Subcategory:"
               placeHolder="Select status"
               name="subCategory"
-              text={state.subCategory.text}
-              options={state.subCategory.data}
-              disabled={state.subCategory.isDisabled}
+              state={state.subCategory}
               onClick={selectOption}
             />
             <DropDownBox
               label="Status:"
               placeHolder="Select status"
               name="status"
-              text={state.status.text}
-              options={state.status.data}
+              state={state.status}
               onClick={selectOption}
             />
           </div>

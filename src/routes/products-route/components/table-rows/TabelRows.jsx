@@ -1,8 +1,9 @@
 import { memo } from "react";
 import formattedCost from "../../../../helper/format-cost/formattedCost";
 import { ACTIONS } from "../../helper/reducerHelper";
-const TabelRows = ({ data, dispatch }) => {
+const TabelRows = ({ data, dispatch, nav }) => {
   //console.log("dwdwdwddddddddddddd");
+
   return (
     <tr>
       <td className="px-6 py-4">
@@ -22,12 +23,28 @@ const TabelRows = ({ data, dispatch }) => {
       <td className="px-6 py-4">{data.model}</td>
       <td className="px-6 py-4">{formattedCost(data.price)}</td>
       <td className="px-6 py-4">
-        <p className="bg-amber-200 text-center rounded-lg font-bold text-amber-500">
-          Here
+        <p className="bg-green-200 text-center rounded-lg px-2  text-green-500">
+          {data.status != "" ? data.status : "InStock"}
         </p>
       </td>
       <td className="px-6 py-4">
         <img src={data.image} className="bg-gray-200 rounded-md p-2 w-20" />
+      </td>
+
+      <td className="px-6 py-4">
+        <button
+          className="text-blue-500"
+          onClick={() =>
+            nav("/home/products/add", {
+              state: {
+                actionType: "Update",
+                data: data,
+              },
+            })
+          }
+        >
+          Update
+        </button>
       </td>
     </tr>
   );

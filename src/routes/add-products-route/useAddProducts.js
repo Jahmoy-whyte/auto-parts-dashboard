@@ -1,84 +1,17 @@
 import { useReducer, useEffect, useCallback } from "react";
 import useFetchInstance from "../../hooks/useFetchInstance";
 import toastMessage from "../../helper/toast-message/toastMessage";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../../firebaseConfig";
 import validateForm from "./helper/validateForm";
+import { useLocation, useNavigate } from "react-router-dom";
+import { startingState, initialState, ACTIONS } from "./helper/reducerHelper";
+
 const useAddProducts = () => {
-  const initialState = {
-    name: "",
-    price: "",
-    Description: "",
-    image: null,
-    isLoading: false,
-
-    condition: {
-      value: "",
-      text: "",
-      data: [
-        { id: "new", text: "New" },
-        { id: "used", text: "Used" },
-      ],
-    },
-    newArrival: {
-      isLoading: false,
-      isDisabled: true,
-      value: "",
-      text: "",
-      data: [
-        { id: "true", text: "True" },
-        { id: "false", text: "False" },
-      ],
-    },
-    subCategory: {
-      isLoading: false,
-      isDisabled: true,
-      value: "",
-      text: "",
-      data: [],
-    },
-    status: {
-      isLoading: false,
-      isDisabled: true,
-      value: "",
-      text: "",
-      data: [
-        { id: "In stock", text: "In Stock" },
-        { id: "Out of stock", text: "Out of stock" },
-      ],
-    },
-
-    make: {
-      isLoading: false,
-      isDisabled: true,
-      value: "",
-      text: "",
-      data: [],
-    },
-    model: {
-      isLoading: false,
-      isDisabled: true,
-      value: "",
-      text: "",
-      data: [],
-    },
-    year: {
-      isLoading: false,
-      isDisabled: true,
-      value: "",
-      text: "",
-      data: [],
-    },
-  };
-
-  const ACTIONS = {
-    set_dropdown_data: "set_dropdown_data",
-    set_text_and_value: "set_text_and_value",
-    set_textbox: "set_textbox",
-    set_loading: "set_loading",
-  };
-
-  const { tokenAwareFetch } = useFetchInstance();
+  const loc = useLocation();
+  const nav = useNavigate();
+  const isUpdate = loc.state ? true : false;
+  const passedState = loc.state ? loc.state.data : null;
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -111,6 +44,12 @@ const useAddProducts = () => {
           ...state,
           isLoading: action.payload,
         };
+      }
+
+      case "reset": {
+        const reset = initialState;
+        reset.make.isDisabled = false;
+        return reset;
       }
 
       case "set_text_and_value": {
@@ -165,9 +104,15 @@ const useAddProducts = () => {
     }
   };
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const { tokenAwareFetch } = useFetchInstance();
+  const [state, dispatch] = useReducer(reducer, startingState(passedState));
 
   useEffect(() => {
+    if (passedState) {
+      getModel("make", passedState.makeId, passedState.make);
+      getYear("model", passedState.modelId, passedState.model);
+      selectOption("year", passedState.yearId, passedState.year);
+    }
     getMake();
     getCategories();
   }, []);
@@ -275,28 +220,92 @@ const useAddProducts = () => {
     setTextBox("image", imageFile);
   }, []);
 
-  const upload = async () => {
+  const uploadImage = async () => {
     try {
-      const storageRef = ref(storage, `images/${state.image.name}`);
+      const storageRef = ref(storage, `products/${state.image.name}`);
       await uploadBytes(storageRef, state.image);
       const url = await getDownloadURL(storageRef);
       return url;
     } catch (error) {
-      toastMessage("error", error.message);
+      return null;
     }
   };
 
-  const save = () => {
+  const save = async () => {
     try {
       const { valid, message } = validateForm(state);
       if (!valid) return toastMessage("error", message);
+
       dispatch({ type: ACTIONS.set_loading, payload: true });
+
+      const url = await uploadImage();
+      if (!url) return toastMessage("error", "error uploading image");
+
+      const data = {
+        productName: state.name,
+        makeId: state.make.value,
+        modelId: state.model.value,
+        yearId: state.year.value,
+        subCategoryId: state.subCategory.value,
+        description: state.description,
+        price: state.price,
+        newArrival: state.newArrival.value,
+        conditionOfPart: state.condition.value,
+        image: url,
+        status: state.status.value,
+      };
+
+      const msg = await tokenAwareFetch("/products", "POST", data);
+      toastMessage("success", msg);
+      dispatch({ type: ACTIONS.reset });
     } catch (error) {
       toastMessage("error", error.message);
     }
 
     dispatch({ type: ACTIONS.set_loading, payload: false });
   };
+
+  const update = async () => {
+    try {
+      const { valid, message } = validateForm(state);
+      if (!valid) return toastMessage("error", message);
+
+      dispatch({ type: ACTIONS.set_loading, payload: true });
+
+      let url = null;
+      if (state.image?.passedImage) {
+        url = state.image.image;
+      } else {
+        url = await uploadImage();
+      }
+
+      if (!url) return toastMessage("error", "error uploading image");
+
+      const data = {
+        id: state.id,
+        productName: state.name,
+        makeId: state.make.value,
+        modelId: state.model.value,
+        yearId: state.year.value,
+        subCategoryId: state.subCategory.value,
+        description: state.description,
+        price: state.price,
+        newArrival: state.newArrival.value,
+        conditionOfPart: state.condition.value,
+        image: url,
+        status: state.status.value,
+      };
+
+      const msg = await tokenAwareFetch("/products", "PUT", data);
+      toastMessage("success", msg);
+      nav("/home/products");
+    } catch (error) {
+      toastMessage("error", error.message);
+    }
+
+    dispatch({ type: ACTIONS.set_loading, payload: false });
+  };
+
   return [
     state,
     dispatch,
@@ -306,6 +315,8 @@ const useAddProducts = () => {
     setTextBox,
     save,
     setImage,
+    isUpdate,
+    update,
   ];
 };
 
