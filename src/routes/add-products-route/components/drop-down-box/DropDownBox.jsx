@@ -55,7 +55,7 @@ const DropDownBox = ({
         </button>
         {open ? (
           <div
-            className="flex flex-col border-2 absolute top-10 bg-white w-full z-10"
+            className="flex flex-col border-2 absolute top-10 bg-white w-full z-10 max-h-40 overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {state.isLoading ? (
@@ -72,7 +72,7 @@ const DropDownBox = ({
                 return (
                   <button
                     key={option.id}
-                    className="h-10"
+                    className="h-10 py-2"
                     onClick={() => {
                       onClick(name, option.id, option.text);
                       setOpen(false);

@@ -60,6 +60,12 @@ const useProducts = () => {
           ...state,
           selected: [...state.selected, action.payload],
         };
+      case "clear-selected":
+        return {
+          ...state,
+          selected: [],
+          deleteBtnIsloading: false,
+        };
 
       case "deselect":
         return {
@@ -209,15 +215,17 @@ const useProducts = () => {
           id: selected[i],
         });
       }
+
+      dispatch({ type: ACTIONS.CLEAR_SELECTED });
       toastMessage("success", "Delete Successful");
+      getProducts();
     } catch (error) {
       toastMessage("error", error.message);
+      dispatch({
+        type: ACTIONS.DELETE_BTN_IS_LOADING,
+        payload: false,
+      });
     }
-
-    dispatch({
-      type: ACTIONS.DELETE_BTN_IS_LOADING,
-      payload: false,
-    });
   };
 
   //console.log(state.currentPageChunk + "==" + state.numberOfPageChunks);

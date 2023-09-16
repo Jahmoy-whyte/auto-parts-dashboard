@@ -12,6 +12,7 @@ import AuthContextProvider from "./context/AuthContextProvider";
 import DashBoard from "./routes/dashboard/DashBoard";
 import ProductsRoute from "./routes/products-route/ProductsRoute";
 import AddProductsRoute from "./routes/add-products-route/AddProductsRoute";
+import OrdersRoute from "./routes/orders-route/OrdersRoute";
 const Router = () => {
   const router = createBrowserRouter([
     { path: "/", element: <LoginRoute /> },
@@ -31,6 +32,10 @@ const Router = () => {
         {
           path: "/home/products/add",
           element: <AddProductsRoute />,
+        },
+        {
+          path: "/home/orders/",
+          element: <OrdersRoute />,
         },
       ],
     },

@@ -25,34 +25,20 @@ const ProductsRoute = () => {
           />
           <div className="flex flex-col bg-white   overflow-x-auto">
             <table className="text-sm">
-              <thead className="text-left">
+              <thead className="text-left ">
                 <tr className="h-11 bg-slate-100">
-                  <th className="px-6 py-4">action</th>
+                  <th className="px-6 py-4 ">Select</th>
                   <th className="px-6 py-4">Product</th>
                   <th className="px-6 py-4">Make</th>
                   <th className="px-6 py-4">Model</th>
                   <th className="px-6 py-4">Price</th>
                   <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4">Image</th>
-                  <th className="px-6 py-4">Image</th>
+                  <th className="px-6 py-4">Edit</th>
                 </tr>
               </thead>
 
               <tbody>
-                {state.isLoading ? (
-                  <tr>
-                    <td colSpan={7}>
-                      <div className=" flex  justify-center mt-5">
-                        <Oval
-                          color="#F47A00"
-                          secondaryColor="#F47A00"
-                          width={40}
-                          height={40}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                ) : (
+                {!state.isLoading &&
                   state.products.map((data) => {
                     return (
                       <TabelRows
@@ -62,8 +48,7 @@ const ProductsRoute = () => {
                         nav={nav}
                       />
                     );
-                  })
-                )}
+                  })}
               </tbody>
             </table>
           </div>

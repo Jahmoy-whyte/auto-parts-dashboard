@@ -11,7 +11,7 @@ import InfoCards from "./components/info-cards/InfoCards";
 
 import React from "react";
 import { Chart as ChartJS } from "chart.js/auto";
-import { Bar, Pie } from "react-chartjs-2";
+import { Bar, Line, Pie } from "react-chartjs-2";
 import useDashBoard from "./useDashBoard";
 import DropDown from "../../components/drop-down/DropDown";
 import formattedCost from "../../helper/format-cost/formattedCost";
@@ -32,8 +32,10 @@ const DashBoard = () => {
     labels,
     datasets: [
       {
+        fill: true,
+        // borderRadius: 10,
         data: labels.map(() => Math.round(Math.random() * 200)),
-        borderColor: "",
+        borderColor: "white",
         backgroundColor: "#F47A00",
       },
     ],
@@ -74,7 +76,7 @@ const DashBoard = () => {
                 <h2 className="text-lg font-bold">Sales</h2>
                 <DropDown />
               </div>
-              <Bar data={data} />
+              <Line data={data} />
             </div>
 
             <div className=" w-full bg-white p-5  lg:w-[400px]">

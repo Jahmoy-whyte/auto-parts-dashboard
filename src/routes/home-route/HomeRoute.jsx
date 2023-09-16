@@ -32,7 +32,12 @@ const HomeRoute = () => {
           onClick={nav}
           path={"/home/products/"}
         />
-        <SideBarOptions icon={<AiOutlineShoppingCart />} title={"Orders"} />
+        <SideBarOptions
+          icon={<AiOutlineShoppingCart />}
+          title={"Orders"}
+          onClick={nav}
+          path={"/home/orders/"}
+        />
         <SideBarOptions icon={<AiOutlineUser />} title={"Users"} />
         <SideBarOptions
           icon={<AiOutlineLogout />}

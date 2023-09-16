@@ -6,7 +6,7 @@ const TabelRows = ({ data, dispatch, nav }) => {
 
   return (
     <tr>
-      <td className="px-6 py-4">
+      <td className="px-6 py-4 ">
         <input
           type="checkbox"
           onChange={(e) => {
@@ -18,17 +18,29 @@ const TabelRows = ({ data, dispatch, nav }) => {
           }}
         />
       </td>
-      <td className="px-6 py-4">{data.productName}</td>
+      <td className="px-6 py-4 ">
+        <div className="flex items-center gap-1 w-[200px]">
+          <img
+            src={data.image}
+            className="bg-gray-200 rounded-md p-2 w-14 h-auto"
+          />
+
+          <p> {data.productName} </p>
+        </div>
+      </td>
       <td className="px-6 py-4">{data.make}</td>
       <td className="px-6 py-4">{data.model}</td>
       <td className="px-6 py-4">{formattedCost(data.price)}</td>
       <td className="px-6 py-4">
-        <p className="bg-green-200 text-center rounded-lg px-2  text-green-500">
-          {data.status != "" ? data.status : "InStock"}
+        <p
+          className={`text-center rounded-lg px-2 ${
+            data.status == "In stock"
+              ? "bg-green-200  text-green-500"
+              : "bg-orange-200 text-orange-500"
+          }`}
+        >
+          {data.status}
         </p>
-      </td>
-      <td className="px-6 py-4">
-        <img src={data.image} className="bg-gray-200 rounded-md p-2 w-20" />
       </td>
 
       <td className="px-6 py-4">
@@ -43,7 +55,7 @@ const TabelRows = ({ data, dispatch, nav }) => {
             })
           }
         >
-          Update
+          Edit
         </button>
       </td>
     </tr>

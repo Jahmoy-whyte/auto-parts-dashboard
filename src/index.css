@@ -9,6 +9,17 @@
     font-family: "Inter", sans-serif;
   }
 }
+
+@layer components {
+  .outlet-outer-container {
+    @apply flex h-screen flex-col  bg-slate-100 items-center  flex-1 overflow-y-auto;
+  }
+
+  .outlet-inner-container {
+    @apply flex w-full max-w-6xl mt-5 flex-1 flex-col px-5;
+  }
+}
+
 /*
 
 :root {

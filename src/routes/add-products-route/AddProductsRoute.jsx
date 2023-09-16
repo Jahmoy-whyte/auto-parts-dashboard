@@ -6,6 +6,7 @@ import CustomModel from "./components/model/CustomModel";
 import useAddProducts from "./useAddProducts";
 import DropDownBox from "./components/drop-down-box/DropDownBox";
 import { Oval } from "react-loader-spinner";
+import formattedCost from "../../helper/format-cost/formattedCost";
 
 const AddProductsRoute = () => {
   const [
@@ -24,7 +25,7 @@ const AddProductsRoute = () => {
   return (
     <div className="flex h-screen flex-col  bg-slate-100 items-center  flex-1 overflow-y-auto relative">
       <div className="flex w-full max-w-6xl mt-5 flex-1 flex-col px-5">
-        <div className="flex justify-between items-center mb-5">
+        <div className="flex justify-between items-center mb-5  max-w-4xl">
           <h1 className="text-2xl font-bold ">Products</h1>
           <button
             disabled={state.isLoading}
@@ -41,7 +42,7 @@ const AddProductsRoute = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 max-w-4xl ">
           <div className="bg-white p-5 flex flex-col gap-1 ">
             <h1 className="text-lg font-bold">Products</h1>
             <TextBox

@@ -71,6 +71,16 @@ const ToolBar = ({ state, dispatch, deleteProduct }) => {
       >
         Add
       </button>
+      {state.isLoading ? (
+        <div className=" flex  justify-center items-center">
+          <Oval
+            width={25}
+            height={25}
+            color="#F47A00"
+            secondaryColor="#F47A00"
+          />
+        </div>
+      ) : null}
     </div>
   );
 };

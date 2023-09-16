@@ -23,4 +23,5 @@ export const ACTIONS = {
   SET_SELECTED: "set-selected",
   DESELECT: "deselect",
   DELETE_BTN_IS_LOADING: "delete-btn-is-loading",
+  CLEAR_SELECTED: "clear-selected",
 };
