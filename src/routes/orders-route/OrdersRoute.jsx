@@ -9,18 +9,38 @@ import { Oval } from "react-loader-spinner";
 import ToolBar from "./components/tool-bar/ToolBar";
 import TableRows from "./components/table-rows/TableRows";
 const OrdersRoute = () => {
-  const [state, dispatch, getTableData, setState] = useOrders();
+  const [state, dispatch, setState, deleteOrders] = useOrders();
   return (
     <div className="outlet-outer-container">
       <div className="outlet-inner-container">
         <h1 className="text-2xl font-bold mb-5">Orders</h1>
         <div className="flex flex-col flex-1 bg-white p-5">
+          <ToolBar
+            setState={setState}
+            state={state}
+            deleteOrders={deleteOrders}
+          />
           <div className="flex mb-5">
-            <TabBtn text={"New Orders"} />
-            <TabBtn text={"Delivered"} />
-            <TabBtn text={"Cancelled"} />
+            <TabBtn
+              text={"New Orders"}
+              onClick={setState}
+              selected={state.currentTable}
+              value="sent"
+            />
+            <TabBtn
+              text={"Delivered"}
+              onClick={setState}
+              selected={state.currentTable}
+              value="delivered"
+            />
+            <TabBtn
+              text={"Cancelled"}
+              onClick={setState}
+              selected={state.currentTable}
+              value="cancelled"
+            />
           </div>
-          <ToolBar setState={setState} state={state} />
+
           <div className="flex   overflow-x-auto">
             <table className="text-sm flex-1">
               <thead className="text-left">
@@ -37,9 +57,25 @@ const OrdersRoute = () => {
                 </tr>
               </thead>
               <tbody>
-                {state?.tableData?.map((data) => {
-                  return <TableRows data={data} dispatch={dispatch} />;
-                })}
+                {state?.searchText != ""
+                  ? state?.searchData.map((data) => {
+                      return (
+                        <TableRows
+                          data={data}
+                          dispatch={dispatch}
+                          key={data.id}
+                        />
+                      );
+                    })
+                  : state[state.currentTable]?.map((data) => {
+                      return (
+                        <TableRows
+                          data={data}
+                          dispatch={dispatch}
+                          key={data.id}
+                        />
+                      );
+                    })}
               </tbody>
             </table>
           </div>

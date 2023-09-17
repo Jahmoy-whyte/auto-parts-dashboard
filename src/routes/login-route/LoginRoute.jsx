@@ -19,6 +19,7 @@ const LoginRoute = () => {
           onChangeHandler={textBoxHandler}
           name={"email"}
           isDisabled={isLoading}
+          value={textBox.email}
         />
         <TextBox
           label={"Password:"}
@@ -27,6 +28,7 @@ const LoginRoute = () => {
           name={"password"}
           isDisabled={isLoading}
           type="password"
+          value={textBox.password}
         />
         <p className="text-right text-sm text-secondary cursor-pointer">
           Forget password?

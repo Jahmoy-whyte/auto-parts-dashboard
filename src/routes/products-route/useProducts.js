@@ -167,7 +167,7 @@ const useProducts = () => {
     }, 1500);
 
     return () => clearTimeout(time);
-  }, [state.searchText, state.numberOfPages]);
+  }, [state.searchText, state.numberOfPages, state.searchTextFilter]);
 
   const next = () => {
     const currentPageChunk = state.currentPageChunk;

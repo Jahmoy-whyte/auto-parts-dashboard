@@ -32,15 +32,17 @@ const TabelRows = ({ data, dispatch, nav }) => {
       <td className="px-6 py-4">{data.model}</td>
       <td className="px-6 py-4">{formattedCost(data.price)}</td>
       <td className="px-6 py-4">
-        <p
-          className={`text-center rounded-lg px-2 ${
-            data.status == "In stock"
-              ? "bg-green-200  text-green-500"
-              : "bg-orange-200 text-orange-500"
-          }`}
-        >
-          {data.status}
-        </p>
+        <div className="flex justify-center">
+          <p
+            className={`text-center rounded-lg px-2 inline-block  ${
+              data.status == "In stock"
+                ? "bg-green-200  text-green-500"
+                : "bg-orange-200 text-orange-500"
+            }`}
+          >
+            {data.status}
+          </p>
+        </div>
       </td>
 
       <td className="px-6 py-4">

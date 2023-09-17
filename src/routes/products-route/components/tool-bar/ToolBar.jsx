@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 const ToolBar = ({ state, dispatch, deleteProduct }) => {
   const nav = useNavigate();
   return (
-    <div className="flex gap-5 items-center mb-5 flex-wrap">
-      <div className="flex items-center gap-2 px-2 border-2  h-9 rounded-md text-sm max-w-xs">
+    <div className="flex gap-2 items-center mb-5 flex-wrap">
+      <div className="flex flex-1 items-center gap-2 px-2 border-2  h-9 rounded-md text-sm ">
         <AiOutlineSearch />
         <input
           type="text"
@@ -36,21 +36,18 @@ const ToolBar = ({ state, dispatch, deleteProduct }) => {
         ) : null}
       </div>
 
-      <div className="flex items-center gap-2 px-2 border-2  h-9 rounded-md  text-sm">
-        <MdFilterList />
-        <select
-          className="outline-none"
-          onChange={(e) =>
-            dispatch({
-              type: ACTIONS.SET_FILTER,
-              payload: e.currentTarget.value,
-            })
-          }
-        >
-          <option value={"product_name"}>Product</option>
-          <option value={"product_id"}>Id</option>
-        </select>
-      </div>
+      <select
+        className=" flex items-center gap-2 px-2 border-2  h-9 rounded-md  text-sm outline-none"
+        onChange={(e) =>
+          dispatch({
+            type: ACTIONS.SET_FILTER,
+            payload: e.currentTarget.value,
+          })
+        }
+      >
+        <option value={"product_name"}>Product</option>
+        <option value={"product_id"}>Id</option>
+      </select>
 
       {state.selected.length > 0 ? (
         <button
