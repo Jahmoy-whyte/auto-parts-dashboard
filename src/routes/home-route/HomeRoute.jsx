@@ -38,7 +38,12 @@ const HomeRoute = () => {
           onClick={nav}
           path={"/home/orders/"}
         />
-        <SideBarOptions icon={<AiOutlineUser />} title={"Users"} />
+        <SideBarOptions
+          icon={<AiOutlineUser />}
+          title={"Users"}
+          path={"/home/users/"}
+          onClick={nav}
+        />
         <SideBarOptions
           icon={<AiOutlineLogout />}
           title={"Logout"}

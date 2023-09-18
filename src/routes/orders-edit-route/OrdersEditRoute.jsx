@@ -11,8 +11,8 @@ const OrdersEditRoute = () => {
     <div className="outlet-outer-container">
       <div className="outlet-inner-container">
         <h1 className="text-2xl font-bold mb-5">Edit Orders</h1>
-        <div className="grid  grid-cols-3  gap-5 ">
-          <div className="bg-white p-5  col-span-2">
+        <div className="grid  grid-cols-1  gap-5 sm:grid-cols-3">
+          <div className="bg-white p-5  sm:col-span-2">
             <h2 className="text-lg font-bold mb-2">Items</h2>
 
             <div className="flex overflow-x-auto">
@@ -35,7 +35,7 @@ const OrdersEditRoute = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-5 bg-white p-5 row-span-3 text-sm min-w-[200px]">
+          <div className="flex flex-col gap-5 bg-white p-5  text-sm min-w-[200px] sm:row-span-3">
             <h2 className="text-lg font-bold">Information</h2>
             <InfoRow
               topText={"Order ID:"}
@@ -62,13 +62,13 @@ const OrdersEditRoute = () => {
             />
           </div>
 
-          <div className="bg-white p-5 col-span-2">
+          <div className="bg-white p-5 sm:col-span-2">
             <h2 className="text-lg font-bold">Total</h2>
             <TotalBars leftText={"Tax"} rightText={"$46"} />
             <TotalBars leftText={"Total"} rightText={displayTotal} />
           </div>
 
-          <div className="flex justify-between bg-white p-5 col-span-2">
+          <div className="flex justify-between bg-white p-5 sm:col-span-2">
             <select
               className="border-2 rounded-md"
               onChange={(e) =>
@@ -80,12 +80,13 @@ const OrdersEditRoute = () => {
               value={state.status}
             >
               <option value={"sent"}>Sent</option>
-              <option value={"ready"}>Ready</option>
-              <option value={"cancelled"}>Cancelled</option>
+              <option value={"transit"}>Transit</option>
               <option value={"delivered"}>Delivered</option>
+              <option value={"cancelled"}>Cancelled</option>
             </select>
 
             <button
+              disabled={state.btnIsLoading}
               onClick={update}
               className="flex justify-center  items-center bg-secondary text-sm text-white w-20 h-8 rounded-md "
             >

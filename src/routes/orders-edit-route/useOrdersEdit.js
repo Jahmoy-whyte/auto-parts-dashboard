@@ -3,13 +3,14 @@ import toastMessage from "../../helper/toast-message/toastMessage";
 import useFetchInstance from "../../hooks/useFetchInstance";
 import { useLocation, useNavigate } from "react-router-dom";
 import formattedCost from "../../helper/format-cost/formattedCost";
+import useSocket from "../../hooks/useSocket";
 const useOrdersEdit = () => {
   const { tokenAwareFetch } = useFetchInstance();
   const loc = useLocation();
   const nav = useNavigate();
   const orderId = loc.state?.orderId ? loc.state?.orderId : "2";
   const passedStatus = loc.state?.orderId ? loc.state?.status : "sent";
-
+  const { socketData } = useSocket();
   const initialState = {
     orderData: [],
     isLoading: true,
@@ -52,19 +53,29 @@ const useOrdersEdit = () => {
   }, []);
 
   const displayTotal = useMemo(() => {
-    const data = state.orderData?.items ? [...state.orderData?.items] : [];
-    let total = 0;
-    data.forEach((data1) => {
-      total += data1.price * data1.quantity;
-    });
-    return formattedCost(Number(total) + Number(46));
+    try {
+      const data = state.orderData?.items ? [...state.orderData?.items] : [];
+      let total = 0;
+      data.forEach((data1) => {
+        total += data1.price * data1.quantity;
+      });
+      return formattedCost(Number(total) + Number(46));
+    } catch (error) {
+      return "%0 error";
+    }
   }, [state?.orderData?.items]);
 
   const update = async () => {
+    if (socketData.error) return toastMessage(socketData.error);
+
     dispatch({ type: ACTIONS.set_btn_is_loading, payload: true });
     try {
       const msg = await tokenAwareFetch(`/orders/update/status`, "PATCH", {
         status: state.status,
+        orderId: state.orderData.id,
+      });
+      socketData.socket.emit("OrderUpdate", {
+        userId: state.orderData.userId,
         orderId: state.orderData.id,
       });
 

@@ -8,8 +8,8 @@ const ToolBar = ({ state, dispatch, deleteProduct }) => {
   const nav = useNavigate();
   return (
     <div className="flex gap-2 items-center mb-5 flex-wrap">
-      <div className="flex flex-1 items-center gap-2 px-2 border-2  h-9 rounded-md text-sm ">
-        <AiOutlineSearch />
+      <div className="max-w-[230px] flex flex-1 items-center gap-2 px-2 border-2  h-9 rounded-md  ">
+        <AiOutlineSearch color="gray" />
         <input
           type="text"
           placeholder="Search"

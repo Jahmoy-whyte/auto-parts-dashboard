@@ -9,6 +9,7 @@ const useOrders = () => {
   const { socketData } = useSocket();
   const initialState = {
     sent: [],
+    transit: [],
     delivered: [],
     cancelled: [],
     selected: [],
@@ -85,7 +86,7 @@ const useOrders = () => {
   };
 
   useEffect(() => {
-    socketData.socket?.on("OrderSent", (msg) => {
+    socketData.socket?.on("OrderSent-res", (msg) => {
       dispatch({ type: ACTIONS.set_is_loading, payload: true });
       toastMessage("success", "new order just in");
       getTableData("sent");

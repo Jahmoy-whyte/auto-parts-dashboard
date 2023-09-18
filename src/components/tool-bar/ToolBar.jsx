@@ -1,23 +1,37 @@
-import { AiOutlineSearch, AiOutlineCloseCircle } from "react-icons/ai";
+import { AiOutlineSearch } from "react-icons/ai";
 import { memo } from "react";
 import { Oval } from "react-loader-spinner";
-const ToolBar = ({ state, setState, deleteOrders }) => {
+const ToolBar = ({
+  state,
+  selected = [],
+  setState,
+  deleteFunc,
+  searchText = "",
+  isLoading = false,
+  deleteBtnIsloading = false,
+  dropDownOptions = [
+    {
+      text: "",
+      value: "",
+    },
+    {
+      text: "",
+      value: "",
+    },
+  ],
+}) => {
   return (
-    <div className="flex  gap-2 mb-5">
-      <div className="max-w-[230px] border-2 rounded-md px-2 flex flex-1 items-center gap-2 ">
+    <div className="flex gap-2 mb-5">
+      <div className="max-w-[230px] flex-1 border-2 rounded-md px-2 flex items-center gap-2 ">
         <AiOutlineSearch color="gray" />
         <input
-          className="outline-none  w-full"
+          className="outline-none w-full"
           onChange={(e) => setState("searchText", e.target.value)}
-          value={state.searchText}
-          placeholder="Search..."
+          value={searchText}
+          placeholder="Search"
         />
-
-        {state.searchText != "" ? (
-          <AiOutlineCloseCircle
-            color="gray"
-            onClick={() => setState("searchText", "")}
-          />
+        {searchText != "" ? (
+          <p onClick={() => setState("searchText", "")}>Clear</p>
         ) : null}
       </div>
 
@@ -25,17 +39,17 @@ const ToolBar = ({ state, setState, deleteOrders }) => {
         onChange={(e) => setState("filter", e.target.value)}
         className="border-2 rounded-md text-sm  h-9  outline-none"
       >
-        <option value="user_id">User Id</option>
-        <option value="order_id">Order Id</option>
-        <option value="date">Date</option>
+        {dropDownOptions.map((option) => (
+          <option value={option.value}>{option.text}</option>
+        ))}
       </select>
 
-      {state.selected.length > 0 ? (
+      {selected > 0 ? (
         <button
-          onClick={deleteOrders}
+          onClick={deleteFunc}
           className="border-white border-2 h-9 px-2 min-w-[50px] bg-red-500 rounded-md text-white text-sm flex justify-center items-center"
         >
-          {state.deleteBtnIsloading ? (
+          {deleteBtnIsloading ? (
             <Oval width={15} height={15} color="white" secondaryColor="white" />
           ) : (
             "Delete"
@@ -43,7 +57,7 @@ const ToolBar = ({ state, setState, deleteOrders }) => {
         </button>
       ) : null}
 
-      {state.isLoading ? (
+      {isLoading ? (
         <Oval color="#F47A00" secondaryColor="#F47A00" width={30} height={30} />
       ) : null}
     </div>
