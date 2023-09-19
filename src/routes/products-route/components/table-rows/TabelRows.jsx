@@ -19,11 +19,8 @@ const TabelRows = ({ data, dispatch, nav }) => {
         />
       </td>
       <td className="px-6 py-4 ">
-        <div className="flex items-center gap-1 w-[200px]">
-          <img
-            src={data.image}
-            className="bg-gray-200 rounded-md p-2 w-14 h-auto"
-          />
+        <div className="flex items-center gap-1 max-w-[200px] min-w-[150px]">
+          <img src={data.image} className="rounded-md p-2 w-14 h-auto" />
 
           <p> {data.productName} </p>
         </div>
@@ -32,17 +29,13 @@ const TabelRows = ({ data, dispatch, nav }) => {
       <td className="px-6 py-4">{data.model}</td>
       <td className="px-6 py-4">{formattedCost(data.price)}</td>
       <td className="px-6 py-4">
-        <div className="flex justify-center">
-          <p
-            className={`text-center rounded-lg px-2 inline-block  ${
-              data.status == "In stock"
-                ? "bg-green-200  text-green-500"
-                : "bg-orange-200 text-orange-500"
-            }`}
-          >
-            {data.status}
-          </p>
-        </div>
+        <p
+          className={`text-center rounded-lg px-2 inline-block font-bold  ${
+            data.status == "In stock" ? "  text-green-500" : " text-red-500"
+          }`}
+        >
+          {data.status}
+        </p>
       </td>
 
       <td className="px-6 py-4">

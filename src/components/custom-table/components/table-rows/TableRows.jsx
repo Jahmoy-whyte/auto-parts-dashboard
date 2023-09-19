@@ -1,9 +1,6 @@
 import { memo } from "react";
-import formattedCost from "../../../../helper/format-cost/formattedCost";
-import { ACTIONS } from "../../helper/reducerHelper";
-import { useNavigate } from "react-router-dom";
+
 const TabelRows = ({ data, dispatch }) => {
-  const nav = useNavigate();
   return (
     <tr>
       <td className="px-6 py-4">
@@ -38,7 +35,7 @@ const TabelRows = ({ data, dispatch }) => {
 
       <td className="px-6 py-4">{formattedCost(data.total)}</td>
       <td className="px-6 py-4">
-        <p className="text-center rounded-lg font-bold text-amber-500">
+        <p className="bg-amber-200 text-center rounded-lg font-bold text-amber-500">
           {data.status}
         </p>
       </td>
