@@ -44,7 +44,7 @@ const ToolBar = ({
         ))}
       </select>
 
-      {selected > 0 ? (
+      {selected.length > 0 ? (
         <button
           onClick={deleteFunc}
           className="border-white border-2 h-9 px-2 min-w-[50px] bg-red-500 rounded-md text-white text-sm flex justify-center items-center"
