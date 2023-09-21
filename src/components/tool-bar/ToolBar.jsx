@@ -22,10 +22,10 @@ const ToolBar = ({
 }) => {
   return (
     <div className="flex gap-2 mb-5">
-      <div className="max-w-[230px] flex-1 border-2 rounded-md px-2 flex items-center gap-2 ">
+      <div className="flex-1 border-2 rounded-md pl-2 flex items-center gap-2 bg-gray-100">
         <AiOutlineSearch color="gray" />
         <input
-          className="outline-none w-full"
+          className="outline-none w-full bg-transparent"
           onChange={(e) => setState("searchText", e.target.value)}
           value={searchText}
           placeholder="Search"
@@ -33,16 +33,16 @@ const ToolBar = ({
         {searchText != "" ? (
           <p onClick={() => setState("searchText", "")}>Clear</p>
         ) : null}
-      </div>
 
-      <select
-        onChange={(e) => setState("filter", e.target.value)}
-        className="border-2 rounded-md text-sm  h-9  outline-none"
-      >
-        {dropDownOptions.map((option) => (
-          <option value={option.value}>{option.text}</option>
-        ))}
-      </select>
+        <select
+          onChange={(e) => setState("filter", e.target.value)}
+          className="rounded-md text-sm  h-9  outline-none"
+        >
+          {dropDownOptions.map((option) => (
+            <option value={option.value}>{option.text}</option>
+          ))}
+        </select>
+      </div>
 
       {selected.length > 0 ? (
         <button

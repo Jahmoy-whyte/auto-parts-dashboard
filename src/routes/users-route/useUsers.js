@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useReducer, useRef } from "react";
 import useFetchInstance from "../../hooks/useFetchInstance";
 import toastMessage from "../../helper/toast-message/toastMessage";
-import useDebounce from "../../hooks/useDebounce";
 import usePagination from "../../hooks/usePagination";
+import { useNavigate } from "react-router-dom";
 
 const useUsers = () => {
   const initialState = {
@@ -91,36 +91,41 @@ const useUsers = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
   const { tokenAwareFetch } = useFetchInstance();
-  const debouncedValue = useDebounce(state.searchText);
   const { pages, currentPage, calulatePages, next, prev, setCurrentPage } =
     usePagination();
+  const nav = useNavigate();
 
   useEffect(() => {
-    if (debouncedValue == "") {
+    if (state.searchText == "") {
       getUsers();
       return;
     }
     dispatch({ type: ACTIONS.set_is_loading, payload: true });
-    const search = async () => {
-      try {
-        const data = await tokenAwareFetch(
-          `/users/user-search/${state.filter}/${state.searchText}`
-        );
+    const timeOut = setTimeout(() => {
+      search();
+    }, 1000);
 
-        dispatch({
-          type: ACTIONS.set_users_table,
-          payload: data,
-        });
-      } catch (error) {
-        toastMessage("error", error.message);
-      }
-    };
-    search();
-  }, [debouncedValue]);
+    return () => clearTimeout(timeOut);
+  }, [state.searchText]);
 
   useEffect(() => {
     countUser();
   }, []);
+
+  const search = async () => {
+    try {
+      const data = await tokenAwareFetch(
+        `/users/user-search/${state.filter}/${state.searchText}`
+      );
+
+      dispatch({
+        type: ACTIONS.set_users_table,
+        payload: data,
+      });
+    } catch (error) {
+      toastMessage("error", error.message);
+    }
+  };
 
   const countUser = async () => {
     try {
@@ -130,7 +135,6 @@ const useUsers = () => {
         NUMBER_OF_ROWS_PER_PAGE,
         NUMBER_OF_CHUNKS_PER_SHOWN
       );
-      getUsers();
     } catch (error) {
       toastMessage("error", error.message);
     }
@@ -162,14 +166,17 @@ const useUsers = () => {
     });
   }, []);
 
-  const rowSelect = (actionType, id) => {
+  const rowSelect = useCallback((actionType, id) => {
     dispatch({
       type: ACTIONS[actionType],
       payload: id,
     });
-  };
+  }, []);
+  const navigate = useCallback((id) => {
+    nav("/home/users/edit");
+  }, []);
 
-  const deleteRow = async () => {
+  const deleteRow = useCallback(async () => {
     dispatch({
       type: ACTIONS.delete_btn_is_loading,
       payload: true,
@@ -184,7 +191,7 @@ const useUsers = () => {
 
       dispatch({ type: ACTIONS.clear_selected });
       toastMessage("success", "Delete Successful");
-      getTableData(state.currentTable);
+      getUsers();
     } catch (error) {
       toastMessage("error", error.message);
       dispatch({
@@ -192,7 +199,7 @@ const useUsers = () => {
         payload: false,
       });
     }
-  };
+  }, []);
 
   return [
     state,
@@ -206,6 +213,7 @@ const useUsers = () => {
     rowSelect,
     deleteRow,
     setState,
+    navigate,
   ];
 };
 

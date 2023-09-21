@@ -16,6 +16,7 @@ import OrdersRoute from "./routes/orders-route/OrdersRoute";
 import OrdersEditRoute from "./routes/orders-edit-route/OrdersEditRoute";
 
 import UsersRoute from "./routes/users-route/UsersRoute";
+import UserEditRoute from "./routes/user-edit-route/UserEditRoute";
 const Router = () => {
   const router = createBrowserRouter([
     { path: "/", element: <LoginRoute /> },
@@ -47,6 +48,10 @@ const Router = () => {
         {
           path: "/home/users/",
           element: <UsersRoute />,
+        },
+        {
+          path: "/home/users/edit",
+          element: <UserEditRoute />,
         },
       ],
     },

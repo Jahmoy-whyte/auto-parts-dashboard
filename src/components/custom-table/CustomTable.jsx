@@ -6,6 +6,7 @@ const CustomTable = ({
   rowData = [],
   selectFunc,
   selected = [],
+  navigate,
 }) => {
   console.log("=========================== table");
   return (
@@ -52,7 +53,14 @@ const CustomTable = ({
                 {columnData.map((column) => {
                   const row = rowData[rowIndex][column.field];
 
-                  return <td className="px-6 py-4">{row}</td>;
+                  return (
+                    <td
+                      onClick={() => navigate(rowData[rowIndex].id)}
+                      className="px-6 py-4 cursor-pointer"
+                    >
+                      {row}
+                    </td>
+                  );
                 })}
               </tr>
             ))}

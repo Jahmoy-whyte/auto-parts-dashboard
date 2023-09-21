@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import CustomTable from "../../components/custom-table/CustomTable";
 import Pagination from "../../components/pagination/Pagination";
 import ToolBar from "../../components/tool-bar/ToolBar";
@@ -16,7 +17,20 @@ const UsersRoute = () => {
     rowSelect,
     deleteRow,
     setState,
+    navigate,
   ] = useUsers();
+
+  const headings = useMemo(() => {
+    return [
+      { field: "id", head: "id" },
+      { field: "firstName", head: "Firstname" },
+      { field: "lastName", head: "Lastname" },
+      { field: "email", head: "Email" },
+      { field: "userStatus", head: "User status" },
+      { field: "phone", head: "Phone" },
+      { field: "address", head: "Address" },
+    ];
+  }, []);
   return (
     <div className="outlet-outer-container">
       <div className="outlet-inner-container">
@@ -33,10 +47,11 @@ const UsersRoute = () => {
           />
 
           <CustomTable
-            columnData={tableHeading}
+            columnData={headings}
             rowData={state.usersTableData}
             selectFunc={rowSelect}
             selected={state.selected}
+            navigate={navigate}
           />
 
           <Pagination

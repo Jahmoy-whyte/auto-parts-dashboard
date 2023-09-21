@@ -5,7 +5,7 @@ import { Oval } from "react-loader-spinner";
 const CustomDropDown = ({
   label = "label",
   value = "",
-  options = [],
+  options = [{ text: "", value: "" }],
   onClick,
   placeHolder = "",
   dropDownId = "dropId",
@@ -58,11 +58,11 @@ const CustomDropDown = ({
                   <button
                     className="h-10"
                     onClick={() => {
-                      onClick(option, option);
+                      onClick(option.value, option.text);
                       setOpen(false);
                     }}
                   >
-                    {option}
+                    {option.text}
                   </button>
                 );
               })
