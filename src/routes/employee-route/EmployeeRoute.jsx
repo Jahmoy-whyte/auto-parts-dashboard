@@ -1,12 +1,10 @@
-import { useMemo } from "react";
-import CustomTable from "../../components/custom-table/CustomTable";
-import Pagination from "../../components/pagination/Pagination";
-import ToolBar from "../../components/tool-bar/ToolBar";
-import useUsers from "./useUsers";
+import useEmployee from "./useEmployee";
 import TableRows from "./components/table-rows/TableRows";
-import { ACTIONS } from "./helper/reducerHelper";
+import Pagination from "../../components/pagination/Pagination";
 import { useNavigate } from "react-router-dom";
-const UsersRoute = () => {
+import { ACTIONS } from "./helper/reducerHelper";
+import ToolBar from "../../components/tool-bar/ToolBar";
+const EmployeeRoute = () => {
   const [
     state,
     dispatch,
@@ -14,15 +12,15 @@ const UsersRoute = () => {
     prev,
     next,
     currentPage,
-    getUsers,
+    getEmployees,
     deleteRow,
     setState,
-  ] = useUsers();
+  ] = useEmployee();
   const nav = useNavigate();
   return (
     <div className="outlet-outer-container">
       <div className="outlet-inner-container">
-        <h1 className="text-2xl font-bold mb-5">users</h1>
+        <h1 className="text-2xl font-bold mb-5">Employee Accounts</h1>
         <div className="flex flex-col flex-1 bg-white p-5">
           <ToolBar
             isLoading={state.isLoading}
@@ -55,15 +53,13 @@ const UsersRoute = () => {
                   <th className="px-6 py-4 ">Firstname</th>
                   <th className="px-6 py-4 ">Lastname</th>
                   <th className="px-6 py-4 ">Email</th>
-                  <th className="px-6 py-4 ">User status</th>
-                  <th className="px-6 py-4 ">Phone</th>
-                  <th className="px-6 py-4 ">Address</th>
+                  <th className="px-6 py-4 ">Role</th>
                   <th className="px-6 py-4 ">Edit</th>
                 </tr>
               </thead>
 
               <tbody>
-                {state.usersTableData.map((row) => (
+                {state.employeeTableData.map((row) => (
                   <TableRows
                     data={row}
                     dispatch={dispatch}
@@ -81,7 +77,7 @@ const UsersRoute = () => {
             prev={prev}
             pages={pages}
             currentPage={currentPage}
-            onClick={getUsers}
+            onClick={getEmployees}
           />
         </div>
       </div>
@@ -89,10 +85,4 @@ const UsersRoute = () => {
   );
 };
 
-export default UsersRoute;
-/**
- * 
- * 
- 
-        
- */
+export default EmployeeRoute;

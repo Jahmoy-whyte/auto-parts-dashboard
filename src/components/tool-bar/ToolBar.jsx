@@ -20,6 +20,7 @@ const ToolBar = ({
     },
   ],
 }) => {
+  console.log("=======================================ddddddddddddd");
   return (
     <div className="flex gap-2 mb-5">
       <div className="flex-1 border-2 rounded-md pl-2 flex items-center gap-2 bg-gray-100">

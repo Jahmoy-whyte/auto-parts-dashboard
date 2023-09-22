@@ -8,6 +8,7 @@ import {
   AiOutlineLogout,
 } from "react-icons/ai";
 import { BsBagCheck } from "react-icons/bs";
+import { PiUsersFour } from "react-icons/pi";
 import { Outlet } from "react-router-dom";
 import useHome from "./useHome";
 import accountimg from "../../assets/images/account.svg";
@@ -44,6 +45,13 @@ const HomeRoute = () => {
           path={"/home/users/"}
           onClick={nav}
         />
+        <SideBarOptions
+          icon={<PiUsersFour />}
+          title={"Employees"}
+          path={"/home/employees/"}
+          onClick={nav}
+        />
+
         <SideBarOptions
           icon={<AiOutlineLogout />}
           title={"Logout"}

@@ -16,7 +16,7 @@ const TextBox = ({
         disabled={isDisabled}
         className="flex border-2  rounded-md h-10 px-2 outline-none"
         type={type}
-        onChange={(e) => onChangeHandler(name, e.currentTarget.value)}
+        onChange={(e) => onChangeHandler(name, e.target.value)}
         placeholder={placeHolder}
         value={value}
       />

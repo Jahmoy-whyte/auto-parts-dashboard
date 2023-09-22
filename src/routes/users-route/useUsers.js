@@ -3,9 +3,10 @@ import useFetchInstance from "../../hooks/useFetchInstance";
 import toastMessage from "../../helper/toast-message/toastMessage";
 import usePagination from "../../hooks/usePagination";
 import { useNavigate } from "react-router-dom";
-
+import { ACTIONS } from "./helper/reducerHelper";
 const useUsers = () => {
   const initialState = {
+    checkAll: false,
     isLoading: false,
     usersTableData: [],
     selected: [],
@@ -14,33 +15,14 @@ const useUsers = () => {
     dropDown: [
       { text: "First Name", value: "firstname" },
       { text: "Last Name", value: "lastname" },
+      { text: "Email", value: "email" },
+      { text: "ID", value: "id" },
+      { text: "User Status", value: "user_status" },
     ],
   };
 
   const NUMBER_OF_ROWS_PER_PAGE = 10;
-  const NUMBER_OF_CHUNKS_PER_SHOWN = 5;
-  const tableHeading = [
-    { field: "id", head: "id" },
-    { field: "firstName", head: "firstname" },
-    { field: "lastName", head: "lastname" },
-    { field: "email", head: "email" },
-    { field: "userStatus", head: "userStatus" },
-    { field: "phone", head: "phone" },
-    { field: "address", head: "address" },
-  ];
-
-  const ACTIONS = {
-    set_is_loading: "set_is_loading",
-    set_users_table: "set_users_table",
-    set_search_text: "set_search_text",
-    setState: "setState",
-    delete_btn_is_loading: "delete_btn_is_loading",
-
-    single_select: "single_select",
-    single_deselect: "single_deselect",
-    select_all: "select_all",
-    clear_selected: "clear_selected",
-  };
+  const NUMBER_OF_PAGES_PER_CHUNKS = 5;
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -78,11 +60,12 @@ const useUsers = () => {
       case "select_all":
         return {
           ...state,
+          checkAll: true,
           selected: state.usersTableData.map((row) => row.id),
         };
 
       case "clear_selected":
-        return { ...state, selected: [] };
+        return { ...state, checkAll: false, selected: [] };
 
       default:
         return state;
@@ -93,7 +76,6 @@ const useUsers = () => {
   const { tokenAwareFetch } = useFetchInstance();
   const { pages, currentPage, calulatePages, next, prev, setCurrentPage } =
     usePagination();
-  const nav = useNavigate();
 
   useEffect(() => {
     if (state.searchText == "") {
@@ -133,7 +115,7 @@ const useUsers = () => {
       calulatePages(
         data.count,
         NUMBER_OF_ROWS_PER_PAGE,
-        NUMBER_OF_CHUNKS_PER_SHOWN
+        NUMBER_OF_PAGES_PER_CHUNKS
       );
     } catch (error) {
       toastMessage("error", error.message);
@@ -166,17 +148,7 @@ const useUsers = () => {
     });
   }, []);
 
-  const rowSelect = useCallback((actionType, id) => {
-    dispatch({
-      type: ACTIONS[actionType],
-      payload: id,
-    });
-  }, []);
-  const navigate = useCallback((id) => {
-    nav("/home/users/edit");
-  }, []);
-
-  const deleteRow = useCallback(async () => {
+  const deleteRow = async () => {
     dispatch({
       type: ACTIONS.delete_btn_is_loading,
       payload: true,
@@ -184,36 +156,38 @@ const useUsers = () => {
     const selected = state.selected;
     try {
       for (let i = 0; i < selected.length; i++) {
-        const msg = await tokenAwareFetch("/orders", "DELETE", {
-          orderId: selected[i],
+        const msg = await tokenAwareFetch("/users", "DELETE", {
+          userId: selected[i],
         });
       }
 
       dispatch({ type: ACTIONS.clear_selected });
       toastMessage("success", "Delete Successful");
-      getUsers();
+
+      if (state.searchText == "") {
+        getUsers();
+      } else {
+        search();
+      }
     } catch (error) {
       toastMessage("error", error.message);
-      dispatch({
-        type: ACTIONS.delete_btn_is_loading,
-        payload: false,
-      });
     }
-  }, []);
+    dispatch({
+      type: ACTIONS.delete_btn_is_loading,
+      payload: false,
+    });
+  };
 
   return [
     state,
     dispatch,
-    tableHeading,
     pages,
     prev,
     next,
     currentPage,
     getUsers,
-    rowSelect,
     deleteRow,
     setState,
-    navigate,
   ];
 };
 

@@ -1,7 +1,6 @@
 import { memo } from "react";
 
 const Pagination = ({ pages = [], next, prev, onClick, currentPage }) => {
-  console.log("========== Pagination================= Pagination ");
   const selectedColor = {
     selected: "bg-secondary text-white",
   };
