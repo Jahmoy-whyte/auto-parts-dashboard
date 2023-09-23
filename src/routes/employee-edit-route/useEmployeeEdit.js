@@ -7,7 +7,7 @@ import { useAuthContext } from "../../context/AuthContextProvider";
 
 const useEmployeeEdit = () => {
   const initialState = {
-    formActionType: "add",
+    formActionType: "update",
     btnIsLoading: false,
     firstName: "",
     lastName: "",
@@ -43,8 +43,10 @@ role
 */
   const reducer = (state, action) => {
     switch (action.type) {
-      case "set_btn_loading":
-        return { ...state, btnIsLoading: action.payload };
+      case "set_btn_loading": {
+        const bool = action.payload;
+        return { ...state, btnIsLoading: bool, disableForm: bool };
+      }
       case "set_employee_data": {
         const employeeData = action.payload;
         return {
@@ -98,8 +100,6 @@ role
         const employee = await tokenAwareFetch(
           `/employee/employee-by-id/${params.employeeId}`
         );
-
-        console.log(employee);
         dispatch({ type: ACTIONS.set_employee_data, payload: employee });
       } catch (error) {
         dispatch({ type: ACTIONS.disable_form, payload: true });
@@ -136,36 +136,55 @@ role
   }, []);
 
   const submit = async () => {
-    const { bool, message } = checkTextBox();
+    const { bool, message } = validateForm();
     if (bool) return toastMessage("error", message);
-    setIsLoading(true);
+    dispatch({ type: ACTIONS.set_btn_loading, payload: true });
 
     try {
-      await signUp(
-        textBox.firstName.trim(),
-        textBox.lastName.trim(),
-        textBox.email.trim(),
-        textBox.password.trim()
-      );
-      toastMessage("success", "Account created successfully");
-      nav("/");
+      const employeeData = {
+        employeeId: state.employeeId,
+        firstName: state.firstName.trim(),
+        lastName: state.lastName.trim(),
+        email: state.email.trim(),
+        role: state.role.value.trim(),
+        password: state.password.trim(),
+      };
+
+      let msg = "";
+      if (state.formActionType == "add") {
+        msg = await signUp(
+          employeeData.firstName,
+          employeeData.lastName,
+          employeeData.email,
+          employeeData.role,
+          employeeData.password
+        );
+      } else {
+        msg = await tokenAwareFetch("/employee/employee-update", "PATCH", {
+          employeeData: employeeData,
+        });
+      }
+
+      toastMessage("success", msg);
     } catch (error) {
       toastMessage("error", error.message);
     }
-    setIsLoading(false);
+    dispatch({ type: ACTIONS.set_btn_loading, payload: false });
   };
 
-  const checkTextBox = () => {
+  const validateForm = () => {
     let bool = false;
     let message = "";
-    if (textBox.firstName == "") {
+    if (state.firstName == "") {
       (bool = true), (message = "Please enter your first name");
-    } else if (textBox.lastName == "") {
+    } else if (state.lastName == "") {
       (bool = true), (message = "Please enter your last name");
-    } else if (textBox.email == "") {
+    } else if (state.email == "") {
       (bool = true), (message = "Please enter your email");
-    } else if (textBox.password == "") {
+    } else if (state.formActionType == "add" && state.password == "") {
       (bool = true), (message = "Please enter a password");
+    } else if (state.role.value == "") {
+      (bool = true), (message = "select a role");
     }
 
     return { bool, message };

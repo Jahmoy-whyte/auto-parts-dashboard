@@ -10,6 +10,7 @@ const CustomDropDown = ({
   placeHolder = "",
   name = "dropId",
   isDisabled = false,
+  showLabel = true,
 }) => {
   console.log("====================== dropdwon");
   useEffect(() => {
@@ -24,9 +25,9 @@ const CustomDropDown = ({
 
   const [open, setOpen] = useState(false);
   return (
-    <>
-      <label className="text-sm">{label}</label>
-      <div className="flex flex-col relative text-sm">
+    <div>
+      {showLabel ? <label className="text-sm">{label}</label> : null}
+      <div className="flex flex-col relative text-sm min-w-[100px]">
         <button
           disabled={isDisabled}
           onClick={(e) => {
@@ -63,7 +64,7 @@ const CustomDropDown = ({
           </div>
         ) : null}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -22,7 +22,7 @@ const UsersRoute = () => {
   return (
     <div className="outlet-outer-container">
       <div className="outlet-inner-container">
-        <h1 className="text-2xl font-bold mb-5">users</h1>
+        <h1 className="text-2xl font-bold mb-5">User Accounts</h1>
         <div className="flex flex-col flex-1 bg-white p-5">
           <ToolBar
             isLoading={state.isLoading}
@@ -34,10 +34,10 @@ const UsersRoute = () => {
             selected={state.selected}
           />
 
-          <div className="flex flex-col bg-white   overflow-x-auto">
-            <table className="text-sm">
+          <div className="flex flex-col bg-white mb-2  overflow-x-auto">
+            <table className="text-sm ">
               <thead className="text-left ">
-                <tr className="h-11 bg-slate-100">
+                <tr className="h-11 bg-gray-100 ">
                   <th className="px-6 py-4 ">
                     <input
                       type="checkbox"

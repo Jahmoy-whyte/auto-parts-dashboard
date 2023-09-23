@@ -12,13 +12,15 @@ const AuthContextProvider = ({ children }) => {
     accessToken: null,
   });
 
-  const signUp = async (firstName, lastName, email, password) => {
+  const signUp = async (firstName, lastName, email, role, password) => {
     const msg = await regularFetch("/employee/signup", "POST", {
       firstName,
       lastName,
       email,
+      role,
       password,
     });
+    return msg;
   };
 
   const logIn = async (email, password) => {

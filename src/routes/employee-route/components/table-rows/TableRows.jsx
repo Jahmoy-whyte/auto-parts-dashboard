@@ -18,7 +18,7 @@ const TableRows = ({ data, dispatch, nav, selected = [] }) => {
       </td>
       <td className="px-6 py-4 ">{data.id}</td>
       <td className="px-6 py-4">{data.firstName}</td>
-      <td className="px-6 py-4">{data.lastnName}</td>
+      <td className="px-6 py-4">{data.lastName}</td>
       <td className="px-6 py-4 ">{data.email}</td>
       <td className="px-6 py-4">{data.role}</td>
 

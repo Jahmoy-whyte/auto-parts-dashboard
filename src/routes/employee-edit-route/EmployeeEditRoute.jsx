@@ -11,8 +11,11 @@ const EmployeeEditRoute = () => {
   return (
     <div className="outlet-outer-container">
       <div className="outlet-inner-container">
-        <form className="flex flex-col max-w-xs bg-white p-5">
-          <div className="mb-4">
+        <form
+          className="flex flex-col max-w-xs bg-white p-5 gap-2"
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <div className="mb-2">
             <h1 className="text-2xl font-bold">Sign up for account</h1>
             <p className="text-sm text-gray-500 ">
               Please enter your information correctly and create a password to
@@ -43,17 +46,17 @@ const EmployeeEditRoute = () => {
             isDisabled={state.disableForm}
             value={state.email}
           />
-
-          <TextBox
-            label={"Password:"}
-            placeHolder={"Please enter a password"}
-            onChangeHandler={setTextBox}
-            name={"password"}
-            isDisabled={state.disableForm}
-            value={state.password}
-            type="password"
-          />
-
+          {state.formActionType == "add" ? (
+            <TextBox
+              label={"Password:"}
+              placeHolder={"Please enter a password"}
+              onChangeHandler={setTextBox}
+              name={"password"}
+              isDisabled={state.disableForm}
+              value={state.password}
+              type="password"
+            />
+          ) : null}
           <CustomDropDown
             label="Role:"
             isDisabled={state.disableForm}
@@ -63,9 +66,9 @@ const EmployeeEditRoute = () => {
             name="role"
             onClick={dropDownOnClick}
           />
-          <div className="mb-5"></div>
+
           <Button
-            text={"Sign Up"}
+            text={state.formActionType == "add" ? "Sign Up" : "Update"}
             isLoading={state.btnIsLoading}
             onClick={submit}
           />

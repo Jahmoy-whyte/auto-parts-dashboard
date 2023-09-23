@@ -20,7 +20,7 @@ const OrdersRoute = () => {
             state={state}
             deleteOrders={deleteOrders}
           />
-          <div className="flex flex-col mb-5 bg-orange-100 p-1 rounded-2xl sm:flex-row">
+          <div className="flex flex-col mb-5 bg-gray-100 p-1 rounded-md sm:flex-row">
             <TabBtn
               text={"New Orders"}
               onClick={setState}

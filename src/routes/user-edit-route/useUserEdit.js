@@ -50,7 +50,7 @@ const useUserEdit = () => {
     try {
       let msg = "";
       if (state.formActionType === "update") {
-        msg = await tokenAwareFetch(`/users/user-update`, "PUT", {
+        msg = await tokenAwareFetch(`/users/user-update`, "PATCH", {
           userData: userData,
         });
       } else {
