@@ -6,6 +6,7 @@ import {
   AiOutlineUser,
   AiOutlineShoppingCart,
   AiOutlineLogout,
+  AiOutlineCar,
 } from "react-icons/ai";
 import { BsBagCheck } from "react-icons/bs";
 import { PiUsersFour } from "react-icons/pi";
@@ -32,6 +33,13 @@ const HomeRoute = () => {
           title={"Products"}
           onClick={nav}
           path={"/home/products/"}
+        />
+
+        <SideBarOptions
+          icon={<AiOutlineCar />}
+          title={"make / model / year"}
+          onClick={nav}
+          path={"/home/ProductDetails/"}
         />
         <SideBarOptions
           icon={<AiOutlineShoppingCart />}

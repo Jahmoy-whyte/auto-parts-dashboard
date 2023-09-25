@@ -4,7 +4,7 @@ const SideBarOptions = ({ title, icon, onClick, path }) => {
       onClick={() => onClick(path)}
       className="flex items-center gap-3 py-3  "
     >
-      {icon} <p> {title} </p>
+      {icon} <p className="text-left"> {title} </p>
     </button>
   );
 };

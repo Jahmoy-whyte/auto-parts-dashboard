@@ -19,6 +19,7 @@ import UsersRoute from "./routes/users-route/UsersRoute";
 import UserEditRoute from "./routes/user-edit-route/UserEditRoute";
 import EmployeeRoute from "./routes/employee-route/EmployeeRoute";
 import EmployeeEditRoute from "./routes/employee-edit-route/EmployeeEditRoute";
+import ProductDetailsRoute from "./routes/product-details-route/ProductDetailsRoute";
 const Router = () => {
   const router = createBrowserRouter([
     { path: "/", element: <LoginRoute /> },
@@ -62,6 +63,11 @@ const Router = () => {
         {
           path: "/home/employees/edit/:employeeId",
           element: <EmployeeEditRoute />,
+        },
+
+        {
+          path: "/home/ProductDetails/",
+          element: <ProductDetailsRoute />,
         },
       ],
     },
