@@ -2,19 +2,35 @@ import { useCallback, useEffect, useReducer, useRef } from "react";
 import useFetchInstance from "../../hooks/useFetchInstance";
 import toastMessage from "../../helper/toast-message/toastMessage";
 import { ACTIONS } from "./helper/reducerHelper";
+import { getUrl, postUrl } from "./helper/urlHelper";
+import SPECIFICATIONS from "./constants/specification";
+import { BUTTON_ACTION_TYPE } from "./constants/buttonActionType";
 const useProductDetails = () => {
   const initialState = {
     isLoading: false,
     tableData: [],
     deleteIsLoading: false,
-    selected: "make",
+    selected: SPECIFICATIONS.make,
     regularModelData: {
+      updateId: "",
       visible: false,
       textBoxPlaceHolder: "",
       textBoxValue: "",
       title: "",
       subText: "",
-      actionType: "add",
+      actionType: "Add",
+      btnIsloading: false,
+    },
+
+    irregularModelData: {
+      updateId: "",
+      visible: false,
+      textBoxPlaceHolder: "",
+      textBoxValue: "",
+      title: "",
+      subText: "",
+      actionType: "Add",
+      btnIsloading: false,
     },
   };
 
@@ -29,25 +45,27 @@ const useProductDetails = () => {
         return { ...state, deleteIsLoading: action.payload };
       case "set_selected":
         return { ...state, selected: action.payload };
-      case "set_regularModelData_visibility": {
-        const visible = action.payload.visible;
-        const textBoxValue = action.payload.textBoxValue;
-        const title = action.payload.title;
-        const subText = action.payload.subText;
-        const actionType = action.payload.actionType;
+      case "set_regularModelData": {
+        const modelData = action.payload;
         return {
           ...state,
           regularModelData: {
             ...state.regularModelData,
-            visible: visible,
-            textBoxValue: textBoxValue,
-            title: title,
-            subText: subText,
-            actionType: actionType,
+            ...modelData,
           },
         };
       }
 
+      case "set_irregularModelData": {
+        const modelData = action.payload;
+        return {
+          ...state,
+          irregularModelData: {
+            ...state.irregularModelData,
+            ...modelData,
+          },
+        };
+      }
       default:
         return state;
     }
@@ -66,7 +84,7 @@ const useProductDetails = () => {
       payload: true,
     });
     try {
-      const url = getUrl();
+      const url = getUrl(state.selected);
       const data = await tokenAwareFetch(url);
       console.log(data);
       dispatch({
@@ -82,24 +100,32 @@ const useProductDetails = () => {
     });
   };
 
-  const getUrl = () => {
-    switch (state.selected) {
-      case "make":
-        return `/make/get`;
-      case "model":
-        return `/model/`;
-      case "year":
-        return `/year/`;
-      case "categories":
-        return `/categories/`;
+  const addBtnOnClick = () => {
+    const payload = {
+      visible: true,
+      textBoxPlaceHolder: "Type Here",
+      textBoxValue: "",
+      title: state.selected,
+      subText: "Enter into the text box below",
+      actionType: BUTTON_ACTION_TYPE.Add,
+    };
+    if (
+      state.selected == SPECIFICATIONS.make ||
+      state.selected == SPECIFICATIONS.categories
+    ) {
+      dispatch({
+        type: ACTIONS.set_regularModelData,
+        payload: payload,
+      });
+    } else {
+      dispatch({
+        type: ACTIONS.set_irregularModelData,
+        payload: payload,
+      });
     }
   };
 
-  const add = () => {
-    alert("Wdwdwd");
-  };
-
-  return [state, dispatch];
+  return [state, dispatch, getData, addBtnOnClick];
 };
 
 export default useProductDetails;

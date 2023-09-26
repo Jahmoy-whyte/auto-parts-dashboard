@@ -20,6 +20,8 @@ import UserEditRoute from "./routes/user-edit-route/UserEditRoute";
 import EmployeeRoute from "./routes/employee-route/EmployeeRoute";
 import EmployeeEditRoute from "./routes/employee-edit-route/EmployeeEditRoute";
 import ProductDetailsRoute from "./routes/product-details-route/ProductDetailsRoute";
+import ProductSpecificationRoute from "./routes/product-specification-route/ProductSpecificationRoute";
+import MakeRoute from "./routes/product-specification-route/routes/make-route/MakeRoute";
 const Router = () => {
   const router = createBrowserRouter([
     { path: "/", element: <LoginRoute /> },
@@ -66,8 +68,14 @@ const Router = () => {
         },
 
         {
-          path: "/home/ProductDetails/",
-          element: <ProductDetailsRoute />,
+          path: "/home/ProductSpecification/",
+          element: <ProductSpecificationRoute />,
+          children: [
+            {
+              path: "/home/ProductSpecification/",
+              element: <MakeRoute />,
+            },
+          ],
         },
       ],
     },

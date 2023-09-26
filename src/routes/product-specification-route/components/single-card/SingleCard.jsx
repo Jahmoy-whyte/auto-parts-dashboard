@@ -1,7 +1,6 @@
-import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
-import { ACTIONS } from "../../helper/reducerHelper";
-import { BUTTON_ACTION_TYPE } from "../../constants/buttonActionType";
-const Card = ({ data, dispatch, state }) => {
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { BUTTON_ACTION_TYPE } from "../../constants/constants";
+const SingleCard = ({ data, dispatch, state, dispatchType }) => {
   return (
     <div className="flex justify-between p-2 border-2 rounded-md items-center">
       <p>{data.data}</p>
@@ -10,9 +9,9 @@ const Card = ({ data, dispatch, state }) => {
         <AiOutlineEdit
           onClick={() =>
             dispatch({
-              type: ACTIONS.set_regularModelData,
+              type: dispatchType,
               payload: {
-                updateId: data.id,
+                id: data.id,
                 visible: true,
                 textBoxPlaceHolder: "Type Here",
                 textBoxValue: data.data,
@@ -29,4 +28,4 @@ const Card = ({ data, dispatch, state }) => {
   );
 };
 
-export default Card;
+export default SingleCard;

@@ -1,15 +1,18 @@
 import Model from "../../../../components/model/Model";
 import TextBox from "../../../../components/text-box/TextBox";
-import { ACTIONS } from "../../helper/reducerHelper";
-
-const AddModel = ({ modelData = {}, dispatch, buttonFunc }) => {
+const SingleModel = ({
+  modelData = {},
+  dispatch,
+  buttonFunc,
+  dispatchType,
+}) => {
   const modelState = modelData;
 
   return (
     <Model
       close={() =>
         dispatch({
-          type: ACTIONS.set_regularModelData,
+          type: dispatchType,
           payload: { visible: false },
         })
       }
@@ -23,7 +26,7 @@ const AddModel = ({ modelData = {}, dispatch, buttonFunc }) => {
         placeHolder={modelState.textBoxPlaceHolder}
         onChangeHandler={(name, value) =>
           dispatch({
-            type: ACTIONS.set_regularModelData,
+            type: dispatchType,
             payload: { textBoxValue: value },
           })
         }
@@ -40,5 +43,5 @@ const AddModel = ({ modelData = {}, dispatch, buttonFunc }) => {
   );
 };
 
-export default AddModel;
+export default SingleModel;
 //   "This action cannot be undone. This will permanently delete your account and remove your modelState from our servers."

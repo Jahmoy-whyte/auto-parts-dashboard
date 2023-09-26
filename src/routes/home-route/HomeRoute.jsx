@@ -37,9 +37,9 @@ const HomeRoute = () => {
 
         <SideBarOptions
           icon={<AiOutlineCar />}
-          title={"make / model / year"}
+          title={"Product Specification"}
           onClick={nav}
-          path={"/home/ProductDetails/"}
+          path={"/home/ProductSpecification/"}
         />
         <SideBarOptions
           icon={<AiOutlineShoppingCart />}

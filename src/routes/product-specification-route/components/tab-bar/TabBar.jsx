@@ -1,5 +1,5 @@
 import TabButton from "../../../../components/tab-buttons/TabButton";
-import SPECIFICATIONS from "../../constants/specification";
+import { SPECIFICATIONS } from "../../constants/constants";
 const TabBar = ({ state, dispatch }) => {
   return (
     <div className="flex bg-gray-100 p-1 rounded-md max-w-sm">
