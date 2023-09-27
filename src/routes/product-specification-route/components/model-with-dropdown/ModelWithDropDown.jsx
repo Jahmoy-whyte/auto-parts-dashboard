@@ -1,7 +1,8 @@
+import CustomDropDown from "../../../../components/custom-drop-down/CustomDropDown";
 import Model from "../../../../components/model/Model";
 import TextBox from "../../../../components/text-box/TextBox";
 import { ACTIONS } from "../../helper/reducerHelper";
-const SingleModel = ({ modelData = {}, dispatch, buttonFunc }) => {
+const ModelWithDropDown = ({ modelData = {}, dispatch, buttonFunc }) => {
   const modelState = modelData;
 
   return (
@@ -16,6 +17,17 @@ const SingleModel = ({ modelData = {}, dispatch, buttonFunc }) => {
       title={modelState.title}
       subtext={modelState.subText}
     >
+      <CustomDropDown
+        options={modelState.dropDown.options}
+        placeHolder="select"
+        value={modelState.dropDown.text}
+        onClick={(name, value, text) =>
+          dispatch({
+            type: ACTIONS.set_dropdown_on_select,
+            payload: { text: text, value: value },
+          })
+        }
+      />
       <TextBox
         isDisabled={modelState.btnIsloading}
         value={modelState.textBoxValue}
@@ -39,5 +51,5 @@ const SingleModel = ({ modelData = {}, dispatch, buttonFunc }) => {
   );
 };
 
-export default SingleModel;
+export default ModelWithDropDown;
 //   "This action cannot be undone. This will permanently delete your account and remove your modelState from our servers."

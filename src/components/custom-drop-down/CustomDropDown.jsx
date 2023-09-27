@@ -3,7 +3,7 @@ import { BsChevronDown } from "react-icons/bs";
 import { Oval } from "react-loader-spinner";
 
 const CustomDropDown = ({
-  label = "label",
+  label = null,
   value = "",
   options = [{ text: "", value: "" }],
   onClick,
@@ -26,7 +26,7 @@ const CustomDropDown = ({
   const [open, setOpen] = useState(false);
   return (
     <div>
-      {showLabel ? <label className="text-sm">{label}</label> : null}
+      {label ? <label className="text-sm">{label}</label> : null}
       <div className="flex flex-col relative text-sm min-w-[100px]">
         <button
           disabled={isDisabled}
@@ -44,14 +44,14 @@ const CustomDropDown = ({
         </button>
         {open ? (
           <div
-            className="flex flex-col border-2 absolute top-10 bg-white w-full z-10"
+            className="flex flex-col border-2 absolute top-10 bg-white w-full z-10 overflow-y-auto h-44"
             onClick={(e) => e.stopPropagation()}
           >
             {options.map((option, index) => {
               return (
                 <button
                   key={index}
-                  className="h-10"
+                  className="py-2"
                   onClick={() => {
                     onClick(name, option.value, option.text);
                     setOpen(false);

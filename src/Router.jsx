@@ -22,6 +22,9 @@ import EmployeeEditRoute from "./routes/employee-edit-route/EmployeeEditRoute";
 import ProductDetailsRoute from "./routes/product-details-route/ProductDetailsRoute";
 import ProductSpecificationRoute from "./routes/product-specification-route/ProductSpecificationRoute";
 import MakeRoute from "./routes/product-specification-route/routes/make-route/MakeRoute";
+import ModelRoute from "./routes/product-specification-route/routes/model-route/ModelRoute";
+import YearRoute from "./routes/product-specification-route/routes/year-route/YearRoute";
+import CategoriesRoute from "./routes/product-specification-route/routes/categories-route/CategoriesRoute";
 const Router = () => {
   const router = createBrowserRouter([
     { path: "/", element: <LoginRoute /> },
@@ -74,6 +77,19 @@ const Router = () => {
             {
               path: "/home/ProductSpecification/",
               element: <MakeRoute />,
+            },
+            {
+              path: "/home/ProductSpecification/model",
+              element: <ModelRoute />,
+            },
+
+            {
+              path: "/home/ProductSpecification/year",
+              element: <YearRoute />,
+            },
+            {
+              path: "/home/ProductSpecification/categories",
+              element: <CategoriesRoute />,
             },
           ],
         },

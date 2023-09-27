@@ -181,7 +181,9 @@ const useAddProducts = () => {
         type: ACTIONS.set_dropdown_data,
         payload: { dropDown: "year", data: newarr },
       });
-    } catch (error) {}
+    } catch (error) {
+      toastMessage("error", error.message);
+    }
   }, []);
 
   const selectOption = useCallback((name, value, text) => {

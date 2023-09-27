@@ -1,9 +1,10 @@
 import SingleCard from "../../components/single-card/SingleCard";
-import useMake from "./useMake";
+import useCategories from "./useCategories";
 import SingleModel from "../../components/single-model/SingleModel";
 
-const MakeRoute = () => {
-  const [state, dispatch, addBtnOnClick, modelButtonOnClickHandler] = useMake();
+const CategoriesRoute = () => {
+  const [state, dispatch, addBtnOnClick, modelButtonOnClickHandler] =
+    useCategories();
   return (
     <>
       <SingleModel
@@ -13,14 +14,17 @@ const MakeRoute = () => {
       />
       {state.isLoading ? ".......ISLOADING" : null}
       <div className="flex flex-col gap-2 max-w-sm mt-2">
-        <button className="text-white bg-secondary" onClick={addBtnOnClick}>
+        <button
+          className="text-white bg-secondary rounded-md"
+          onClick={addBtnOnClick}
+        >
           Add
         </button>
         {state.tableData.map((data) => {
           return (
             <SingleCard
               id={data.id}
-              text={data.make}
+              text={data.category}
               key={data.id}
               dispatch={dispatch}
               state={state}
@@ -32,7 +36,7 @@ const MakeRoute = () => {
   );
 };
 
-export default MakeRoute;
+export default CategoriesRoute;
 /**
  * 
  * 

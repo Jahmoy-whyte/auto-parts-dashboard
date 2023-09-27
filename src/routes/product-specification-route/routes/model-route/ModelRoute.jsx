@@ -1,12 +1,15 @@
+import DoubleCard from "../../components/doubleCardcard/DoubleCard";
+import ModelWithDropDown from "../../components/model-with-dropdown/ModelWithDropDown";
 import SingleCard from "../../components/single-card/SingleCard";
-import useMake from "./useMake";
-import SingleModel from "../../components/single-model/SingleModel";
 
-const MakeRoute = () => {
-  const [state, dispatch, addBtnOnClick, modelButtonOnClickHandler] = useMake();
+import useModel from "./useModel";
+
+const ModelRoute = () => {
+  const [state, dispatch, addBtnOnClick, modelButtonOnClickHandler] =
+    useModel();
   return (
     <>
-      <SingleModel
+      <ModelWithDropDown
         modelData={state.modelData}
         dispatch={dispatch}
         buttonFunc={modelButtonOnClickHandler}
@@ -18,9 +21,11 @@ const MakeRoute = () => {
         </button>
         {state.tableData.map((data) => {
           return (
-            <SingleCard
-              id={data.id}
-              text={data.make}
+            <DoubleCard
+              text1={data.make}
+              id1={data.makeId}
+              text2={data.model}
+              id2={data.id}
               key={data.id}
               dispatch={dispatch}
               state={state}
@@ -32,7 +37,7 @@ const MakeRoute = () => {
   );
 };
 
-export default MakeRoute;
+export default ModelRoute;
 /**
  * 
  * 

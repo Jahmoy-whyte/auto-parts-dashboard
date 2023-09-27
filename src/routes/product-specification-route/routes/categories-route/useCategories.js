@@ -4,21 +4,21 @@ import useFetchInstance from "../../../../hooks/useFetchInstance";
 import { BUTTON_ACTION_TYPE } from "../../constants/constants";
 import validateModelActions from "./helper/validateModelActions";
 import { reducer, ACTIONS, initialState } from "../../helper/reducerHelper";
-const useMake = () => {
+const useCategories = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { tokenAwareFetch } = useFetchInstance();
 
   useEffect(() => {
-    getData();
+    getCategories();
   }, []);
 
-  const getData = async () => {
+  const getCategories = async () => {
     dispatch({
       type: ACTIONS.set_isLoading,
       payload: true,
     });
     try {
-      const data = await tokenAwareFetch("/make/");
+      const data = await tokenAwareFetch("/categories/");
       dispatch({
         type: ACTIONS.set_tableData,
         payload: data,
@@ -59,7 +59,7 @@ const useMake = () => {
         type: ACTIONS.set_model_data,
         payload: { btnIsloading: false, visible: false },
       });
-      getData();
+      getCategories();
       toastMessage("success", msg);
     } catch (error) {
       toastMessage("error", error.message);
@@ -73,4 +73,4 @@ const useMake = () => {
   return [state, dispatch, addBtnOnClick, modelBtnOnClickHander];
 };
 
-export default useMake;
+export default useCategories;
