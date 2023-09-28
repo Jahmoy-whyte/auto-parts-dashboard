@@ -2,10 +2,11 @@ import { useCallback, useEffect, useReducer, useState } from "react";
 import useFetchInstance from "../../hooks/useFetchInstance";
 import toastMessage from "../../helper/toast-message/toastMessage";
 import { ACTIONS, initialState } from "./helper/reducerHelper";
+import usePagination from "../../hooks/usePagination";
 
 const useProducts = () => {
-  const chunks = 4;
-
+  const NUMBER_OF_PAGES_PER_CHUNKS = 4;
+  const NUMBER_OF_ROWS_PER_PAGE = 15;
   const reducer = (state, action) => {
     switch (action.type) {
       case "delete-btn-is-loading":
@@ -17,25 +18,10 @@ const useProducts = () => {
       case "set-products":
         return {
           ...state,
-          products: action.payload.products,
-          currentPage: action.payload.currentPage,
+          products: action.payload,
+
           isLoading: false,
           selected: [],
-        };
-
-      case "set-page-chunk":
-        return {
-          ...state,
-          pageChunk: action.payload.pageChunk,
-          currentPageChunk: action.payload.currentPageChunk,
-        };
-
-      case "page-setup":
-        return {
-          ...state,
-          numberOfPages: action.payload.numberOfPages,
-          pageChunk: action.payload.pageChunk,
-          numberOfPageChunks: action.payload.numberOfPageChunks,
         };
 
       case "set-search-text":
@@ -55,42 +41,55 @@ const useProducts = () => {
           ...state,
           isLoading: action.payload,
         };
-      case "set-selected":
+
+      case "single_select":
         return {
           ...state,
           selected: [...state.selected, action.payload],
         };
-      case "clear-selected":
-        return {
-          ...state,
-          selected: [],
-          deleteBtnIsloading: false,
-        };
 
-      case "deselect":
+      case "single_deselect":
         return {
           ...state,
           selected: state.selected.filter((id) => id != action.payload),
         };
 
+      case "select_all":
+        return {
+          ...state,
+          checkAll: true,
+          selected: state.products.map((row) => row.id),
+        };
+
+      case "clear_selected":
+        return {
+          ...state,
+          selected: [],
+          checkAll: false,
+          deleteBtnIsloading: false,
+        };
+
       default:
-        state;
+        return state;
     }
   };
 
+  const { pages, prev, setCurrentPage, calulatePages, currentPage, next } =
+    usePagination();
   const { tokenAwareFetch } = useFetchInstance();
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const getProducts = async (pageNumber = 0) => {
+  const getProducts = async () => {
     try {
-      const productsPerPage = state.productsPerPage;
-      const startingNumber = productsPerPage * pageNumber;
+      const productsPerPage = NUMBER_OF_ROWS_PER_PAGE;
+      const startingNumber = currentPage * NUMBER_OF_ROWS_PER_PAGE;
       const products = await tokenAwareFetch(
         `/products/products/get?start=${startingNumber}&limit=${productsPerPage}`
       );
+
       dispatch({
         type: ACTIONS.SET_PRODUCTS,
-        payload: { products: products, currentPage: pageNumber },
+        payload: products,
       });
     } catch (error) {
       toastMessage("error", error.message);
@@ -102,17 +101,12 @@ const useProducts = () => {
     const getInitialProducts = async () => {
       try {
         const count = await tokenAwareFetch("/products/product/count");
-        const [numberOfPages, numberOfPageChunks, pageChunk] = caluPages(
-          count?.numOfProducts
+
+        calulatePages(
+          count?.numOfProducts,
+          NUMBER_OF_ROWS_PER_PAGE,
+          NUMBER_OF_PAGES_PER_CHUNKS
         );
-        dispatch({
-          type: ACTIONS.PAGE_SETUP,
-          payload: {
-            numberOfPages: numberOfPages,
-            pageChunk: pageChunk,
-            numberOfPageChunks: numberOfPageChunks,
-          },
-        });
       } catch (error) {
         toastMessage("error", error.message);
       }
@@ -121,24 +115,11 @@ const useProducts = () => {
     getInitialProducts();
   }, []);
 
-  const caluPages = (numOfProducts) => {
-    // get number of pages
-    //to get total page number numOfProducts / productsPerPage
-    //productsPerPage is the limit of how many products is return after a query
-    const numberOfPages = Math.ceil(numOfProducts / state.productsPerPage);
-
-    const numberOfPageChunks = Math.ceil(numberOfPages / chunks); //chunks is how many page number to show at a time
-
-    const pages = [...Array(numberOfPages).keys()];
-    const pageChunk = pages.length > chunks ? pages.slice(0, chunks) : pages;
-    return [numberOfPages, numberOfPageChunks, pageChunk];
-  };
-
   useEffect(() => {
     // search useEffect =======
-    if (state.numberOfPages == 0) return;
+
     if (state.searchText == "") {
-      getProducts(0);
+      getProducts();
       return;
     }
 
@@ -148,61 +129,30 @@ const useProducts = () => {
     });
 
     const time = setTimeout(async () => {
-      try {
-        const products = await tokenAwareFetch(
-          `/products/products/search?text=${state.searchText}&filter=${state.searchTextFilter}`
-        );
-
-        dispatch({
-          type: ACTIONS.SET_PRODUCTS,
-          payload: { products: products, currentPage: state.currentPage },
-        });
-      } catch (error) {
-        toastMessage("error", error.message);
-        dispatch({
-          type: ACTIONS.SET_IS_LOADING,
-          payload: true,
-        });
-      }
+      productSearch();
     }, 1500);
 
     return () => clearTimeout(time);
-  }, [state.searchText, state.numberOfPages, state.searchTextFilter]);
+  }, [state.searchText, currentPage, state.searchTextFilter]);
 
-  const next = () => {
-    const currentPageChunk = state.currentPageChunk;
+  const productSearch = async () => {
+    try {
+      const products = await tokenAwareFetch(
+        `/products/products/search?text=${state.searchText}&filter=${state.searchTextFilter}`
+      );
 
-    if (currentPageChunk == state.numberOfPageChunks) return;
-
-    const pages = [...Array(state.numberOfPages).keys()];
-    const start = state.pageChunk[0] + chunks;
-    const end = start + chunks;
-
-    dispatch({
-      type: ACTIONS.SET_PAGE_CHUNK,
-      payload: {
-        pageChunk: pages.slice(start, end),
-        currentPageChunk: currentPageChunk + 1,
-      },
-    });
+      dispatch({
+        type: ACTIONS.SET_PRODUCTS,
+        payload: products,
+      });
+    } catch (error) {
+      toastMessage("error", error.message);
+      dispatch({
+        type: ACTIONS.SET_IS_LOADING,
+        payload: true,
+      });
+    }
   };
-
-  const prev = () => {
-    const currentPageChunk = state.currentPageChunk;
-    if (currentPageChunk == 1) return;
-    const pages = [...Array(state.numberOfPages).keys()];
-    const start = state.pageChunk[0] - chunks;
-    const end = start + chunks;
-
-    dispatch({
-      type: ACTIONS.SET_PAGE_CHUNK,
-      payload: {
-        pageChunk: pages.slice(start, end),
-        currentPageChunk: state.currentPageChunk - 1,
-      },
-    });
-  };
-
   const deleteProduct = async () => {
     dispatch({
       type: ACTIONS.DELETE_BTN_IS_LOADING,
@@ -216,9 +166,14 @@ const useProducts = () => {
         });
       }
 
-      dispatch({ type: ACTIONS.CLEAR_SELECTED });
+      dispatch({ type: ACTIONS.clear_selected });
       toastMessage("success", "Delete Successful");
-      getProducts();
+
+      if (state.searchText == "") {
+        getProducts();
+      } else {
+        productSearch();
+      }
     } catch (error) {
       toastMessage("error", error.message);
       dispatch({
@@ -230,7 +185,17 @@ const useProducts = () => {
 
   //console.log(state.currentPageChunk + "==" + state.numberOfPageChunks);
 
-  return [state, dispatch, getProducts, prev, next, deleteProduct];
+  return [
+    state,
+    dispatch,
+
+    deleteProduct,
+    pages,
+    setCurrentPage,
+    currentPage,
+    prev,
+    next,
+  ];
 };
 
 export default useProducts;

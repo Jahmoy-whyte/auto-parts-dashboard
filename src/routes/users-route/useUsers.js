@@ -2,7 +2,6 @@ import { useCallback, useEffect, useReducer, useRef } from "react";
 import useFetchInstance from "../../hooks/useFetchInstance";
 import toastMessage from "../../helper/toast-message/toastMessage";
 import usePagination from "../../hooks/usePagination";
-import { useNavigate } from "react-router-dom";
 import { ACTIONS } from "./helper/reducerHelper";
 const useUsers = () => {
   const initialState = {
@@ -34,14 +33,9 @@ const useUsers = () => {
 
       case "set_search_text":
         return { ...state, searchText: action.payload };
-      case "setState":
-        const key = action.payload.key;
-        const value = action.payload.value;
-        return {
-          ...state,
-          [key]: value,
-        };
-      //=======================================================================
+      case "set_filter_text":
+        return { ...state, filter: action.payload };
+
       case "delete_btn_is_loading":
         return { ...state, deleteBtnIsloading: action.payload };
 
@@ -141,13 +135,6 @@ const useUsers = () => {
     }
   }, []);
 
-  const setState = useCallback((key, value) => {
-    dispatch({
-      type: ACTIONS.setState,
-      payload: { key: key, value: value },
-    });
-  }, []);
-
   const deleteRow = async () => {
     dispatch({
       type: ACTIONS.delete_btn_is_loading,
@@ -178,17 +165,7 @@ const useUsers = () => {
     });
   };
 
-  return [
-    state,
-    dispatch,
-    pages,
-    prev,
-    next,
-    currentPage,
-    getUsers,
-    deleteRow,
-    setState,
-  ];
+  return [state, dispatch, pages, prev, next, currentPage, getUsers, deleteRow];
 };
 
 export default useUsers;

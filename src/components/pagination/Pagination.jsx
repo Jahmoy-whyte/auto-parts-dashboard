@@ -1,9 +1,17 @@
 import { memo } from "react";
 
-const Pagination = ({ pages = [], next, prev, onClick, currentPage }) => {
+const Pagination = ({
+  pages = [],
+  next,
+  prev,
+  onClick,
+  currentPage,
+  visible = true,
+}) => {
   const selectedColor = {
     selected: "bg-secondary text-white",
   };
+  if (!visible) return null;
   return (
     <div className="flex justify-end">
       <div className="flex text-sm h-9">

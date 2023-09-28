@@ -3,7 +3,7 @@ import { memo } from "react";
 import { Oval } from "react-loader-spinner";
 const ToolBar = ({ state, setState, deleteOrders }) => {
   return (
-    <div className="flex  gap-2 mb-5">
+    <div className="flex  gap-2 mb-2">
       <div className="max-w-[230px] border-2 rounded-md px-2 flex flex-1 items-center gap-2 ">
         <AiOutlineSearch color="gray" />
         <input

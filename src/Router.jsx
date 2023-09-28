@@ -19,7 +19,7 @@ import UsersRoute from "./routes/users-route/UsersRoute";
 import UserEditRoute from "./routes/user-edit-route/UserEditRoute";
 import EmployeeRoute from "./routes/employee-route/EmployeeRoute";
 import EmployeeEditRoute from "./routes/employee-edit-route/EmployeeEditRoute";
-import ProductDetailsRoute from "./routes/product-details-route/ProductDetailsRoute";
+
 import ProductSpecificationRoute from "./routes/product-specification-route/ProductSpecificationRoute";
 import MakeRoute from "./routes/product-specification-route/routes/make-route/MakeRoute";
 import ModelRoute from "./routes/product-specification-route/routes/model-route/ModelRoute";

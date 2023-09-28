@@ -1,8 +1,9 @@
 import { useEffect, useState, memo } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import { Oval } from "react-loader-spinner";
-
+import { twMerge } from "tailwind-merge";
 const CustomDropDown = ({
+  className,
   label = null,
   value = "",
   options = [{ text: "", value: "" }],
@@ -22,12 +23,15 @@ const CustomDropDown = ({
     window.addEventListener("click", click);
     return () => window.removeEventListener("click", click);
   }, []);
-
+  const customClass = twMerge(
+    "flex flex-col relative text-sm min-w-[100px]",
+    className
+  );
   const [open, setOpen] = useState(false);
   return (
     <div>
       {label ? <label className="text-sm">{label}</label> : null}
-      <div className="flex flex-col relative text-sm min-w-[100px]">
+      <div className={customClass}>
         <button
           disabled={isDisabled}
           onClick={(e) => {
@@ -44,7 +48,7 @@ const CustomDropDown = ({
         </button>
         {open ? (
           <div
-            className="flex flex-col border-2 absolute top-10 bg-white w-full z-10 overflow-y-auto h-44"
+            className="flex flex-col border-2 absolute top-10 bg-white w-full z-10 overflow-y-auto max-h-44"
             onClick={(e) => e.stopPropagation()}
           >
             {options.map((option, index) => {

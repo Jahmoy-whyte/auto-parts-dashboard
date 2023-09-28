@@ -1,15 +1,22 @@
-import PageNumbers from "./components/page-numbers/PageNumbers";
 import TabelRows from "./components/table-rows/TabelRows";
 import useProducts from "./useProducts";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-
-import { Oval } from "react-loader-spinner";
-import PageNumberPagination from "./components/page-number-pagination/PageNumberPagination";
-import ToolBar from "./components/tool-bar/ToolBar";
+import { ACTIONS } from "./helper/reducerHelper";
+import ToolBar from "../../components/tool-bar/ToolBar";
 import { useNavigate } from "react-router-dom";
+import Pagination from "../../components/pagination/Pagination";
+import Button from "../../components/button/Button";
 const ProductsRoute = () => {
-  const [state, dispatch, getProducts, prev, next, deleteProduct] =
-    useProducts();
+  const [
+    state,
+    dispatch,
+    deleteProduct,
+    pages,
+    setCurrentPage,
+    currentPage,
+    prev,
+    next,
+  ] = useProducts();
   const nav = useNavigate();
 
   return (
@@ -19,15 +26,43 @@ const ProductsRoute = () => {
 
         <div className="flex flex-col bg-white p-5   ">
           <ToolBar
-            dispatch={dispatch}
-            state={state}
-            deleteProduct={deleteProduct}
-          />
+            isLoading={state.isLoading}
+            searchTextOnChange={(value) =>
+              dispatch({ type: ACTIONS.SET_SEARCH_TEXT, payload: value })
+            }
+            filterOnChange={(value) =>
+              dispatch({ type: ACTIONS.SET_FILTER, payload: value })
+            }
+            searchText={state.searchText}
+            dropDownOptions={state.filterOptions}
+            deleteBtnIsloading={state.deleteBtnIsloading}
+            deleteFunc={deleteProduct}
+            selected={state.selected}
+          >
+            <Button
+              className="h-9  min-w-[56px] px-2  text-sm border-2 border-white"
+              onClick={() => nav("/home/products/add")}
+              text={"Add"}
+            />
+          </ToolBar>
+
           <div className="flex flex-col bg-white   overflow-x-auto">
             <table className="text-sm">
               <thead className="text-left ">
                 <tr className="h-11 bg-slate-100">
-                  <th className="px-6 py-4 ">Select</th>
+                  <th className="px-6 py-4 ">
+                    <input
+                      type="checkbox"
+                      checked={state.checkAll}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          dispatch({ type: ACTIONS.select_all });
+                        } else {
+                          dispatch({ type: ACTIONS.clear_selected });
+                        }
+                      }}
+                    />
+                  </th>
                   <th className="px-6 py-4">Product</th>
                   <th className="px-6 py-4">Make</th>
                   <th className="px-6 py-4">Model</th>
@@ -42,6 +77,7 @@ const ProductsRoute = () => {
                   state.products.map((data) => {
                     return (
                       <TabelRows
+                        selected={state.selected}
                         data={data}
                         key={data.id}
                         dispatch={dispatch}
@@ -54,15 +90,41 @@ const ProductsRoute = () => {
           </div>
         </div>
 
-        <PageNumberPagination
+        <Pagination
+          visible={state.searchText == "" ? true : false}
+          currentPage={currentPage}
           next={next}
           prev={prev}
-          state={state}
-          getProducts={getProducts}
+          onClick={setCurrentPage}
+          pages={pages}
         />
       </div>
     </div>
   );
 };
+
+/*
+ <ToolBar
+            isLoading={state.isLoading}
+            searchTextOnChange={(value) =>
+              dispatch({ type: ACTIONS.set_search_text, payload: value })
+            }
+            filterOnChange={(value) =>
+              dispatch({ type: ACTIONS.set_filter_value, payload: value })
+            }
+            searchText={state.searchText}
+            dropDownOptions={state.dropDown}
+            deleteBtnIsloading={state.deleteBtnIsloading}
+            deleteFunc={deleteRow}
+            selected={state.selected}
+          >
+            <Button
+              className="h-9  min-w-[56px] px-2  text-sm border-2 border-white"
+              onClick={() => nav("/home/employees/edit/add")}
+              text={"Add"}
+            />
+          </ToolBar>
+
+*/
 
 export default ProductsRoute;

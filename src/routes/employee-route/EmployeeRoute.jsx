@@ -4,6 +4,7 @@ import Pagination from "../../components/pagination/Pagination";
 import { useNavigate } from "react-router-dom";
 import { ACTIONS } from "./helper/reducerHelper";
 import ToolBar from "../../components/tool-bar/ToolBar";
+import Button from "../../components/button/Button";
 const EmployeeRoute = () => {
   const [
     state,
@@ -14,7 +15,6 @@ const EmployeeRoute = () => {
     currentPage,
     getEmployees,
     deleteRow,
-    setState,
   ] = useEmployee();
   const nav = useNavigate();
   return (
@@ -24,13 +24,24 @@ const EmployeeRoute = () => {
         <div className="flex flex-col flex-1 bg-white p-5">
           <ToolBar
             isLoading={state.isLoading}
-            setState={setState}
-            deleteBtnIsloading={state.deleteBtnIsloading}
+            searchTextOnChange={(value) =>
+              dispatch({ type: ACTIONS.set_search_text, payload: value })
+            }
+            filterOnChange={(value) =>
+              dispatch({ type: ACTIONS.set_filter_value, payload: value })
+            }
             searchText={state.searchText}
-            deleteFunc={deleteRow}
             dropDownOptions={state.dropDown}
+            deleteBtnIsloading={state.deleteBtnIsloading}
+            deleteFunc={deleteRow}
             selected={state.selected}
-          />
+          >
+            <Button
+              className="h-9  min-w-[56px] px-2  text-sm border-2 border-white"
+              onClick={() => nav("/home/employees/edit/add")}
+              text={"Add"}
+            />
+          </ToolBar>
 
           <div className="flex flex-col bg-white   overflow-x-auto">
             <table className="text-sm">

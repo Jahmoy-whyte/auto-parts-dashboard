@@ -44,10 +44,7 @@ const ToolBar = ({ state, dispatch, deleteProduct }) => {
             payload: e.currentTarget.value,
           })
         }
-      >
-        <option value={"product_name"}>Product</option>
-        <option value={"product_id"}>Id</option>
-      </select>
+      ></select>
 
       {state.selected.length > 0 ? (
         <button

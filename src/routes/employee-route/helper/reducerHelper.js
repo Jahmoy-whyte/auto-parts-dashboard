@@ -19,6 +19,7 @@ export const ACTIONS = {
   set_employee_table: "set_employee_table",
   set_is_loading: "set_is_loading",
   set_search_text: "set_search_text",
+  set_filter_value: "set_filter_value",
   setState: "setState",
   delete_btn_is_loading: "delete_btn_is_loading",
   single_select: "single_select",
@@ -41,13 +42,9 @@ export const reducer = (state, action) => {
 
     case "set_search_text":
       return { ...state, searchText: action.payload };
-    case "setState":
-      const key = action.payload.key;
-      const value = action.payload.value;
-      return {
-        ...state,
-        [key]: value,
-      };
+
+    case "set_filter_value":
+      return { ...state, filter: action.payload };
 
     case "delete_btn_is_loading":
       return { ...state, deleteBtnIsloading: action.payload };

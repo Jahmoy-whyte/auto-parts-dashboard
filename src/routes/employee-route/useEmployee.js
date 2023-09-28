@@ -47,7 +47,7 @@ const useEmployee = () => {
   const countEmployee = async () => {
     try {
       const data = await tokenAwareFetch(`/employee/count-all-employees`);
-      console.log(data);
+
       calulatePages(
         data.count,
         NUMBER_OF_ROWS_PER_PAGE,
@@ -75,13 +75,6 @@ const useEmployee = () => {
       toastMessage("error", error.message);
       dispatch({ type: ACTIONS.set_is_loading, payload: false });
     }
-  }, []);
-
-  const setState = useCallback((key, value) => {
-    dispatch({
-      type: ACTIONS.setState,
-      payload: { key: key, value: value },
-    });
   }, []);
 
   const deleteRow = async () => {
@@ -123,7 +116,6 @@ const useEmployee = () => {
     currentPage,
     getEmployees,
     deleteRow,
-    setState,
   ];
 };
 

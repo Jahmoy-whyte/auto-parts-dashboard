@@ -1,7 +1,7 @@
 import { memo } from "react";
 import formattedCost from "../../../../helper/format-cost/formattedCost";
 import { ACTIONS } from "../../helper/reducerHelper";
-const TabelRows = ({ data, dispatch, nav }) => {
+const TabelRows = ({ data, dispatch, nav, selected = [] }) => {
   //console.log("dwdwdwddddddddddddd");
 
   return (
@@ -9,11 +9,12 @@ const TabelRows = ({ data, dispatch, nav }) => {
       <td className="px-6 py-4 ">
         <input
           type="checkbox"
+          checked={selected.includes(data.id)}
           onChange={(e) => {
             if (e.currentTarget.checked) {
-              dispatch({ type: ACTIONS.SET_SELECTED, payload: data.id });
+              dispatch({ type: ACTIONS.single_select, payload: data.id });
             } else {
-              dispatch({ type: ACTIONS.DESELECT, payload: data.id });
+              dispatch({ type: ACTIONS.single_deselect, payload: data.id });
             }
           }}
         />

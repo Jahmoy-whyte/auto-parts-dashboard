@@ -74,7 +74,7 @@ const useOrders = () => {
     dispatch({ type: ACTIONS.set_is_loading, payload: true });
     try {
       const data = await tokenAwareFetch(`/orders/orders/get/${tableStatus}`);
-
+      console.log(data);
       dispatch({
         type: ACTIONS.set_tableData,
         payload: { table: tableStatus, data: data },
