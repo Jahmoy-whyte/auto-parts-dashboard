@@ -82,15 +82,14 @@ const EmployeeRoute = () => {
               </tbody>
             </table>
           </div>
-
-          <Pagination
-            next={next}
-            prev={prev}
-            pages={pages}
-            currentPage={currentPage}
-            onClick={getEmployees}
-          />
         </div>
+        <Pagination
+          next={next}
+          prev={prev}
+          pages={pages}
+          currentPage={currentPage}
+          onClick={getEmployees}
+        />
       </div>
     </div>
   );

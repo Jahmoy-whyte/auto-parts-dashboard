@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import Button from "../../components/button/Button";
 import Pagination from "../../components/pagination/Pagination";
 import ToolBar from "../../components/tool-bar/ToolBar";
@@ -79,15 +78,14 @@ const UsersRoute = () => {
               </tbody>
             </table>
           </div>
-
-          <Pagination
-            next={next}
-            prev={prev}
-            pages={pages}
-            currentPage={currentPage}
-            onClick={getUsers}
-          />
         </div>
+        <Pagination
+          next={next}
+          prev={prev}
+          pages={pages}
+          currentPage={currentPage}
+          onClick={getUsers}
+        />
       </div>
     </div>
   );

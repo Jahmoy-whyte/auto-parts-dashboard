@@ -13,7 +13,7 @@ const Pagination = ({
   };
   if (!visible) return null;
   return (
-    <div className="flex justify-end">
+    <div className="flex justify-end my-2">
       <div className="flex text-sm h-9">
         <button className="border-2 p-2" onClick={prev}>
           prev

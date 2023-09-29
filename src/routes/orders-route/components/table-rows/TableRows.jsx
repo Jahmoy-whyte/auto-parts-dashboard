@@ -2,21 +2,22 @@ import { memo } from "react";
 import formattedCost from "../../../../helper/format-cost/formattedCost";
 import { ACTIONS } from "../../helper/reducerHelper";
 import { useNavigate } from "react-router-dom";
-const TabelRows = ({ data, dispatch }) => {
+const TabelRows = ({ data, dispatch, selected = [] }) => {
   const nav = useNavigate();
   return (
     <tr>
       <td className="px-6 py-4">
         <input
           type="checkbox"
+          checked={selected.includes(data.id)}
           onChange={(e) => {
             if (e.currentTarget.checked) {
               dispatch({
-                type: ACTIONS.set_selected,
+                type: ACTIONS.single_select,
                 payload: data.id,
               });
             } else {
-              dispatch({ type: ACTIONS.deselect, payload: data.id });
+              dispatch({ type: ACTIONS.single_deselect, payload: data.id });
             }
           }}
         />

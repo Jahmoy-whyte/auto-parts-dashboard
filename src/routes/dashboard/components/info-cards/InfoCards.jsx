@@ -1,6 +1,6 @@
 import account from "../../../../assets/images/account.svg";
 import { BsGraphUp } from "react-icons/bs";
-const InfoCards = ({ title, number, img, color = "default" }) => {
+const InfoCards = ({ title, number, icon, color = "default" }) => {
   const colorVariants = {
     blue: "bg-blue-500",
     red: "bg-red-500",
@@ -14,17 +14,14 @@ const InfoCards = ({ title, number, img, color = "default" }) => {
     >
       <div className="flex gap-5">
         <div className="text-sm flex-1">
-          <h2 className="font-bold">{number}</h2>
           <p className="">{title}</p>
-          <p className={`flex items-center gap-1 mt-1 `}>
-            <BsGraphUp color="green" /> %10
-          </p>
+          <h2 className="font-bold text-lg">{number}</h2>
         </div>
 
         <div
-          className={`flex justify-center items-center w-10 h-10 ${colorVariants[color]}`}
+          className={`flex justify-center items-center w-10 h-10  rounded-md bg-secondary text-white text-xl`}
         >
-          <img src={account} className="w-5" />
+          {icon}
         </div>
       </div>
     </div>
