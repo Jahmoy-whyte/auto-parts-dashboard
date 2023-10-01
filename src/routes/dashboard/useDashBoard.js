@@ -6,39 +6,43 @@ const useDashBoard = () => {
   const { tokenAwareFetch } = useFetchInstance();
 
   const initialState = {
-    isLoading: false,
+    isLoading: true,
+    error: false,
     orders: [],
     sales: [],
-    usersCount: 0,
-    ordersCount: 0,
-    averagedailySales: 0,
+    averageDailySales: 0,
+    userRatio: {},
     productCount: 0,
+    newOrdersCount: 0,
+    newUserThisMonth: 0,
+    outOfStockProducts: [],
   };
   // "/count-all-users",
   const ACTIONS = {
-    set_orders: "set_orders",
+    set_error: "set_error",
+    set_isLoading: "set_isLoading",
     set_all: "set_all",
   };
   const reducer = (state, action) => {
     switch (action.type) {
-      case "set_orders":
-        return { ...state, orders: action.payload };
+      case "set_isLoading":
+        return { ...state, isLoading: action.payload };
+      case "set_error":
+        return { ...state, error: action.payload, isLoading: false };
 
       case "set_all": {
-        const orders = action.payload.orders;
-        const sales = action.payload.sales;
-        const usersCount = action.payload.usersCount;
-        const ordersCount = action.payload.ordersCount;
-        const averagedailySales = action.payload.averagedailySales;
-        const productCount = action.payload.productCount;
         return {
           ...state,
-          orders: orders,
-          sales: sales,
-          usersCount: usersCount,
-          ordersCount: ordersCount,
-          averagedailySales: averagedailySales,
-          productCount: productCount,
+          orders: action.payload.orders,
+          sales: action.payload.sales,
+          averageDailySales: action.payload.averageDailySales,
+          userRatio: action.payload.userRatio,
+          productCount: action.payload.productCount,
+          newOrdersCount: action.payload.newOrdersCount,
+          newUserThisMonth: action.payload.newUserThisMonth,
+          outOfStockProducts: action.payload.outOfStockProducts,
+          isLoading: false,
+          error: false,
         };
       }
       default:
@@ -52,34 +56,37 @@ const useDashBoard = () => {
   }, []);
 
   const getOrders = async () => {
-    Promise.all([
-      tokenAwareFetch("/orders/orders/get"),
-      tokenAwareFetch("/orders/orders/sales"),
-      tokenAwareFetch("/users/count-all-users"),
-      tokenAwareFetch("/orders/orders/average-daily-sales"),
-    ])
-      .then((data) => {
-        console.log(data);
-        dispatch({
-          type: ACTIONS.set_all,
-          payload: {
-            orders: data[0],
-            sales: data[1],
-            usersCount: data[2].count,
-            averagedailySales: data[3].average,
-            ordersCount: 0,
-            productCount: 0,
-          },
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        toastMessage("error", error.message);
+    try {
+      dispatch({
+        type: ACTIONS.set_isLoading,
+        payload: true,
       });
-
-    //
+      const arrayData = await tokenAwareFetch("/dashboard/");
+      console.log(arrayData);
+      dispatch({
+        type: ACTIONS.set_all,
+        payload: {
+          orders: arrayData.orders,
+          sales: arrayData.sales,
+          averageDailySales: arrayData.averageDailySales,
+          userRatio: arrayData.userRatio,
+          productCount: arrayData.productCount,
+          newOrdersCount: arrayData.newOrdersCount,
+          newUserThisMonth: arrayData.newUserThisMonth,
+          outOfStockProducts: arrayData.outOfStockProducts,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: ACTIONS.set_error,
+        payload: error.message,
+      });
+      toastMessage("error", error.message);
+    }
   };
-  return [state, dispatch];
+
+  return [state, dispatch, getOrders];
 };
 
 export default useDashBoard;

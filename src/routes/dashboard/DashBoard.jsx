@@ -28,63 +28,15 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Label,
+  LabelList,
+  Legend,
 } from "recharts";
+import LoadingIndicator from "../../components/loading-indicator/LoadingIndicator";
 
 const DashBoard = () => {
-  const [state, dispatch] = useDashBoard();
+  const [state, dispatch, getOrders] = useDashBoard();
 
-  const data2 = [
-    {
-      date: "2023",
-      total: "871000",
-    },
-    {
-      date: "2024",
-      total: "71000",
-    },
-    {
-      date: "2025",
-      total: "931000",
-    },
-  ];
-  const data = [
-    {
-      name: "Page A",
-      uv: 4000,
-    },
-    {
-      name: "Page B",
-      uv: 3000,
-    },
-    {
-      name: "Page C",
-      uv: 2000,
-    },
-    {
-      name: "Page D",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: "Page E",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: "Page F",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Page G",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ];
   const data1 = [
     { name: "Group A", value: 400 },
     { name: "Group B", value: 300 },
@@ -93,23 +45,39 @@ const DashBoard = () => {
     { name: "Group E", value: 278 },
     { name: "Group F", value: 189 },
   ];
+  if (state.isLoading) {
+    return <LoadingIndicator />;
+  }
+
+  if (state.error) {
+    return (
+      <div className="bg-white flex flex-1 flex-col justify-center items-center">
+        <p>{state.error}</p>
+        <button onClick={getOrders} className=" border-2 p-2 rounded-md">
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen flex-col  bg-slate-100 items-center  flex-1 overflow-y-auto">
       <div className="flex w-full max-w-6xl mt-5 flex-1 flex-col px-5">
-        <h1 className="text-2xl font-bold mb-5">DashBoad</h1>
+        <h1 onClick={getOrders} className="text-2xl font-bold mb-5">
+          DashBoad
+        </h1>
 
         <div className="flex flex-col  justify-between gap-5 sm:flex-row  lg:flex-row ">
           <div className="flex flex-col  gap-5  flex-1 lg:flex-row ">
             <InfoCards
-              title={"Total Users"}
-              number={state.usersCount}
+              title={"New Users This Month"}
+              number={state.newUserThisMonth}
               color="red"
               icon={<AiOutlineUser />}
             />
             <InfoCards
               title={"Average Daily Sales"}
-              number={formattedCost(state.averagedailySales)}
+              number={formattedCost(state.averageDailySales)}
               color="green"
               icon={<AiOutlineDollarCircle />}
             />
@@ -117,13 +85,13 @@ const DashBoard = () => {
           <div className="flex flex-col  gap-5  flex-1 lg:flex-row ">
             <InfoCards
               title={"Pending Orders"}
-              number={100}
+              number={state.newOrdersCount}
               color="blue"
               icon={<AiOutlineShoppingCart />}
             />
             <InfoCards
               title={"Products"}
-              number={100}
+              number={"#" + state.productCount}
               color="yellow"
               icon={<AiOutlineShoppingCart />}
             />
@@ -135,6 +103,9 @@ const DashBoard = () => {
             <div className=" w-ful  bg-white p-5 lg:flex-1 ">
               <div className="flex justify-between items-center mb-5 ">
                 <h2 className="text-lg font-bold">Sales</h2>
+                <div className="bg-gray-100 flex gap-2 p-1  rounded-md text-sm ">
+                  <p className="p-2 rounded-md bg-white font-bold">In Months</p>
+                </div>
               </div>
               <ResponsiveContainer width="100%" height={250}>
                 <AreaChart
@@ -149,9 +120,10 @@ const DashBoard = () => {
                   }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
+                  <XAxis dataKey="shortendMonthsName" />
                   <YAxis />
                   <Tooltip />
+
                   <Area
                     type="monotone"
                     dataKey="total"
@@ -166,11 +138,12 @@ const DashBoard = () => {
               <div className="flex justify-between items-center mb-5">
                 <h2 className="text-lg font-bold">Sales</h2>
               </div>
+
               <ResponsiveContainer width="100%" height={250}>
                 <BarChart
                   width={500}
                   height={300}
-                  data={data1}
+                  data={state.userRatio}
                   margin={{
                     top: 5,
                     right: 30,
@@ -182,8 +155,9 @@ const DashBoard = () => {
                   <XAxis dataKey="name" />
                   <YAxis />
                   <Tooltip />
-
-                  <Bar dataKey="value" fill="#F47A00" />
+                  <Legend />
+                  <Bar dataKey="guestCount" fill="#8884d8" />
+                  <Bar dataKey="userCount" fill="#82ca9d" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
