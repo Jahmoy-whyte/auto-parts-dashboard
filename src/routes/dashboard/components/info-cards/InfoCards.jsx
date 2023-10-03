@@ -10,7 +10,7 @@ const InfoCards = ({ title, number, icon, color = "default" }) => {
   };
   return (
     <div
-      className={`flex flex-col bg-white min-h-[80px]  p-5  justify-center flex-1 overflow-hidden`}
+      className={`flex flex-col bg-white min-h-[80px]  p-5   flex-1 overflow-hidden`}
     >
       <div className="flex gap-5">
         <div className="text-sm flex-1">

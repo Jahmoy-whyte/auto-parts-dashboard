@@ -2,6 +2,7 @@ import CustomDropDown from "../../../../components/custom-drop-down/CustomDropDo
 import Model from "../../../../components/model/Model";
 import TextBox from "../../../../components/text-box/TextBox";
 import { ACTIONS } from "../../helper/reducerHelper";
+import Button from "../../../../components/button/Button";
 const ModelWithDropDown = ({ modelData = {}, dispatch, buttonFunc }) => {
   const modelState = modelData;
 
@@ -40,13 +41,12 @@ const ModelWithDropDown = ({ modelData = {}, dispatch, buttonFunc }) => {
         }
       />
 
-      <button
-        disabled={modelState.btnIsloading}
+      <Button
+        className=" px-2 self-end text-sm"
         onClick={buttonFunc}
-        className="bg-secondary text-white rounded-md p-2 self-end"
-      >
-        {modelState.btnIsloading ? "...Loading" : modelState.actionType}
-      </button>
+        text={modelState.actionType}
+        isLoading={modelState.btnIsloading}
+      />
     </Model>
   );
 };

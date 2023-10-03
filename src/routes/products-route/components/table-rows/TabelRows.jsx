@@ -42,14 +42,7 @@ const TabelRows = ({ data, dispatch, nav, selected = [] }) => {
       <td className="px-6 py-4">
         <button
           className="text-blue-500"
-          onClick={() =>
-            nav("/home/products/add", {
-              state: {
-                actionType: "Update",
-                data: data,
-              },
-            })
-          }
+          onClick={() => nav(`/home/products/${data.id}`)}
         >
           Edit
         </button>

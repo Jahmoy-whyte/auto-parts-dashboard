@@ -2,7 +2,9 @@ export const initialState = {
   isLoading: false,
   tableData: [],
   deleteIsLoading: false,
+
   modelData: {
+    disabled: false,
     id: "",
     visible: false,
     textBoxPlaceHolder: "",
@@ -26,6 +28,7 @@ export const ACTIONS = {
   set_model_data: "set_model_data",
   set_dropdown: "set_dropdown",
   set_dropdown_on_select: "set_dropdown_on_select",
+  set_disabled: "set_disabled",
 };
 
 export const reducer = (state, action) => {

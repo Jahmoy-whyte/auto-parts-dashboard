@@ -3,10 +3,14 @@ const Model = ({ show = false, title, subtext, children, close }) => {
   if (!show) return null;
   return (
     <>
-      <div className="fixed bg-white opacity-50 top-0 left-0 bottom-0 right-0 blur-sm"></div>
+      <div className="fixed bg-white opacity-50 top-0 left-0 bottom-0 right-0 blur-sm z-30"></div>
       <div
         onClick={close}
-        className="flex justify-center items-center fixed  top-0 left-0 bottom-0 right-0 "
+        className=" flex justify-center items-center fixed  top-0 left-0 
+        bottom-0 right-0 animate-fadeInModel
+        mx-5
+        z-40
+        "
       >
         <div
           onClick={(e) => e.stopPropagation()}

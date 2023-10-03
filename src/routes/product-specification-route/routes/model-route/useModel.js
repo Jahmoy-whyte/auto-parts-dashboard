@@ -14,7 +14,7 @@ const useModel = () => {
 
   const getMake = async () => {
     try {
-      const data = await tokenAwareFetch("/make/");
+      const data = await tokenAwareFetch("/make/get");
       const options = data.map((option) => {
         return { text: option.make, value: option.id };
       });

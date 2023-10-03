@@ -1,3 +1,4 @@
+import Button from "../../../../components/button/Button";
 import Model from "../../../../components/model/Model";
 import TextBox from "../../../../components/text-box/TextBox";
 import { ACTIONS } from "../../helper/reducerHelper";
@@ -28,13 +29,12 @@ const SingleModel = ({ modelData = {}, dispatch, buttonFunc }) => {
         }
       />
 
-      <button
-        disabled={modelState.btnIsloading}
+      <Button
+        className=" px-2 self-end text-sm"
         onClick={buttonFunc}
-        className="bg-secondary text-white rounded-md p-2 self-end"
-      >
-        {modelState.btnIsloading ? "...Loading" : modelState.actionType}
-      </button>
+        text={modelState.actionType}
+        isLoading={modelState.btnIsloading}
+      />
     </Model>
   );
 };

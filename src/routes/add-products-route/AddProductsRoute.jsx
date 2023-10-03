@@ -7,6 +7,7 @@ import useAddProducts from "./useAddProducts";
 import DropDownBox from "./components/drop-down-box/DropDownBox";
 import { Oval } from "react-loader-spinner";
 import formattedCost from "../../helper/format-cost/formattedCost";
+import Button from "../../components/button/Button";
 
 const AddProductsRoute = () => {
   const [
@@ -27,19 +28,13 @@ const AddProductsRoute = () => {
       <div className="flex w-full max-w-6xl mt-5 flex-1 flex-col px-5">
         <div className="flex justify-between items-center mb-5  max-w-4xl">
           <h1 className="text-2xl font-bold ">Products</h1>
-          <button
-            disabled={state.isLoading}
+
+          <Button
+            className="text-sm  px-2"
+            text={isUpdate ? "Update" : "save"}
             onClick={isUpdate ? update : save}
-            className="bg-secondary text-white font-bold text-sm h-8 w-14 rounded-md flex justify-center items-center hover:bg-orange-600 active:scale-95"
-          >
-            {state.isLoading ? (
-              <Oval width={18} height={18} color="white" />
-            ) : isUpdate ? (
-              "Update"
-            ) : (
-              "Save"
-            )}
-          </button>
+            isLoading={state.isLoading}
+          />
         </div>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 max-w-4xl ">

@@ -9,6 +9,8 @@ const useHome = () => {
   const { tokenAwareFetch } = useFetchInstance();
   const { socketData } = useSocket();
   const nav = useNavigate();
+  const windowWidth = window.innerWidth;
+  const [menuIsOpen, setMenuIsOpen] = useState(windowWidth > 650);
 
   const logout = async () => {
     try {
@@ -18,7 +20,7 @@ const useHome = () => {
       toastMessage("error", error.message);
     }
   };
-  return [logout, nav];
+  return [logout, nav, menuIsOpen, setMenuIsOpen, windowWidth];
 };
 
 export default useHome;

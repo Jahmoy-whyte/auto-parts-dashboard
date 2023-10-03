@@ -12,7 +12,7 @@ const ProductSpecificationRoute = () => {
         <h1 className="text-2xl font-bold mb-5">Product Specification</h1>
         <div className="flex flex-col flex-1 bg-white p-5">
           <TabBar state={state} dispatch={dispatch} nav={nav} />
-          {state.isLoading ? ".......ISLOADING" : null}
+
           <Outlet />
         </div>
       </div>

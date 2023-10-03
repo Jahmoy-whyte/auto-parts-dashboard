@@ -2,7 +2,7 @@ import TabButton from "../../../../components/tab-buttons/TabButton";
 import { SPECIFICATIONS } from "../../constants/constants";
 const TabBar = ({ state, dispatch, nav }) => {
   return (
-    <div className="flex bg-gray-100 p-1 rounded-md max-w-sm">
+    <div className="flex flex-col bg-gray-100 p-1 rounded-md max-w-sm sm:flex-row ">
       <TabButton
         text={SPECIFICATIONS.make}
         selected={state.selected}

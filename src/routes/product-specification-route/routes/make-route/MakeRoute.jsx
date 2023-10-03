@@ -1,6 +1,7 @@
 import SingleCard from "../../components/single-card/SingleCard";
 import useMake from "./useMake";
 import SingleModel from "../../components/single-model/SingleModel";
+import Button from "../../../../components/button/Button";
 
 const MakeRoute = () => {
   const [state, dispatch, addBtnOnClick, modelButtonOnClickHandler] = useMake();
@@ -11,11 +12,14 @@ const MakeRoute = () => {
         dispatch={dispatch}
         buttonFunc={modelButtonOnClickHandler}
       />
-      {state.isLoading ? ".......ISLOADING" : null}
-      <div className="flex flex-col gap-2 max-w-sm mt-2">
-        <button className="text-white bg-secondary" onClick={addBtnOnClick}>
-          Add
-        </button>
+
+      <div className="flex flex-col gap-2 max-w-sm mt-2 ">
+        <Button
+          className="h-8 text-sm"
+          onClick={addBtnOnClick}
+          text={"Add"}
+          isLoading={state.isLoading}
+        />
         {state.tableData.map((data) => {
           return (
             <SingleCard

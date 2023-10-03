@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 const useFetchInstance = () => {
   const { accessToken, setAuthData } = useAuthContext();
   const nav = useNavigate();
-
+  const tokenErrors = ["jwt expired", "unauthorized(V301)"];
+  const refreshTokenErrors = ["forbidden(R101)", "forbidden(R102)"];
   const timeOutFunc = (func) => {
     return new Promise((res, rej) => {
       setTimeout(async () => {
@@ -31,11 +32,7 @@ const useFetchInstance = () => {
       const responce = await timeOutFunc(() => privateFetch(...fetchData));
       return responce;
     } catch (error) {
-      if (
-        error.message != "jwt expired" &&
-        error.message != "unauthorized(V301)"
-      )
-        throw error;
+      if (!tokenErrors.includes(error.message)) throw error;
       const newAccessToken = await getNewAccessToken();
       setAuthData((prev) => ({ ...prev, accessToken: newAccessToken }));
       const fetchData = [URL, method, newAccessToken, data, extraHeaders];
@@ -50,11 +47,7 @@ const useFetchInstance = () => {
       console.log("================== refresh token");
       return accessToken;
     } catch (error) {
-      if (
-        error.message != "forbidden(R101)" &&
-        error.message != "forbidden(R102)"
-      )
-        throw error;
+      if (!refreshTokenErrors.includes(error.message)) throw error;
       setAuthData((prev) => ({ ...prev, isAuth: false }));
       nav("/");
     }

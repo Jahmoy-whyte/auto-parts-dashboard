@@ -1,7 +1,7 @@
 import DoubleCard from "../../components/doubleCardcard/DoubleCard";
 import ModelWithDropDown from "../../components/model-with-dropdown/ModelWithDropDown";
 import useYear from "./useYear";
-
+import Button from "../../../../components/button/Button";
 const YearRoute = () => {
   const [state, dispatch, addBtnOnClick, modelButtonOnClickHandler] = useYear();
   return (
@@ -11,11 +11,14 @@ const YearRoute = () => {
         dispatch={dispatch}
         buttonFunc={modelButtonOnClickHandler}
       />
-      {state.isLoading ? ".......ISLOADING" : null}
+
       <div className="flex flex-col gap-2 max-w-sm mt-2 overflow-y">
-        <button className="text-white bg-secondary" onClick={addBtnOnClick}>
-          Add
-        </button>
+        <Button
+          className="h-8 text-sm"
+          onClick={addBtnOnClick}
+          text={"Add"}
+          isLoading={state.isLoading}
+        />
         {state.tableData.map((data) => {
           return (
             <DoubleCard

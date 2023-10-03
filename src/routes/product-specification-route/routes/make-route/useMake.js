@@ -18,7 +18,7 @@ const useMake = () => {
       payload: true,
     });
     try {
-      const data = await tokenAwareFetch("/make/");
+      const data = await tokenAwareFetch("/make/get");
       dispatch({
         type: ACTIONS.set_tableData,
         payload: data,

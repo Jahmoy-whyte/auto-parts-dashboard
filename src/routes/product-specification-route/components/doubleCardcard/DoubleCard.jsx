@@ -50,6 +50,12 @@ const DoubleCard = ({ text1, text2, id1, id2, dispatch, state }) => {
                   text2 +
                   " this action cant be undone",
                 actionType: BUTTON_ACTION_TYPE.Delete,
+
+                dropDown: {
+                  ...state.modelData.dropDown,
+                  text: text1,
+                  value: id1,
+                },
               },
             })
           }

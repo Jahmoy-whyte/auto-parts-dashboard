@@ -4,14 +4,15 @@ import toastMessage from "../../helper/toast-message/toastMessage";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../../firebaseConfig";
 import validateForm from "./helper/validateForm";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { startingState, initialState, ACTIONS } from "./helper/reducerHelper";
 
 const useAddProducts = () => {
-  const loc = useLocation();
   const nav = useNavigate();
-  const isUpdate = loc.state ? true : false;
-  const passedState = loc.state ? loc.state.data : null;
+
+  const params = useParams();
+
+  const isUpdate = params.id != "add" ? true : false;
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -99,19 +100,105 @@ const useAddProducts = () => {
           },
         };
       }
+
+      case "set_initital_state": {
+        const product = action.payload;
+        return {
+          ...state,
+          id: product.id,
+          name: product.productName,
+          price: product.price,
+          description: product.description,
+          image: { passedImage: true, name: "", image: product.image },
+          isLoading: false,
+
+          condition: {
+            value: product.conditionOfPart,
+            text: product.conditionOfPart,
+            data: [
+              { id: "New", text: "New" },
+              { id: "Used", text: "Used" },
+            ],
+          },
+          newArrival: {
+            isLoading: false,
+            isDisabled: false,
+            value: product.newArrival,
+            text: product.newArrival,
+            data: [
+              { id: "true", text: "True" },
+              { id: "false", text: "False" },
+            ],
+          },
+          subCategory: {
+            isLoading: false,
+            isDisabled: false,
+            value: product.subCategoryId,
+            text: product.subCategory,
+            data: [],
+          },
+          status: {
+            isLoading: false,
+            isDisabled: false,
+            value: product.status != "" ? product.status : "In Stock",
+            text: product.status != "" ? product.status : "In Stock",
+            data: [
+              { id: "In stock", text: "In Stock" },
+              { id: "Out of stock", text: "Out of stock" },
+            ],
+          },
+
+          make: {
+            isLoading: false,
+            isDisabled: false,
+            value: product.makeId,
+            text: product.make,
+            data: [],
+          },
+          model: {
+            isLoading: false,
+            isDisabled: true,
+            value: product.modelId,
+            text: product.model,
+            data: [],
+          },
+          year: {
+            isLoading: false,
+            isDisabled: true,
+            value: product.yearId,
+            text: product.year,
+            data: [],
+          },
+        };
+      }
+
       default:
-        state;
+        return state;
     }
   };
 
   const { tokenAwareFetch } = useFetchInstance();
-  const [state, dispatch] = useReducer(reducer, startingState(passedState));
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    if (passedState) {
-      getModel("make", passedState.makeId, passedState.make);
-      getYear("model", passedState.modelId, passedState.model);
-      selectOption("year", passedState.yearId, passedState.year);
+    const id = params.id;
+
+    const getProudctId = async () => {
+      try {
+        const product = await tokenAwareFetch(`/products/${id}`);
+        if (!product.length) throw new Error("Product not found");
+        const productData = product[0];
+        dispatch({ type: ACTIONS.set_initital_state, payload: productData });
+        getModel("make", productData.makeId, productData.make);
+        getYear("model", productData.modelId, productData.model);
+        selectOption("year", productData.yearId, productData.year);
+      } catch (error) {
+        toastMessage("error", error.message);
+      }
+    };
+
+    if (id != "add") {
+      getProudctId();
     }
     getMake();
     getCategories();
@@ -119,7 +206,7 @@ const useAddProducts = () => {
 
   const getMake = async () => {
     try {
-      const data = await tokenAwareFetch(`/make`);
+      const data = await tokenAwareFetch(`/make/get`);
       const newarr = data.map((data) => {
         return { id: data.id, text: data.make };
       });

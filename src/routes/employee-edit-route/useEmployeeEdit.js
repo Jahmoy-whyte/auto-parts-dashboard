@@ -31,6 +31,7 @@ const useEmployeeEdit = () => {
     set_drop_down: "set_drop_down",
     set_employee_data: "set_employee_data",
     set_from_action_type: "set_from_action_type",
+    clear_form: "clear_form",
   };
   /*
 employee_id	
@@ -82,6 +83,10 @@ role
       }
       case "disable_form": {
         return { ...state, disableForm: action.payload };
+      }
+
+      case "clear_form": {
+        return { ...initialState, disableForm: false, formActionType: "add" };
       }
       default:
         return state;
@@ -152,13 +157,16 @@ role
 
       let msg = "";
       if (state.formActionType == "add") {
-        msg = await signUp(
-          employeeData.firstName,
-          employeeData.lastName,
-          employeeData.email,
-          employeeData.role,
-          employeeData.password
-        );
+        msg = await tokenAwareFetch("/employee/signup", "POST", {
+          firstName: employeeData.firstName,
+          lastName: employeeData.lastName,
+          email: employeeData.email,
+          role: employeeData.role,
+          password: employeeData.password,
+        });
+        dispatch({ type: ACTIONS.clear_form });
+        toastMessage("success", msg);
+        return;
       } else {
         msg = await tokenAwareFetch("/employee/employee-update", "PATCH", {
           employeeData: employeeData,

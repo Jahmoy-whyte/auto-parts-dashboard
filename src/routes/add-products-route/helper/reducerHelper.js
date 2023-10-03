@@ -70,23 +70,24 @@ export const ACTIONS = {
   set_textbox: "set_textbox",
   set_loading: "set_loading",
   reset: "reset",
+  set_initital_state: "set_initital_state",
 };
 
-export const startingState = (passedState) => {
-  if (!passedState) {
+export const startingState = (product) => {
+  if (!product) {
     return initialState;
   } else {
     return {
-      id: passedState.id,
-      name: passedState.productName,
-      price: passedState.price,
-      description: passedState.description,
-      image: { passedImage: true, name: "", image: passedState.image },
+      id: product.id,
+      name: product.productName,
+      price: product.price,
+      description: product.description,
+      image: { passedImage: true, name: "", image: product.image },
       isLoading: false,
 
       condition: {
-        value: passedState.conditionOfPart,
-        text: passedState.conditionOfPart,
+        value: product.conditionOfPart,
+        text: product.conditionOfPart,
         data: [
           { id: "New", text: "New" },
           { id: "Used", text: "Used" },
@@ -95,8 +96,8 @@ export const startingState = (passedState) => {
       newArrival: {
         isLoading: false,
         isDisabled: false,
-        value: passedState.newArrival,
-        text: passedState.newArrival,
+        value: product.newArrival,
+        text: product.newArrival,
         data: [
           { id: "true", text: "True" },
           { id: "false", text: "False" },
@@ -105,15 +106,15 @@ export const startingState = (passedState) => {
       subCategory: {
         isLoading: false,
         isDisabled: true,
-        value: passedState.subCategoryId,
-        text: passedState.subCategory,
+        value: product.subCategoryId,
+        text: product.subCategory,
         data: [],
       },
       status: {
         isLoading: false,
         isDisabled: false,
-        value: passedState.status != "" ? passedState.status : "In Stock",
-        text: passedState.status != "" ? passedState.status : "In Stock",
+        value: product.status != "" ? product.status : "In Stock",
+        text: product.status != "" ? product.status : "In Stock",
         data: [
           { id: "In stock", text: "In Stock" },
           { id: "Out of stock", text: "Out of stock" },
@@ -123,22 +124,22 @@ export const startingState = (passedState) => {
       make: {
         isLoading: false,
         isDisabled: true,
-        value: passedState.makeId,
-        text: passedState.make,
+        value: product.makeId,
+        text: product.make,
         data: [],
       },
       model: {
         isLoading: false,
         isDisabled: true,
-        value: passedState.modelId,
-        text: passedState.model,
+        value: product.modelId,
+        text: product.model,
         data: [],
       },
       year: {
         isLoading: false,
         isDisabled: true,
-        value: passedState.yearId,
-        text: passedState.year,
+        value: product.yearId,
+        text: product.year,
         data: [],
       },
     };

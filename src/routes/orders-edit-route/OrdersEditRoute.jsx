@@ -4,8 +4,12 @@ import TotalBars from "./components/total-bars/TotalBars";
 import useOrdersEdit from "./useOrdersEdit";
 import TableRows from "./components/table-rows/TableRows";
 import formattedCost from "../../helper/format-cost/formattedCost";
+import LoadingIndicator from "../../components/loading-indicator/LoadingIndicator";
 const OrdersEditRoute = () => {
   const [state, dispatch, displayTotal, update] = useOrdersEdit();
+  if (state.isLoading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <div className="outlet-outer-container">

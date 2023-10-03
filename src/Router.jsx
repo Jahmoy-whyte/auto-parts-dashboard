@@ -42,7 +42,7 @@ const Router = () => {
           element: <ProductsRoute />,
         },
         {
-          path: "/home/products/add",
+          path: "/home/products/:id",
           element: <AddProductsRoute />,
         },
         {
