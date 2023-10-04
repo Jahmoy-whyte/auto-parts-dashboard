@@ -5,6 +5,7 @@ import useOrdersEdit from "./useOrdersEdit";
 import TableRows from "./components/table-rows/TableRows";
 import formattedCost from "../../helper/format-cost/formattedCost";
 import LoadingIndicator from "../../components/loading-indicator/LoadingIndicator";
+import { Link } from "react-router-dom";
 const OrdersEditRoute = () => {
   const [state, dispatch, displayTotal, update] = useOrdersEdit();
   if (state.isLoading) {
@@ -47,8 +48,16 @@ const OrdersEditRoute = () => {
             />
             <InfoRow
               topText={"User ID:"}
-              bottomText={"#" + state.orderData?.userId}
+              bottomText={
+                <Link
+                  className="text-blue-500"
+                  to={`/home/users/edit/${state.orderData?.userId}`}
+                >
+                  #{state.orderData?.userId}
+                </Link>
+              }
             />
+
             <InfoRow
               topText={"Date:"}
               bottomText={state.orderData?.date?.split("T")[0]}
@@ -83,7 +92,7 @@ const OrdersEditRoute = () => {
               }
               value={state.status}
             >
-              <option value={"sent"}>Sent</option>
+              <option value={"sent"}>New</option>
               <option value={"transit"}>Transit</option>
               <option value={"delivered"}>Delivered</option>
               <option value={"cancelled"}>Cancelled</option>

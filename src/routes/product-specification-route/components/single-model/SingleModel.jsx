@@ -10,7 +10,7 @@ const SingleModel = ({ modelData = {}, dispatch, buttonFunc }) => {
       close={() =>
         dispatch({
           type: ACTIONS.set_model_data,
-          payload: { visible: false },
+          payload: { visible: false, isDisabled: false },
         })
       }
       show={modelState.visible}
@@ -18,7 +18,7 @@ const SingleModel = ({ modelData = {}, dispatch, buttonFunc }) => {
       subtext={modelState.subText}
     >
       <TextBox
-        isDisabled={modelState.btnIsloading}
+        isDisabled={modelState.btnIsloading || modelState.isDisabled}
         value={modelState.textBoxValue}
         placeHolder={modelState.textBoxPlaceHolder}
         onChangeHandler={(name, value) =>

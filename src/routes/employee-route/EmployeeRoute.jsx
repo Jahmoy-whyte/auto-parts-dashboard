@@ -75,7 +75,6 @@ const EmployeeRoute = () => {
                     data={row}
                     dispatch={dispatch}
                     key={row.id}
-                    nav={nav}
                     selected={state.selected}
                   />
                 ))}

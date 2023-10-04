@@ -38,6 +38,7 @@ const SingleCard = ({ id, text, dispatch, state }) => {
                   text +
                   " this action cant be undone",
                 actionType: BUTTON_ACTION_TYPE.Delete,
+                isDisabled: true,
               },
             })
           }

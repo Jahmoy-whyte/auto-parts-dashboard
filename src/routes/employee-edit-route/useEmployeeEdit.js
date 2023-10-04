@@ -4,6 +4,7 @@ import toastMessage from "../../helper/toast-message/toastMessage";
 import useFetchInstance from "../../hooks/useFetchInstance";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContextProvider";
+import emailTester from "../../helper/email-tester/emailTester";
 
 const useEmployeeEdit = () => {
   const initialState = {
@@ -187,7 +188,7 @@ role
       (bool = true), (message = "Please enter your first name");
     } else if (state.lastName == "") {
       (bool = true), (message = "Please enter your last name");
-    } else if (state.email == "") {
+    } else if (!emailTester(state.email)) {
       (bool = true), (message = "Please enter your email");
     } else if (state.formActionType == "add" && state.password == "") {
       (bool = true), (message = "Please enter a password");
@@ -197,6 +198,7 @@ role
 
     return { bool, message };
   };
+
   return [state, dispatch, dropDownOnClick, setTextBox, submit];
 };
 

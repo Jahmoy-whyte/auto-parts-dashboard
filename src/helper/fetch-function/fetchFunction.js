@@ -4,7 +4,7 @@ import { BASE_URL } from "../base-url/BASEURL";
 export const regularFetch = async (
   URL = "",
   method = "GET",
-  data,
+  body,
   extraOptions = {},
   extraHeaders = {}
 ) => {
@@ -15,7 +15,7 @@ export const regularFetch = async (
       "Content-Type": "application/json",
       ...extraHeaders,
     },
-    body: data ? JSON.stringify(data) : null,
+    body: body ? JSON.stringify(body) : null,
   });
   return await checkResponce(responce);
 };
@@ -24,7 +24,7 @@ export const privateFetch = async (
   URL = "",
   method = "GET",
   accessToken = "",
-  data,
+  body,
   extraHeaders = {}
 ) => {
   console.log(`${BASE_URL}${URL}`);
@@ -36,7 +36,7 @@ export const privateFetch = async (
       Authorization: `Bearer ${accessToken}`,
       ...extraHeaders,
     },
-    body: data ? JSON.stringify(data) : null,
+    body: body ? JSON.stringify(body) : null,
   });
   return await checkResponce(responce);
 };

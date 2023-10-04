@@ -23,8 +23,6 @@ const useLogin = () => {
 
     try {
       await logIn(textBox.email.trim(), textBox.password.trim());
-
-      nav("/home");
     } catch (error) {
       toastMessage("error", error.message);
     }

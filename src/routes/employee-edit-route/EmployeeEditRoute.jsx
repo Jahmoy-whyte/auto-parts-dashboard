@@ -10,16 +10,15 @@ const EmployeeEditRoute = () => {
     useEmployeeEdit();
   return (
     <div className="outlet-outer-container">
-      <div className="outlet-inner-container">
+      <div className="outlet-inner-container   ">
         <form
-          className="flex flex-col max-w-xs bg-white p-5 gap-2"
+          className="flex  flex-col max-w-sm bg-white p-5 gap-2"
           onSubmit={(e) => e.preventDefault()}
         >
           <div className="mb-2">
-            <h1 className="text-2xl font-bold">Sign up for account</h1>
+            <h1 className="text-2xl font-bold">Account</h1>
             <p className="text-sm text-gray-500 ">
-              Please enter your information correctly and create a password to
-              continue.
+              Please enter your information correctly.
             </p>
           </div>
           <TextBox

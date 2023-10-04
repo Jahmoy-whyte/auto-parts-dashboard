@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { ACTIONS } from "../../helper/reducerHelper";
+import { Link } from "react-router-dom";
 const TableRows = ({ data, dispatch, nav, selected = [] }) => {
   return (
     <tr>
@@ -23,12 +24,9 @@ const TableRows = ({ data, dispatch, nav, selected = [] }) => {
       <td className="px-6 py-4">{data.role}</td>
 
       <td className="px-6 py-4">
-        <button
-          className="text-blue-500"
-          onClick={() => nav(`/home/employees/edit/${data.id}`)}
-        >
+        <Link className="text-blue-500" to={`/home/employees/edit/${data.id}`}>
           Edit
-        </button>
+        </Link>
       </td>
     </tr>
   );

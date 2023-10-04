@@ -11,7 +11,7 @@ const ModelWithDropDown = ({ modelData = {}, dispatch, buttonFunc }) => {
       close={() =>
         dispatch({
           type: ACTIONS.set_model_data,
-          payload: { visible: false },
+          payload: { visible: false, isDisabled: false },
         })
       }
       show={modelState.visible}
@@ -19,6 +19,7 @@ const ModelWithDropDown = ({ modelData = {}, dispatch, buttonFunc }) => {
       subtext={modelState.subText}
     >
       <CustomDropDown
+        isDisabled={modelState.isDisabled}
         options={modelState.dropDown.options}
         placeHolder="select"
         value={modelState.dropDown.text}
@@ -30,7 +31,7 @@ const ModelWithDropDown = ({ modelData = {}, dispatch, buttonFunc }) => {
         }
       />
       <TextBox
-        isDisabled={modelState.btnIsloading}
+        isDisabled={modelState.btnIsloading || modelState.isDisabled}
         value={modelState.textBoxValue}
         placeHolder={modelState.textBoxPlaceHolder}
         onChangeHandler={(name, value) =>

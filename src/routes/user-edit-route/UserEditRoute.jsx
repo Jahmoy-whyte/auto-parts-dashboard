@@ -8,9 +8,9 @@ const UserEditRoute = () => {
   const [state, dispatch, submit, dropDownOnClick, setTextBox] = useUserEdit();
   return (
     <div className="outlet-outer-container">
-      <div className="outlet-inner-container">
-        <h1 className="text-2xl font-bold mb-5">Edit</h1>
+      <div className="outlet-inner-container ">
         <div className="flex flex-col flex-1 bg-white p-5 max-w-sm">
+          <h1 className="text-2xl font-bold mb-5">Edit</h1>
           <form
             className="flex flex-col gap-2 flex-wrap max-w-sm"
             onSubmit={(e) => {

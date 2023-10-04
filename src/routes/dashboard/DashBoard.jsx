@@ -7,7 +7,7 @@ import {
   AiOutlineLogout,
 } from "react-icons/ai";
 import { BsBagCheck } from "react-icons/bs";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import InfoCards from "./components/info-cards/InfoCards";
 
 import React from "react";
@@ -38,7 +38,7 @@ import ProductTable from "./components/product-table/ProductTable";
 
 const DashBoard = () => {
   const [state, dispatch, getOrders] = useDashBoard();
-
+  const nav = useNavigate();
   const data1 = [
     { name: "Group A", value: 400 },
     { name: "Group B", value: 300 },
@@ -158,7 +158,7 @@ const DashBoard = () => {
 
         <div className="flex flex-col  gap-5 my-5 lg:flex-row">
           <OrderTable orders={state.orders} />
-          <ProductTable product={state.outOfStockProducts} />
+          <ProductTable product={state.outOfStockProducts} nav={nav} />
         </div>
       </div>
     </div>

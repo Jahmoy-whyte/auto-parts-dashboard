@@ -56,6 +56,7 @@ const DoubleCard = ({ text1, text2, id1, id2, dispatch, state }) => {
                   text: text1,
                   value: id1,
                 },
+                isDisabled: true,
               },
             })
           }

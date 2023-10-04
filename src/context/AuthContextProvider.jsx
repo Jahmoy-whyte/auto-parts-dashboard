@@ -3,6 +3,8 @@ import {
   privateFetch,
   regularFetch,
 } from "../helper/fetch-function/fetchFunction";
+import { Navigate } from "react-router-dom";
+import LoginRoute from "../routes/login-route/LoginRoute";
 const AuthContext = createContext(null);
 
 const AuthContextProvider = ({ children }) => {
@@ -10,6 +12,13 @@ const AuthContextProvider = ({ children }) => {
     isAuth: false,
     isLoading: true,
     accessToken: null,
+    user: {
+      email: "",
+      firstName: "",
+      lastName: "",
+      id: "",
+      role: "",
+    },
   });
 
   const signUp = async (firstName, lastName, email, role, password) => {
@@ -24,7 +33,7 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const logIn = async (email, password) => {
-    const accessToken = await regularFetch(
+    const { accessToken, user } = await regularFetch(
       "/employee/login",
       "POST",
       {
@@ -33,7 +42,13 @@ const AuthContextProvider = ({ children }) => {
       },
       { credentials: "include" }
     );
-    setAuthData((prev) => ({ ...prev, accessToken: accessToken }));
+
+    setAuthData((prev) => ({
+      ...prev,
+      accessToken: accessToken,
+      user: user,
+      isAuth: true,
+    }));
   };
 
   const logOut = async () => {
@@ -45,12 +60,38 @@ const AuthContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    if (authData.accessToken) return;
+
+    const checkForRefreshToken = async () => {
+      try {
+        const { accessToken, user } = await privateFetch(
+          "/employee/refreshtoken"
+        );
+        alert(accessToken);
+        setAuthData((prev) => ({
+          ...prev,
+          accessToken: accessToken,
+          user: user,
+          isLoading: false,
+          isAuth: true,
+        }));
+      } catch (error) {
+        setAuthData((prev) => ({
+          ...prev,
+          isLoading: false,
+          isAuth: false,
+        }));
+        alert("here");
+      }
+    };
+
     const t = setTimeout(() => {
-      setAuthData((prev) => ({ ...prev, isLoading: false }));
+      // setAuthData((prev) => ({ ...prev, isLoading: false }));\
+      checkForRefreshToken();
     }, 1000);
 
     return () => clearTimeout(t);
-  }, []);
+  }, [authData.accessToken]);
 
   if (authData.isLoading) {
     return <p>isLoading</p>;
@@ -67,9 +108,26 @@ const AuthContextProvider = ({ children }) => {
 };
 
 export const useAuthContext = () => {
-  const { isAuth, isLoading, accessToken, setAuthData, signUp, logIn, logOut } =
-    useContext(AuthContext);
-  return { isAuth, isLoading, accessToken, setAuthData, signUp, logIn, logOut };
+  const {
+    isAuth,
+    isLoading,
+    accessToken,
+    setAuthData,
+    signUp,
+    logIn,
+    logOut,
+    user,
+  } = useContext(AuthContext);
+  return {
+    isAuth,
+    isLoading,
+    accessToken,
+    setAuthData,
+    signUp,
+    logIn,
+    logOut,
+    user,
+  };
 };
 
 export default AuthContextProvider;

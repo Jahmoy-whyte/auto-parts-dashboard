@@ -1,7 +1,8 @@
 import { memo } from "react";
 import formattedCost from "../../../../helper/format-cost/formattedCost";
 import { ACTIONS } from "../../helper/reducerHelper";
-const TabelRows = ({ data, dispatch, nav, selected = [] }) => {
+import { Link } from "react-router-dom";
+const TabelRows = ({ data, dispatch, selected = [] }) => {
   //console.log("dwdwdwddddddddddddd");
 
   return (
@@ -31,8 +32,10 @@ const TabelRows = ({ data, dispatch, nav, selected = [] }) => {
       <td className="px-6 py-4">{formattedCost(data.price)}</td>
       <td className="px-6 py-4">
         <p
-          className={`text-center rounded-lg px-2 inline-block font-bold  ${
-            data.status == "In stock" ? "  text-green-500" : " text-red-500"
+          className={`text-center rounded-lg px-2 inline-block  ${
+            data.status == "In stock"
+              ? "  text-green-500 border-[1px] border-green-500"
+              : " text-red-500 border-[1px] border-red-500"
           }`}
         >
           {data.status}
@@ -40,12 +43,9 @@ const TabelRows = ({ data, dispatch, nav, selected = [] }) => {
       </td>
 
       <td className="px-6 py-4">
-        <button
-          className="text-blue-500"
-          onClick={() => nav(`/home/products/${data.id}`)}
-        >
+        <Link to={`/home/products/${data.id}`} className="text-blue-500">
           Edit
-        </button>
+        </Link>
       </td>
     </tr>
   );

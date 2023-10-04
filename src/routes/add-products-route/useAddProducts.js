@@ -197,11 +197,15 @@ const useAddProducts = () => {
       }
     };
 
-    if (id != "add") {
-      getProudctId();
-    }
-    getMake();
-    getCategories();
+    const onStartUp = async () => {
+      if (id != "add") {
+        await getProudctId();
+      }
+      getMake();
+      getCategories();
+    };
+
+    onStartUp();
   }, []);
 
   const getMake = async () => {

@@ -1,8 +1,6 @@
+import emailTester from "../../../helper/email-tester/emailTester";
+
 const validateInput = (state) => {
-  const emailRegex = new RegExp(
-    /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/,
-    "gm"
-  );
   let bool = true;
   let errorMsg = "";
   if (state.firstName == "") {
@@ -11,7 +9,7 @@ const validateInput = (state) => {
   } else if (state.lastName == "") {
     bool = false;
     errorMsg = "Enter last name";
-  } else if (!emailRegex.test(state.email)) {
+  } else if (!emailTester(state.email)) {
     bool = false;
     errorMsg = "Enter email";
   } else if (state.phone == "") {

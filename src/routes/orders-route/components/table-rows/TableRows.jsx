@@ -1,9 +1,8 @@
 import { memo } from "react";
 import formattedCost from "../../../../helper/format-cost/formattedCost";
 import { ACTIONS } from "../../helper/reducerHelper";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 const TabelRows = ({ data, dispatch, selected = [] }) => {
-  const nav = useNavigate();
   return (
     <tr>
       <td className="px-6 py-4">
@@ -39,24 +38,17 @@ const TabelRows = ({ data, dispatch, selected = [] }) => {
 
       <td className="px-6 py-4">{formattedCost(data.total)}</td>
       <td className="px-6 py-4">
-        <p className="text-center rounded-lg font-bold text-amber-500">
-          {data.status}
+        <p className="text-center rounded-md p-1 text-blue-500 border-blue-500 border-[1px]">
+          {data.status == "sent" ? "new" : data.status}
         </p>
       </td>
       <td className="px-6 py-4">
-        <button
-          onClick={() =>
-            nav("/home/orders/edit", {
-              state: {
-                orderId: data.id,
-                status: data.status,
-              },
-            })
-          }
+        <Link
+          to={`/home/orders/edit/${data.status}/${data.id}`}
           className="text-blue-500"
         >
           View
-        </button>
+        </Link>
       </td>
     </tr>
   );

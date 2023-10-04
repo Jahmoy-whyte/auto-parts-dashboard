@@ -13,7 +13,6 @@ const CustomDropDown = ({
   isDisabled = false,
   showLabel = true,
 }) => {
-  console.log("====================== dropdwon");
   useEffect(() => {
     const click = (e) => {
       if (e.target.id != name) {
@@ -23,11 +22,14 @@ const CustomDropDown = ({
     window.addEventListener("click", click);
     return () => window.removeEventListener("click", click);
   }, []);
+
   const customClass = twMerge(
     "flex flex-col relative text-sm min-w-[100px]",
     className
   );
+
   const [open, setOpen] = useState(false);
+
   return (
     <div>
       {label ? <label className="text-sm">{label}</label> : null}

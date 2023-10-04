@@ -33,15 +33,11 @@ const LoginRoute = () => {
         <p className="text-right text-sm text-secondary cursor-pointer">
           Forget password?
         </p>
-
         <Button text={"Log In"} isLoading={isLoading} onClick={submit} />
         <div className="flex flex-row items-center text-sm gap-1">
           <p>Dont have an account? </p>
-          <p
-            onClick={() => nav("/signup")}
-            className="text-secondary font-bold cursor-pointer"
-          >
-            Sign Up
+          <p className="text-secondary font-bold cursor-pointer">
+            Contact Admin
           </p>
         </div>
       </div>

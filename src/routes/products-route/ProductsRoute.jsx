@@ -81,7 +81,6 @@ const ProductsRoute = () => {
                         data={data}
                         key={data.id}
                         dispatch={dispatch}
-                        nav={nav}
                       />
                     );
                   })}

@@ -8,13 +8,13 @@ const SideMenu = ({ visible = true, setMenuIsOpen, children }) => {
   return (
     <>
       <div
-        className={` bg-primary h-screen w-52 px-5 text-white  overflow-y-auto
+        className={`flex flex-col bg-primary h-screen w-52  text-white  overflow-y-auto
         top-0 left-0
          ${
            visible ? "animate-slideMenuOpen " : "animate-slideMenuClose hidden "
          }  z-20 absolute  md:relative `}
       >
-        <div className="h-16  items-center flex gap-2">
+        <div className="h-16  items-center flex gap-2 px-4 mx-1">
           <svg
             id="logo-1"
             width="132"

@@ -1,21 +1,27 @@
 import { useReducer, useEffect, useCallback, useMemo } from "react";
 import toastMessage from "../../helper/toast-message/toastMessage";
 import useFetchInstance from "../../hooks/useFetchInstance";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import formattedCost from "../../helper/format-cost/formattedCost";
 import useSocket from "../../hooks/useSocket";
 const useOrdersEdit = () => {
   const { tokenAwareFetch } = useFetchInstance();
   const loc = useLocation();
   const nav = useNavigate();
-  const orderId = loc.state?.orderId ? loc.state?.orderId : "2";
-  const passedStatus = loc.state?.orderId ? loc.state?.status : "sent";
+
+  // const orderId = loc.state?.orderId ? loc.state?.orderId : "2";
+  // const passedStatus = loc.state?.orderId ? loc.state?.status : "sent";
+
+  const params = useParams();
+  const status = params.status;
+  const orderId = params.id;
+
   const { socketData } = useSocket();
   const initialState = {
     orderData: [],
     isLoading: true,
     btnIsLoading: false,
-    status: passedStatus,
+    status: status,
   };
 
   const reducer = (state, action) => {

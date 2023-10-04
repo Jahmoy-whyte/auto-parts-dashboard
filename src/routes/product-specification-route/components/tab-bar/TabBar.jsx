@@ -1,10 +1,11 @@
 import TabButton from "../../../../components/tab-buttons/TabButton";
+import InitialCapitalization from "../../../../helper/initial-capitalization/InitialCapitalization";
 import { SPECIFICATIONS } from "../../constants/constants";
 const TabBar = ({ state, dispatch, nav }) => {
   return (
     <div className="flex flex-col bg-gray-100 p-1 rounded-md max-w-sm sm:flex-row ">
       <TabButton
-        text={SPECIFICATIONS.make}
+        text={InitialCapitalization(SPECIFICATIONS.make)}
         selected={state.selected}
         value={SPECIFICATIONS.make}
         onClick={(value) => {
@@ -13,7 +14,7 @@ const TabBar = ({ state, dispatch, nav }) => {
         }}
       />
       <TabButton
-        text={SPECIFICATIONS.model}
+        text={InitialCapitalization(SPECIFICATIONS.model)}
         selected={state.selected}
         value={SPECIFICATIONS.model}
         onClick={(value) => {
@@ -22,7 +23,7 @@ const TabBar = ({ state, dispatch, nav }) => {
         }}
       />
       <TabButton
-        text={SPECIFICATIONS.year}
+        text={InitialCapitalization(SPECIFICATIONS.year)}
         selected={state.selected}
         value={SPECIFICATIONS.year}
         onClick={(value) => {
@@ -31,7 +32,7 @@ const TabBar = ({ state, dispatch, nav }) => {
         }}
       />
       <TabButton
-        text={SPECIFICATIONS.categories}
+        text={InitialCapitalization(SPECIFICATIONS.categories)}
         selected={state.selected}
         value={SPECIFICATIONS.categories}
         onClick={(value) => {
