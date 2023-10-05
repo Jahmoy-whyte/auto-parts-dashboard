@@ -9,7 +9,7 @@ const Router = () => {
       <AuthContextProvider>
         <Routing />
       </AuthContextProvider>
-      <ToastContainer />
+      <ToastContainer hideProgressBar />
     </>
   );
 };

@@ -9,4 +9,7 @@ export const ACTIONS = {
   single_deselect: "single_deselect",
   select_all: "select_all",
   clear_selected: "clear_selected",
+
+  set_model_visibility: "set_model_visibility",
+  set_model_isLoading: "set_model_isLoading",
 };

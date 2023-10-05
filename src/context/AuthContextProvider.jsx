@@ -67,7 +67,7 @@ const AuthContextProvider = ({ children }) => {
         const { accessToken, user } = await privateFetch(
           "/employee/refreshtoken"
         );
-        alert(accessToken);
+        //  alert(accessToken);
         setAuthData((prev) => ({
           ...prev,
           accessToken: accessToken,
@@ -81,7 +81,7 @@ const AuthContextProvider = ({ children }) => {
           isLoading: false,
           isAuth: false,
         }));
-        alert("here");
+        //  alert("here");
       }
     };
 

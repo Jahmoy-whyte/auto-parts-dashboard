@@ -33,14 +33,20 @@ const useFetchInstance = () => {
       return responce;
     } catch (error) {
       if (!accessTokenErrors.includes(error.message)) throw error;
-      const { accessToken, user } = await getNewAccessToken();
+      const tokenData = await getNewAccessToken();
 
       setAuthData((prev) => ({
         ...prev,
-        accessToken: accessToken,
-        user: user,
+        accessToken: tokenData.accessToken,
+        user: tokenData.user,
       }));
-      const fetchData = [URL, method, accessToken, data, extraHeaders];
+      const fetchData = [
+        URL,
+        method,
+        tokenData.accessToken,
+        data,
+        extraHeaders,
+      ];
       const responce = await privateFetch(...fetchData);
       return responce;
     }
@@ -52,8 +58,11 @@ const useFetchInstance = () => {
       console.log("================== refresh token");
       return tokenData;
     } catch (error) {
-      if (!refreshTokenErrors.includes(error.message)) throw error;
+      //console.log(error.message);
+      //if (!refreshTokenErrors.includes(error.message)) ;
       setAuthData((prev) => ({ ...prev, isAuth: false }));
+
+      throw error;
     }
   };
 

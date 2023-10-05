@@ -13,6 +13,12 @@ export const initialState = {
     { text: "ID", value: "employee_id" },
     { text: "Role", value: "role" },
   ],
+  model: {
+    name: "",
+    id: "",
+    isLoading: false,
+    visible: false,
+  },
 };
 
 export const ACTIONS = {
@@ -26,6 +32,9 @@ export const ACTIONS = {
   single_deselect: "single_deselect",
   select_all: "select_all",
   clear_selected: "clear_selected",
+
+  set_model_visibility: "set_model_visibility",
+  set_model_isLoading: "set_model_isLoading",
 };
 
 export const reducer = (state, action) => {
@@ -70,7 +79,26 @@ export const reducer = (state, action) => {
 
     case "clear_selected":
       return { ...state, checkAll: false, selected: [] };
-
+    case "set_model_visibility": {
+      const visible = action.payload.visible;
+      const id = action.payload.id;
+      const name = action.payload.name;
+      return {
+        ...state,
+        model: {
+          ...state.model,
+          visible: visible,
+          id: id,
+          name: name,
+          isLoading: false,
+        },
+      };
+    }
+    case "set_model_isLoading":
+      return {
+        ...state,
+        model: { ...state.model, isLoading: action.payload },
+      };
     default:
       return state;
   }

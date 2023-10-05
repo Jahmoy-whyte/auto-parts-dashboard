@@ -18,6 +18,12 @@ const useUsers = () => {
       { text: "ID", value: "id" },
       { text: "User Status", value: "user_status" },
     ],
+    model: {
+      visible: false,
+      id: "",
+      name: "",
+      isLoading: false,
+    },
   };
 
   const NUMBER_OF_ROWS_PER_PAGE = 10;
@@ -33,7 +39,7 @@ const useUsers = () => {
 
       case "set_search_text":
         return { ...state, searchText: action.payload };
-      case "set_filter_text":
+      case "set_filter_value":
         return { ...state, filter: action.payload };
 
       case "delete_btn_is_loading":
@@ -60,6 +66,27 @@ const useUsers = () => {
 
       case "clear_selected":
         return { ...state, checkAll: false, selected: [] };
+
+      case "set_model_visibility": {
+        const visible = action.payload.visible;
+        const id = action.payload.id;
+        const name = action.payload.name;
+        return {
+          ...state,
+          model: {
+            ...state.model,
+            visible: visible,
+            id: id,
+            name: name,
+            isLoading: false,
+          },
+        };
+      }
+      case "set_model_isLoading":
+        return {
+          ...state,
+          model: { ...state.model, isLoading: action.payload },
+        };
 
       default:
         return state;
@@ -135,6 +162,28 @@ const useUsers = () => {
     }
   }, []);
 
+  const signOutUser = async () => {
+    dispatch({ type: ACTIONS.set_model_isLoading, payload: true });
+    try {
+      const message = await tokenAwareFetch(
+        `/users/invalidate-refresh-token/${state.model.id}`,
+        "DELETE"
+      );
+      toastMessage("success", message);
+      dispatch({
+        type: ACTIONS.set_model_visibility,
+        payload: {
+          visible: false,
+          userId: "",
+          name: "",
+        },
+      });
+    } catch (error) {
+      toastMessage("error", error.message);
+      dispatch({ type: ACTIONS.set_model_isLoading, payload: false });
+    }
+  };
+
   const deleteRow = async () => {
     dispatch({
       type: ACTIONS.delete_btn_is_loading,
@@ -165,7 +214,17 @@ const useUsers = () => {
     });
   };
 
-  return [state, dispatch, pages, prev, next, currentPage, getUsers, deleteRow];
+  return [
+    state,
+    dispatch,
+    pages,
+    prev,
+    next,
+    currentPage,
+    getUsers,
+    deleteRow,
+    signOutUser,
+  ];
 };
 
 export default useUsers;

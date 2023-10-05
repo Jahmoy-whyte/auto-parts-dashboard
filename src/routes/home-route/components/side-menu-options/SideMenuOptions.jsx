@@ -1,5 +1,5 @@
 const SideMenuOptions = ({ title, icon, onClick, path, close }) => {
-  console.log("======================================dwdwd");
+  //console.log("======================================dwdwd");
 
   return (
     <button

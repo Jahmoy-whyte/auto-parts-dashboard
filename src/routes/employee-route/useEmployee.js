@@ -107,6 +107,28 @@ const useEmployee = () => {
     });
   };
 
+  const signOutEmployee = async () => {
+    dispatch({ type: ACTIONS.set_model_isLoading, payload: true });
+    try {
+      const message = await tokenAwareFetch(
+        `/employee/invalidate-refresh-token/${state.model.id}`,
+        "DELETE"
+      );
+      toastMessage("success", message);
+      dispatch({
+        type: ACTIONS.set_model_visibility,
+        payload: {
+          visible: false,
+          id: "",
+          name: "",
+        },
+      });
+    } catch (error) {
+      toastMessage("error", error.message);
+      dispatch({ type: ACTIONS.set_model_isLoading, payload: false });
+    }
+  };
+
   return [
     state,
     dispatch,
@@ -116,6 +138,7 @@ const useEmployee = () => {
     currentPage,
     getEmployees,
     deleteRow,
+    signOutEmployee,
   ];
 };
 

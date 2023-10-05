@@ -24,8 +24,11 @@ const OrderTable = ({ orders }) => {
           <tbody>
             {orders.map((data) => {
               return (
-                <tr key={data.id}>
-                  <td className="px-6 py-4">#{data.id}</td>
+                <tr
+                  key={data.id}
+                  className=" transition-all hover:bg-slate-100"
+                >
+                  <td className="px-6 py-4 ">#{data.id}</td>
                   <td className="px-6 py-4">{data.date.split("T")[0]}</td>
                   <td className="px-6 py-4">{data.address}</td>
                   <td className="px-6 py-4">{data.quantity}</td>

@@ -31,6 +31,24 @@ const TableRows = ({ data, dispatch, selected = [] }) => {
           Edit
         </Link>
       </td>
+
+      <td className="px-6 py-4">
+        <button
+          onClick={() =>
+            dispatch({
+              type: ACTIONS.set_model_visibility,
+              payload: {
+                visible: true,
+                id: data.id,
+                name: data.firstName + " " + data.lastName,
+              },
+            })
+          }
+          className="text-red-500"
+        >
+          SignOut
+        </button>
+      </td>
     </tr>
   );
 };
