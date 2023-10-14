@@ -5,6 +5,7 @@ import {
   AiOutlineShoppingCart,
   AiOutlineLogout,
   AiOutlineCar,
+  AiOutlineBell,
 } from "react-icons/ai";
 import { BsBagCheck } from "react-icons/bs";
 import { PiUsersFour } from "react-icons/pi";
@@ -75,8 +76,13 @@ const HomeRoute = () => {
       permissions: ADMIN_ONLY,
       path: "/home/employees/",
     },
-
-    ,
+    {
+      id: 7,
+      icon: <AiOutlineBell />,
+      title: "Notifications",
+      permissions: ADMIN_AND_EMPLOYEE,
+      path: "/home/notifications/",
+    },
   ];
 
   // nav={nav}

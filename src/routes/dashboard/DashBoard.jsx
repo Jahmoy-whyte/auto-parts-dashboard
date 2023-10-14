@@ -47,8 +47,16 @@ const DashBoard = () => {
     { name: "Group E", value: 278 },
     { name: "Group F", value: 189 },
   ];
+
+  console.log(state.sales);
   if (state.isLoading) {
-    return <LoadingIndicator />;
+    return (
+      <LoadingIndicator
+        text={
+          "Node sever hosted on the free tier on render.com, free instance will spin down with inactivity. so it may take a minute to connect to server. Please wait"
+        }
+      />
+    );
   }
 
   if (state.error) {

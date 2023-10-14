@@ -10,6 +10,7 @@ import ToolBar from "../../components/tool-bar/ToolBar";
 import TableRows from "./components/table-rows/TableRows";
 import Pagination from "../../components/pagination/Pagination";
 import { ACTIONS } from "./helper/reducerHelper";
+import Button from "../../components/button/Button";
 
 const OrdersRoute = () => {
   const [
@@ -22,7 +23,18 @@ const OrdersRoute = () => {
     pages,
     prev,
     setCurrentPage,
+    socketData,
   ] = useOrders();
+
+  if (socketData.error) {
+    return (
+      <div className="flex flex-1 flex-col bg-white justify-center items-center ">
+        <h2 className="font-bold">Socket Error</h2>
+        {socketData.error}
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="outlet-outer-container">

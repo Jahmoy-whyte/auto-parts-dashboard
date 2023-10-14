@@ -5,6 +5,7 @@ import {
 } from "../helper/fetch-function/fetchFunction";
 import { Navigate } from "react-router-dom";
 import LoginRoute from "../routes/login-route/LoginRoute";
+import LoadingIndicator from "../components/loading-indicator/LoadingIndicator";
 const AuthContext = createContext(null);
 
 const AuthContextProvider = ({ children }) => {
@@ -94,7 +95,15 @@ const AuthContextProvider = ({ children }) => {
   }, [authData.accessToken]);
 
   if (authData.isLoading) {
-    return <p>isLoading</p>;
+    return (
+      <div className="flex h-screen">
+        <LoadingIndicator
+          text={
+            "Node sever hosted on the free tier on render.com, free instance will spin down with inactivity. so it may take a minute to connect to server. Please wait"
+          }
+        />
+      </div>
+    );
   }
 
   // console.log(authData);

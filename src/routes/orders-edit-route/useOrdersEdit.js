@@ -18,6 +18,11 @@ const useOrdersEdit = () => {
 
   const { socketData } = useSocket();
   const initialState = {
+    model: {
+      visible: false,
+      text: "",
+      isLoading: false,
+    },
     orderData: [],
     isLoading: true,
     btnIsLoading: false,
@@ -32,6 +37,8 @@ const useOrdersEdit = () => {
         return { ...state, btnIsLoading: action.payload };
       case "set_status":
         return { ...state, status: action.payload };
+      case "set_model":
+        return { ...state, model: { ...state.model, ...action.payload } };
       default:
         return state;
     }
@@ -41,7 +48,7 @@ const useOrdersEdit = () => {
     set_order_data: "set_order_data",
     set_is_loading: "set_is_loading",
     set_btn_is_loading: "set_btn_is_loading",
-    set_status: "set_status",
+    set_model: "set_model",
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -50,6 +57,7 @@ const useOrdersEdit = () => {
     const getOrderData = async () => {
       try {
         const data = await tokenAwareFetch(`/orders/${orderId}`);
+        console.log(data);
         dispatch({ type: ACTIONS.set_order_data, payload: data[0] });
       } catch (error) {
         toastMessage("error", error.message);
@@ -82,7 +90,6 @@ const useOrdersEdit = () => {
       });
       socketData.socket.emit("OrderUpdate", {
         userId: state.orderData.userId,
-        orderId: state.orderData.id,
       });
 
       toastMessage("success", msg);
@@ -93,7 +100,26 @@ const useOrdersEdit = () => {
     dispatch({ type: ACTIONS.set_btn_is_loading, payload: false });
   };
 
-  return [state, dispatch, displayTotal, update];
+  const sendNotification = async () => {
+    if (state.model.text == "")
+      return toastMessage("error", "Please enter message");
+    dispatch({ type: ACTIONS.set_model, payload: { isLoading: true } });
+    try {
+      const msg = await tokenAwareFetch("/notifications/notify-user", "POST", {
+        message: state.model.text,
+        userId: state.orderData?.userId,
+      });
+      toastMessage("success", msg);
+    } catch (error) {
+      toastMessage("error", error.message);
+    }
+    dispatch({
+      type: ACTIONS.set_model,
+      payload: { isLoading: false, text: "", visible: false },
+    });
+  };
+
+  return [state, dispatch, displayTotal, update, sendNotification, socketData];
 };
 
 export default useOrdersEdit;

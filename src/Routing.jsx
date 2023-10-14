@@ -31,11 +31,26 @@ import {
   ADMIN_ONLY,
 } from "./helper/permissions/permissions";
 import { useAuthContext } from "./context/AuthContextProvider";
+
+import { lazy } from "react";
+const timeout = (wdwd) => {
+  return setTimeout(() => {
+    return wdwd;
+  }, 3000);
+};
+
+const NotificationsRoute = lazy(() =>
+  import("./routes/notifications-route/NotificationsRoute")
+);
+
 const Routing = () => {
   const { isAuth } = useAuthContext();
 
   const routes = [
-    { path: "/", element: isAuth ? <Navigate to="/home" /> : <LoginRoute /> },
+    {
+      path: "/",
+      element: isAuth ? <Navigate to="/home" /> : <LoginRoute />,
+    },
 
     {
       path: "/home",
@@ -114,6 +129,14 @@ const Routing = () => {
           element: (
             <ProtectedRoute permissions={ADMIN_ONLY}>
               <EmployeeEditRoute />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/home/notifications/",
+          element: (
+            <ProtectedRoute permissions={ADMIN_AND_EMPLOYEE}>
+              <NotificationsRoute />
             </ProtectedRoute>
           ),
         },

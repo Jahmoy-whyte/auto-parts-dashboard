@@ -5,9 +5,6 @@ import { ACTIONS } from "./helper/reducerHelper";
 import useSocket from "../../hooks/useSocket";
 import usePagination from "../../hooks/usePagination";
 const useOrders = () => {
-  const { tokenAwareFetch } = useFetchInstance();
-
-  const { socketData } = useSocket();
   const NUMBER_OF_ROWS_PER_PAGE = 8;
   const NUMBER_OF_PAGES_PER_CHUNKS = 4;
   const initialState = {
@@ -105,13 +102,19 @@ const useOrders = () => {
         };
 
       case "clear_selected":
-        return { ...state, checkAll: false, selected: [] };
+        return {
+          ...state,
+          checkAll: false,
+          selected: [],
+        };
 
       default:
         return state;
     }
   };
 
+  const { tokenAwareFetch } = useFetchInstance();
+  const { socketData } = useSocket();
   const [state, dispatch] = useReducer(reducer, initialState);
   const { calulatePages, currentPage, next, pages, prev, setCurrentPage } =
     usePagination();
@@ -159,7 +162,7 @@ const useOrders = () => {
   };
 
   useEffect(() => {
-    socketData.socket?.on("OrderSent-res", (msg) => {
+    socketData.socket?.on("OrderSent", (msg) => {
       dispatch({ type: ACTIONS.set_is_loading, payload: true });
       toastMessage("success", "new order just in");
       getTableData("sent");
@@ -215,16 +218,19 @@ const useOrders = () => {
         });
       }
 
+      socketData.socket.emit("refresh", "all");
+
       dispatch({ type: ACTIONS.clear_selected });
       toastMessage("success", "Delete Successful");
       getTableData(state.currentTable);
     } catch (error) {
       toastMessage("error", error.message);
-      dispatch({
-        type: ACTIONS.delete_btn_is_loading,
-        payload: false,
-      });
     }
+
+    dispatch({
+      type: ACTIONS.delete_btn_is_loading,
+      payload: false,
+    });
   };
 
   return [
@@ -237,6 +243,7 @@ const useOrders = () => {
     pages,
     prev,
     setCurrentPage,
+    socketData,
   ];
 };
 

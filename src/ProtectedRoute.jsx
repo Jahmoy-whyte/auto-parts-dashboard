@@ -3,7 +3,7 @@ import { useAuthContext } from "./context/AuthContextProvider";
 
 const ProtectedRoute = ({ permissions = [], children }) => {
   const { isAuth, user } = useAuthContext();
-  if (!isAuth) return <Navigate to={"/"} />;
+  if (!isAuth) return <Navigate to={"/"} replace={true} />;
   if (permissions.includes(user.role)) {
     return <>{children} </>;
   }
