@@ -4,6 +4,7 @@ import toastMessage from "../../helper/toast-message/toastMessage";
 import useFetchInstance from "../../hooks/useFetchInstance";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContextProvider";
+import emailTester from "../../helper/email-tester/emailTester";
 const useLogin = () => {
   const [textBox, setTextBox] = useState({
     email: "",
@@ -33,9 +34,14 @@ const useLogin = () => {
     let bool = false;
     let message = "";
     if (textBox.email == "") {
-      (bool = true), (message = "Please enter your email");
+      bool = true;
+      message = "Please enter your email";
+    } else if (!emailTester(textBox.email.trim())) {
+      bool = true;
+      message = "Please enter a valid email address";
     } else if (textBox.password == "") {
-      (bool = true), (message = "Please enter a password");
+      bool = true;
+      message = "Please enter a password";
     }
 
     return { bool, message };

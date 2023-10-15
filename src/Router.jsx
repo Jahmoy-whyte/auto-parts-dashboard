@@ -10,15 +10,15 @@ const Router = () => {
     <>
       <Suspense
         fallback={
-          <div className="flex">
+          <div className="flex h-screen">
             <LoadingIndicator />
           </div>
         }
       >
         <AuthContextProvider>
           <Routing />
+          <ToastContainer hideProgressBar />
         </AuthContextProvider>
-        <ToastContainer hideProgressBar />
       </Suspense>
     </>
   );

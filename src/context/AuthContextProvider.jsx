@@ -6,7 +6,7 @@ import {
 import { Navigate } from "react-router-dom";
 import LoginRoute from "../routes/login-route/LoginRoute";
 import LoadingIndicator from "../components/loading-indicator/LoadingIndicator";
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
   const [authData, setAuthData] = useState({

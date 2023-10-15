@@ -4,23 +4,38 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import LoginRoute from "./routes/login-route/LoginRoute";
-import SignUpRoute from "./routes/sign-route/SignUpRoute";
 
+import { lazy, Suspense } from "react";
+import LoginRoute from "./routes/login-route/LoginRoute";
 import HomeRoute from "./routes/home-route/HomeRoute";
 
-import DashBoard from "./routes/dashboard/DashBoard";
-import ProductsRoute from "./routes/products-route/ProductsRoute";
+//import DashBoard from "./routes/dashboard/DashBoard";
+const DashBoard = lazy(() => import("./routes/dashboard/DashBoard"));
+
+//import ProductsRoute from "./routes/products-route/ProductsRoute";
+const ProductsRoute = lazy(() =>
+  import("./routes/products-route/ProductsRoute")
+);
+
+//import ProductSpecificationRoute from "./routes/product-specification-route/ProductSpecificationRoute";
+const ProductSpecificationRoute = lazy(() =>
+  import("./routes/product-specification-route/ProductSpecificationRoute")
+);
+
+//import OrdersRoute from "./routes/orders-route/OrdersRoute";
+const OrdersRoute = lazy(() => import("./routes/orders-route/OrdersRoute"));
+
+//import UsersRoute from "./routes/users-route/UsersRoute";
+const UsersRoute = lazy(() => import("./routes/users-route/UsersRoute"));
+//import EmployeeRoute from "./routes/employee-route/EmployeeRoute";
+const EmployeeRoute = lazy(() =>
+  import("./routes/employee-route/EmployeeRoute")
+);
+
 import AddProductsRoute from "./routes/add-products-route/AddProductsRoute";
-import OrdersRoute from "./routes/orders-route/OrdersRoute";
 import OrdersEditRoute from "./routes/orders-edit-route/OrdersEditRoute";
-
-import UsersRoute from "./routes/users-route/UsersRoute";
 import UserEditRoute from "./routes/user-edit-route/UserEditRoute";
-import EmployeeRoute from "./routes/employee-route/EmployeeRoute";
 import EmployeeEditRoute from "./routes/employee-edit-route/EmployeeEditRoute";
-
-import ProductSpecificationRoute from "./routes/product-specification-route/ProductSpecificationRoute";
 import MakeRoute from "./routes/product-specification-route/routes/make-route/MakeRoute";
 import ModelRoute from "./routes/product-specification-route/routes/model-route/ModelRoute";
 import YearRoute from "./routes/product-specification-route/routes/year-route/YearRoute";
@@ -32,16 +47,20 @@ import {
 } from "./helper/permissions/permissions";
 import { useAuthContext } from "./context/AuthContextProvider";
 
-import { lazy } from "react";
-const timeout = (wdwd) => {
-  return setTimeout(() => {
-    return wdwd;
-  }, 3000);
-};
+import LoadingIndicator from "./components/loading-indicator/LoadingIndicator";
 
-const NotificationsRoute = lazy(() =>
-  import("./routes/notifications-route/NotificationsRoute")
+const NotificationsRoute = lazy(
+  async () =>
+    await timeout(import("./routes/notifications-route/NotificationsRoute"))
 );
+
+const timeout = (module) => {
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      res(module);
+    }, 6000);
+  });
+};
 
 const Routing = () => {
   const { isAuth } = useAuthContext();
