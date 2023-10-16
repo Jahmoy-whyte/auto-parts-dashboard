@@ -63,6 +63,7 @@ const useDashBoard = () => {
       });
       const arrayData = await tokenAwareFetch("/dashboard/");
       console.log(arrayData);
+
       dispatch({
         type: ACTIONS.set_all,
         payload: {

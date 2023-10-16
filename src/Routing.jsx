@@ -49,18 +49,9 @@ import { useAuthContext } from "./context/AuthContextProvider";
 
 import LoadingIndicator from "./components/loading-indicator/LoadingIndicator";
 
-const NotificationsRoute = lazy(
-  async () =>
-    await timeout(import("./routes/notifications-route/NotificationsRoute"))
+const NotificationsRoute = lazy(() =>
+  import("./routes/notifications-route/NotificationsRoute")
 );
-
-const timeout = (module) => {
-  return new Promise((res, rej) => {
-    setTimeout(() => {
-      res(module);
-    }, 6000);
-  });
-};
 
 const Routing = () => {
   const { isAuth } = useAuthContext();
@@ -196,3 +187,13 @@ const Routing = () => {
 };
 
 export default Routing;
+/*
+
+const timeout = (module) => {
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      res(module);
+    }, 6000);
+  });
+};
+*/
