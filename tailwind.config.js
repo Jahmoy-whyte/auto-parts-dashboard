@@ -25,9 +25,9 @@ export default {
         },
       },
       animation: {
-        slideMenuClose: "slideMenuClose  0.4s",
-        slideMenuOpen: "slideMenuOpen  0.4s  ",
-        fadeInModel: "fadeInModel 0.4s ",
+        slideMenuClose: "slideMenuClose  0.3s",
+        slideMenuOpen: "slideMenuOpen  0.3s  ",
+        fadeInModel: "fadeInModel 0.3s ",
       },
     },
   },

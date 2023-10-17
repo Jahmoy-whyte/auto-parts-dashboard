@@ -15,7 +15,7 @@ const ToolBar = ({
   dropDownOptions = [],
 }) => {
   return (
-    <div className="flex gap-2 mb-2 ">
+    <div className="flex flex-col gap-2 mb-2  sm:flex-row">
       <div className="flex border-2 rounded-md pl-2  items-center gap-2  h-9">
         <AiOutlineSearch color="black" />
         <input
@@ -28,31 +28,35 @@ const ToolBar = ({
 
       <select
         onChange={(e) => filterOnChange(e.target.value)}
-        className="rounded-md text-sm border-2  h-9  outline-none"
+        className="rounded-md text-sm border-2  h-9  outline-none bg-white"
       >
         {dropDownOptions.map((option) => (
           <option value={option.value}>{option.text}</option>
         ))}
       </select>
 
-      <Button
-        visible={selected.length > 0 ? true : false}
-        isDisabled={deleteBtnIsloading}
-        isLoading={deleteBtnIsloading}
-        onClick={deleteFunc}
-        text={"Delete"}
-        className="border-white border-2 h-9 px-2 min-w-[50px] bg-red-500 text-sm"
-      />
+      <div className="flex gap-2 items-center">
+        <div className="flex flex-1">
+          <Button
+            visible={selected.length > 0 ? true : false}
+            isDisabled={deleteBtnIsloading}
+            isLoading={deleteBtnIsloading}
+            onClick={deleteFunc}
+            text={"Delete"}
+            className="border-white border-2 h-9 px-2 min-w-[50px] bg-red-500 text-sm flex-1"
+          />
 
-      {children}
+          {children}
+        </div>
 
-      <Oval
-        visible={isLoading}
-        color="#F47A00"
-        secondaryColor="#F47A00"
-        width={30}
-        height={30}
-      />
+        <Oval
+          visible={isLoading}
+          color="#F47A00"
+          secondaryColor="#F47A00"
+          width={30}
+          height={30}
+        />
+      </div>
     </div>
   );
 };

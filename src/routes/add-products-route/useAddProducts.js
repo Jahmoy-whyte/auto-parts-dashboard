@@ -16,6 +16,12 @@ const useAddProducts = () => {
 
   const reducer = (state, action) => {
     switch (action.type) {
+      case "set_error": {
+        return {
+          ...state,
+          error: action.payload,
+        };
+      }
       case "set_dropdown_data": {
         const dropDown = action.payload.dropDown;
         const data = action.payload.data;
@@ -105,6 +111,7 @@ const useAddProducts = () => {
         const product = action.payload;
         return {
           ...state,
+          error: null,
           id: product.id,
           name: product.productName,
           price: product.price,
@@ -193,6 +200,7 @@ const useAddProducts = () => {
         getYear("model", productData.modelId, productData.model);
         selectOption("year", productData.yearId, productData.year);
       } catch (error) {
+        dispatch({ type: ACTIONS.set_error, payload: error.message });
         toastMessage("error", error.message);
       }
     };
@@ -401,7 +409,7 @@ const useAddProducts = () => {
 
   return [
     state,
-    dispatch,
+    nav,
     getModel,
     getYear,
     selectOption,

@@ -1,3 +1,4 @@
+import { Oval } from "react-loader-spinner";
 import { twMerge } from "tailwind-merge";
 const Button = ({
   visible = true,
@@ -8,7 +9,7 @@ const Button = ({
   isDisabled = false,
 }) => {
   const myclass = twMerge(
-    "bg-secondary h-9 rounded-lg text-white font-bold active:scale-95",
+    "flex justify-center items-center bg-secondary h-9 rounded-lg text-white font-bold  active:scale-95 ",
     className
   );
 
@@ -22,7 +23,11 @@ const Button = ({
             onClick();
           }}
         >
-          {isLoading ? "Loading..." : text}{" "}
+          {isLoading ? (
+            <Oval color="white" secondaryColor="white" height={20} width={20} />
+          ) : (
+            text
+          )}{" "}
         </button>
       ) : null}
     </>

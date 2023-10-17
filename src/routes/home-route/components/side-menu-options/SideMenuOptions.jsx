@@ -5,10 +5,10 @@ const SideMenuOptions = ({ title, icon, onClick, path, close }) => {
     <button
       className="flex items-center gap-3 py-3 px-4 mx-1 transition-all rounded-md hover:bg-blue-400 "
       onClick={() => {
-        //const windowWidth = window.innerWidth;
+        const windowWidth = window.innerWidth;
         onClick(path);
 
-        // if (windowWidth < 650) close();
+        if (windowWidth < 650) close(false);
       }}
     >
       {icon} <p className="text-left"> {title} </p>

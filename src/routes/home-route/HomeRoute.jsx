@@ -98,6 +98,7 @@ const HomeRoute = () => {
           if (options.permissions.includes(user.role)) {
             return (
               <SideMenuOptions
+                close={setMenuIsOpen}
                 icon={options.icon}
                 onClick={nav}
                 path={options.path}

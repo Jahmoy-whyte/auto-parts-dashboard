@@ -1,5 +1,6 @@
 import {
   BrowserRouter,
+  createHashRouter,
   createBrowserRouter,
   Navigate,
   RouterProvider,
@@ -182,7 +183,7 @@ const Routing = () => {
     },
   ];
 
-  const router = createBrowserRouter(routes);
+  const router = createHashRouter(routes);
   return <RouterProvider router={router} />;
 };
 

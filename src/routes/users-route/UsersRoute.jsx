@@ -65,7 +65,7 @@ const UsersRoute = () => {
                 selected={state.selected}
               >
                 <Button
-                  className="h-9  min-w-[56px] px-2  text-sm border-2 border-white"
+                  className="h-9  min-w-[56px] px-2  text-sm border-2 border-white flex-1"
                   onClick={() => nav("/home/users/edit/add")}
                   text={"Add"}
                 />

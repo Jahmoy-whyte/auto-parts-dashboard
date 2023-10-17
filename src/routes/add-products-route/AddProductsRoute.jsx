@@ -12,7 +12,7 @@ import Button from "../../components/button/Button";
 const AddProductsRoute = () => {
   const [
     state,
-    dispatch,
+    nav,
     getModel,
     getYear,
     selectOption,
@@ -22,7 +22,18 @@ const AddProductsRoute = () => {
     isUpdate,
     update,
   ] = useAddProducts();
-
+  if (state.error) {
+    return (
+      <div className="flex flex-1 justify-center items-center bg-white">
+        <p>
+          {state.error}{" "}
+          <b className="text-blue-500 cursor-pointer" onClick={() => nav(-1)}>
+            go back
+          </b>
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="flex h-screen flex-col  bg-slate-100 items-center  flex-1 overflow-y-auto relative">
       <div className="flex w-full max-w-6xl mt-5 flex-1 flex-col px-5">

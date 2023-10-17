@@ -2,6 +2,7 @@ import { memo } from "react";
 import formattedCost from "../../../../helper/format-cost/formattedCost";
 import { ACTIONS } from "../../helper/reducerHelper";
 import { Link } from "react-router-dom";
+import InitialCapitalization from "../../../../helper/initial-capitalization/InitialCapitalization";
 const TabelRows = ({ data, dispatch, selected = [] }) => {
   return (
     <tr>
@@ -39,7 +40,7 @@ const TabelRows = ({ data, dispatch, selected = [] }) => {
       <td className="px-6 py-4">{formattedCost(data.total)}</td>
       <td className="px-6 py-4">
         <p className="text-center rounded-md p-1 text-blue-500 border-blue-500 border-[1px]">
-          {data.status == "sent" ? "new" : data.status}
+          {data.status == "sent" ? "New" : InitialCapitalization(data.status)}
         </p>
       </td>
       <td className="px-6 py-4">

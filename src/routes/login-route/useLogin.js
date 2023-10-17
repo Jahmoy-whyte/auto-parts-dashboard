@@ -46,7 +46,7 @@ const useLogin = () => {
 
     return { bool, message };
   };
-  return [textBox, isLoading, textBoxHandler, submit, nav];
+  return [textBox, isLoading, textBoxHandler, submit, nav, setTextBox];
 };
 
 export default useLogin;

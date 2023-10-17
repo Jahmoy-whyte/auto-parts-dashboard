@@ -4,6 +4,7 @@ export const initialState = {
   description: "",
   image: null,
   isLoading: false,
+  error: null,
 
   condition: {
     value: "",
@@ -71,6 +72,7 @@ export const ACTIONS = {
   set_loading: "set_loading",
   reset: "reset",
   set_initital_state: "set_initital_state",
+  set_error: "set_error",
 };
 
 export const startingState = (product) => {
@@ -78,6 +80,7 @@ export const startingState = (product) => {
     return initialState;
   } else {
     return {
+      error: null,
       id: product.id,
       name: product.productName,
       price: product.price,

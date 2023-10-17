@@ -25,7 +25,6 @@ const OrdersEditRoute = () => {
     );
   }
 
-  console.log(state);
   return (
     <>
       <Model
