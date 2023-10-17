@@ -27,14 +27,14 @@ const TabelRows = ({ data, dispatch, selected = [] }) => {
       <td className="px-6 py-4">
         <div className="flex items-center gap-2 w-32">
           <div className="bg-primary w-[35px] h-[35px] rounded-[35px] flex justify-center items-center text-white">
-            <p>{data?.firstName.split("")[0]}</p>
+            <p>{data?.firstName?.split("")[0]}</p>
           </div>
 
           {data?.firstName + " " + data?.lastName}
         </div>
       </td>
 
-      <td className="px-6 py-4">{data.date.split("T")[0]}</td>
+      <td className="px-6 py-4">{data.date?.split("T")[0]}</td>
       <td className="px-6 py-4">{data.address}</td>
 
       <td className="px-6 py-4">{formattedCost(data.total)}</td>
