@@ -9,13 +9,13 @@ const EmailType = ({ setTextBox, isLoading }) => {
         <p
           key={data.id}
           className="border-[1px] bg-slate-100  px-2 rounded-lg cursor-pointer active:scale-95"
-          disabled={isLoading}
-          onClick={() =>
+          onClick={() => {
+            if (isLoading) return;
             setTextBox((prev) => ({
               ...prev,
               email: prev.email + data.text,
-            }))
-          }
+            }));
+          }}
         >
           {data.text}
         </p>
